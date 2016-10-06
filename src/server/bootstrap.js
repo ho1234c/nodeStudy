@@ -2,7 +2,7 @@ import express from 'express'
 import db from './models'
 
 
-db.sequelize.sync()
+db.sequelize.sync({force: true})
     .then(()=>{
         console.log('db connect');
     })

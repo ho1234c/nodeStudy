@@ -3,10 +3,10 @@ const environment = {
         uri: 'postgres://postgres:1234@localhost/withSong_v2',
     },
     development: {
-        uri: 'mongodb://localhost:27017/tested',
+        uri: '',
     },
     production: {
-        uri: 'mongodb://localhost:27017/tested',
+        uri: '',
     },
 };
 
