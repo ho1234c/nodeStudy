@@ -1,4 +1,9 @@
 const environment = {
+    port: process.env.PORT || 8000,
+    cwd: process.cwd(),
+    path: {
+        public: process.cwd() + '/public'
+    },
     localhost: {
         uri: 'postgres://postgres:1234@localhost/withSong_v2',
     },

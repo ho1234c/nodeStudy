@@ -1,10 +1,16 @@
 import webpack from 'webpack'
+import path from 'path';
 
 export default {
-    entry: './src/server',
+    entry: './src/client/app.js',
     output: {
-        path: __dirname,
+        path: path.join(__dirname, 'public'),
         filename: 'bundle.js'
+    },
+    resolve: {
+        root: [
+            path.resolve('./src/client/node_modules'),
+        ]
     },
     module:{
         preLoaders: [
@@ -15,6 +21,12 @@ export default {
             }
         ],
         loaders:[
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel',
+                query: { presets: ['es2015'] }
+            },
             {
                 test: /\.scss$/,
                 loaders: [ 'style', 'css', 'sass' ]
