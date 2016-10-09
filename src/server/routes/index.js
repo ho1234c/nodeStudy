@@ -1,5 +1,5 @@
 import index from '../controllers/index';
 
 export default router => {
-    router.get('/', index);
+    router.get('/', index.render);
 };

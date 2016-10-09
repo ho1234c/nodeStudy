@@ -1,5 +1,6 @@
 import bootstrap from './bootstrap'
+import config from './config'
 
-const server = bootstrap.listen(8000, ()=>{
-    console.log('server start!');
+const server = bootstrap.listen(config.port, ()=>{
+    console.log(`server start! port ${config.port}`);
 });

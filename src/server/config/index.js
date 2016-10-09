@@ -5,10 +5,7 @@ const environment = {
         public: process.cwd() + '/public'
     },
     localhost: {
-        uri: 'postgres://postgres:1234@localhost/withSong_v2',
-    },
-    development: {
-        uri: '',
+        uri: 'postgres://postgres:1234@localhost:5432/withSong_v2',
     },
     production: {
         uri: '',

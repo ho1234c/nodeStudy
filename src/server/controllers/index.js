@@ -1,3 +1,5 @@
-export default (req, res) => {
-    res.render('index');
-};
+export default {
+    render(req, res) {
+        res.render('index');
+    }
+}

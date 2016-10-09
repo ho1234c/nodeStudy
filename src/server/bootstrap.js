@@ -6,10 +6,10 @@ import db from './models'
 
 db.sequelize.sync({force: true})
     .then(()=>{
-        console.log('db connect');
+        console.log('Connect database');
     })
     .catch(()=>{
-        console.log('db connection fail');
+        console.log('Fail to database connection');
     });
 
 const app = express();
