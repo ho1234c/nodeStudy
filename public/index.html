@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="ko" ng-app="app">
+<html lang="ko" ng-app="withSong">
 <head>
     <meta charset="UTF-8">
     <title>withSong</title>
 </head>
 <body>
-Hello World!
-<button ui-sref="sign-up">sign-up</button>
-<ui-view></ui-view>
+<div id="wrap">
+    <div id="content">
+        <ui-view></ui-view>
+    </div>
+    <div id="id-box"></div>
+</div>
 <script src="./bundle.js"></script>
 </body>
 </html>

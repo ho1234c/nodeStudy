@@ -1,3 +1,29 @@
-body {
-  background-color: #343434;
+body{
+  background-color: #ffffff;
+  margin: 0;
 }
+
+#content{
+  width: 940px;
+  margin: 0 auto;
+  #content-left{
+    width: 490px;
+    #menu{
+      height: 50px;
+      #menu-left{
+        float: left;
+        width: 50%;
+      }
+      #menu-right{
+        float: right;
+        width: 50%;
+      }
+    }
+  }
+  #content-right{
+    width: 450px;
+  }
+}
+
+
+

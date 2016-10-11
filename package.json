@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node dist/server/index.js",
     "build": "babel src/server -d dist/server && webpack",
+    "dev-start": "babel src/server -d dist/server && node dist/server/index.js",
     "test": "mocha --compilers js:babel-core/register"
   },
   "author": "",
@@ -26,6 +27,8 @@
     "lodash": "^4.15.0",
     "nunjucks": "^2.5.2",
     "pg": "^6.1.0",
+    "request": "^2.75.0",
+    "request-promise": "^4.1.1",
     "sequelize": "^3.24.2"
   }
 }

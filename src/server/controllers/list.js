@@ -1,7 +1,12 @@
+import db from '../models';
+
 export default {
     //:pageNum
     load(req, res){
-
+        db.List.findOne({where:{ id: 1}})
+        .then((data) => {
+            res.json(data);
+        });
     },
     //:listId
     // get song included at list
