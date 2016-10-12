@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko" ng-app="withSong">
+<html lang="ko" ng-app="withSong" ng-cloak>
 <head>
     <meta charset="UTF-8">
     <title>withSong</title>
 </head>
 <body>
-<div id="wrap">
-    <div id="content">
-        <ui-view></ui-view>
-    </div>
-    <div id="id-box"></div>
+<div id="wrap" flex>
+    <ui-view></ui-view>
 </div>
+<!--<div id="id-box" ui-sref="sign-up">SIGN UP</div>-->
 <script src="./bundle.js"></script>
 </body>
 </html>

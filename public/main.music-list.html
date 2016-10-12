@@ -1,0 +1,22 @@
+<div id="content-left">
+    <div id="music-list">
+
+        <md-content>
+            <md-list flex>
+                <md-list-item class="md-3-line" ng-repeat="item in vm.list" ng-click="null">
+                    <!--<img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" />-->
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.name }}</h3>
+                        <h4>{{ item.makerId }}</h4>
+                        <p>{{ item.createdAt }}</p>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
+    <div id="search-bar"></div>
+</div>
+<div id="content-right">
+    <div id="song-list"></div>
+    <div id="comment"></div>
+</div>

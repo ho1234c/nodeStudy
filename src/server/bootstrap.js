@@ -5,7 +5,7 @@ import routeList from './routes/list'
 import db from './models'
 
 
-db.sequelize.sync({force: true})
+db.sequelize.sync()
     .then(()=>{
         console.log('Connect database');
     })

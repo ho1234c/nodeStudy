@@ -8,22 +8,15 @@ body{
   margin: 0 auto;
   #content-left{
     width: 490px;
-    #menu{
-      height: 50px;
-      #menu-left{
-        float: left;
-        width: 50%;
-      }
-      #menu-right{
-        float: right;
-        width: 50%;
-      }
-    }
   }
   #content-right{
     width: 450px;
   }
 }
 
+#menu{
+  width: 490px;
+  height: 50px;
+}
 
 

@@ -1,11 +1,11 @@
 import db from '../models';
 
 export default {
-    //:pageNum
+    //:page
     load(req, res){
-        db.List.findOne({where:{ id: 1}})
+        db.List.findAll()
         .then((data) => {
-            res.json(data);
+            res.json({data});
         });
     },
     //:listId
