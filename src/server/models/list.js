@@ -10,6 +10,9 @@ export default (sequelize, DataTypes) => {
         {
             classMethods:{
                 associate: function(models) {
+                    List.belongsTo(models.User, {
+                        foreignKey: 'makerId',
+                    });
                     List.belongsToMany(models.User, {
                         as: 'favor',
                         through: 'UserListFavor'

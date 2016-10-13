@@ -1,22 +1,57 @@
+$white: '#ffffff';
+
 body{
-  background-color: #ffffff;
+  background-color: white;
   margin: 0;
 }
 
-#content{
+#content-wrapper{
   width: 940px;
   margin: 0 auto;
-  #content-left{
-    width: 490px;
-  }
-  #content-right{
-    width: 450px;
+
+  #content{
+    #content-left{
+      width: 490px;
+      padding-top: 50px;
+    }
+
+    #content-right{
+      width: 450px;
+    }
   }
 }
 
 #menu{
   width: 490px;
   height: 50px;
+  position: fixed;
+  z-index: 100;
+  background-color: white;
 }
 
+.list-component{
+  height: 115px;
 
+  img{
+    width: 120px;
+    height: 90px;
+  }
+
+  .list-info{
+    padding: 10px;
+  }
+}
+
+.song-component{
+  height: 60px;
+
+  img{
+    width: 68px;
+    height: 51px;
+  }
+
+  .song-info{
+    width: 150px;
+    padding: 10px;
+  }
+}

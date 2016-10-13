@@ -8,6 +8,9 @@ export default (sequelize, DataTypes) => {
         {
             classMethods:{
                 associate: function(models) {
+                    Comment.belongsTo(models.User, {
+                        foreignKey: 'writerId'
+                    });
                     Comment.belongsToMany(models.User,{
                         as: 'userFavor',
                         through: 'UserCommentFavor'

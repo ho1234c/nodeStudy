@@ -4,12 +4,15 @@ import routeIndex from './routes/index';
 import routeList from './routes/list'
 import db from './models'
 
+import dummy from './dummy'
 
-db.sequelize.sync()
-    .then(()=>{
+
+db.sequelize.sync({force: true})
+    .then(() => {
+        dummy(20, console.log);
         console.log('Connect database');
     })
-    .catch(()=>{
+    .catch(() => {
         console.log('Fail to database connection');
     });
 

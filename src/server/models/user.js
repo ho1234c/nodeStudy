@@ -35,14 +35,12 @@ export default (sequelize, DataTypes) => {
                     });
                     User.hasMany(models.List, {
                         foreignKey: {
-                            name: 'makerId',
-                            allowNull: false
+                            name: 'makerId'
                         }
                     });
                     User.hasMany(models.Comment, {
                         foreignKey: {
-                            name: 'writerId',
-                            allowNull: false
+                            name: 'writerId'
                         }
                     });
                 }

@@ -75682,12 +75682,21 @@
 	        _classCallCheck(this, listCtrl);
 
 	        angular.extend(this, { List: List, initList: initList, $resource: $resource });
-	        this.list = initList.data;
+	        this.list = initList.data.map(function (obj) {
+	            obj.songInfo = JSON.parse(obj.songInfo);return obj;
+	        });
+	        this.detail = [];
 	    }
 
 	    _createClass(listCtrl, [{
 	        key: 'viewDetail',
-	        value: function viewDetail() {}
+	        value: function viewDetail(data) {
+	            var items = data.songInfo.items;
+	            for (var i in items) {
+	                this.detail.push(items[i]);
+	                console.log(items[i]);
+	            }
+	        }
 	    }]);
 
 	    return listCtrl;
@@ -75800,7 +75809,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  background-color: #ffffff;\n  margin: 0; }\n\n#content {\n  width: 940px;\n  margin: 0 auto; }\n  #content #content-left {\n    width: 490px; }\n  #content #content-right {\n    width: 450px; }\n\n#menu {\n  width: 490px;\n  height: 50px; }\n", ""]);
+	exports.push([module.id, "body {\n  background-color: white;\n  margin: 0; }\n\n#content-wrapper {\n  width: 940px;\n  margin: 0 auto; }\n  #content-wrapper #content #content-left {\n    width: 490px;\n    padding-top: 50px; }\n  #content-wrapper #content #content-right {\n    width: 450px; }\n\n#menu {\n  width: 490px;\n  height: 50px;\n  position: fixed;\n  z-index: 100;\n  background-color: white; }\n\n.list-component {\n  height: 115px; }\n  .list-component img {\n    width: 120px;\n    height: 90px; }\n  .list-component .list-info {\n    padding: 10px; }\n\n.song-component {\n  height: 60px; }\n  .song-component img {\n    width: 68px;\n    height: 51px; }\n  .song-component .song-info {\n    width: 150px;\n    padding: 10px; }\n", ""]);
 
 	// exports
 

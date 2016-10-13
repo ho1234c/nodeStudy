@@ -3,7 +3,7 @@ import db from '../models';
 export default {
     //:page
     load(req, res){
-        db.List.findAll()
+        db.List.findAll({include: {model: db.User, attributes: ['email', 'nickname']}})
         .then((data) => {
             res.json({data});
         });
