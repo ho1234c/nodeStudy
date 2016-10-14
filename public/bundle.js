@@ -74,9 +74,9 @@
 
 	var _userSvc2 = _interopRequireDefault(_userSvc);
 
-	__webpack_require__(18);
-
 	__webpack_require__(22);
+
+	__webpack_require__(18);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -93,7 +93,7 @@
 	        controllerAs: "vm",
 	        resolve: {
 	            initList: function initList($resource) {
-	                return $resource('/list/load').get().$promise;
+	                return $resource('/load/list').get().$promise;
 	            }
 	        }
 	    }).state('main.search-add', {
@@ -75682,20 +75682,55 @@
 	        _classCallCheck(this, listCtrl);
 
 	        angular.extend(this, { List: List, initList: initList, $resource: $resource });
-	        this.list = initList.data.map(function (obj) {
-	            obj.songInfo = JSON.parse(obj.songInfo);return obj;
-	        });
+	        this.List = List;
+	        this.musicList = initList.data;
 	        this.detail = [];
 	    }
 
 	    _createClass(listCtrl, [{
+	        key: 'watchMore',
+	        value: function watchMore(count) {
+	            var _this = this;
+
+	            this.List.loadList(count).then(function (result) {
+	                var _iteratorNormalCompletion = true;
+	                var _didIteratorError = false;
+	                var _iteratorError = undefined;
+
+	                try {
+	                    for (var _iterator = result.data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                        var obj = _step.value;
+
+	                        _this.musicList.push(obj);
+	                    }
+	                } catch (err) {
+	                    _didIteratorError = true;
+	                    _iteratorError = err;
+	                } finally {
+	                    try {
+	                        if (!_iteratorNormalCompletion && _iterator.return) {
+	                            _iterator.return();
+	                        }
+	                    } finally {
+	                        if (_didIteratorError) {
+	                            throw _iteratorError;
+	                        }
+	                    }
+	                }
+	            });
+	        }
+	    }, {
 	        key: 'viewDetail',
-	        value: function viewDetail(data) {
-	            var items = data.songInfo.items;
-	            for (var i in items) {
-	                this.detail.push(items[i]);
-	                console.log(items[i]);
-	            }
+	        value: function viewDetail(id) {
+	            var _this2 = this;
+
+	            this.List.loadSong(id).then(function (result) {
+	                var songInfo = JSON.parse(result.data.songInfo);
+	                console.log(songInfo);
+	                for (var obj in songInfo) {
+	                    _this2.detail.push(obj);
+	                }
+	            });
 	        }
 	    }]);
 
@@ -75726,19 +75761,31 @@
 	        _classCallCheck(this, List);
 
 	        angular.extend(this, { $q: $q });
-	        this.Rest = $resource('list/:page/:listId', {
-	            page: '@page',
-	            listId: '@listId'
+	        this.listRequest = $resource('load/list');
+	        this.songRequest = $resource('load/song/:id', {
+	            id: '@id'
 	        });
 	    }
 
 	    _createClass(List, [{
-	        key: 'load',
-	        value: function load() {
+	        key: 'loadList',
+	        value: function loadList(count) {
 	            var q = this.$q.defer();
-	            this.Rest.get({
-	                page: 1,
-	                listId: 1
+	            this.listRequest.get({
+	                count: count
+	            }, function (result) {
+	                q.resolve(result);
+	            }, function (err) {
+	                q.reject(err);
+	            });
+	            return q.promise;
+	        }
+	    }, {
+	        key: 'loadSong',
+	        value: function loadSong(id) {
+	            var q = this.$q.defer();
+	            this.songRequest.get({
+	                id: id
 	            }, function (result) {
 	                q.resolve(result);
 	            }, function (err) {
@@ -75809,7 +75856,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  background-color: white;\n  margin: 0; }\n\n#content-wrapper {\n  width: 940px;\n  margin: 0 auto; }\n  #content-wrapper #content #content-left {\n    width: 490px;\n    padding-top: 50px; }\n  #content-wrapper #content #content-right {\n    width: 450px; }\n\n#menu {\n  width: 490px;\n  height: 50px;\n  position: fixed;\n  z-index: 100;\n  background-color: white; }\n\n.list-component {\n  height: 115px; }\n  .list-component img {\n    width: 120px;\n    height: 90px; }\n  .list-component .list-info {\n    padding: 10px; }\n\n.song-component {\n  height: 60px; }\n  .song-component img {\n    width: 68px;\n    height: 51px; }\n  .song-component .song-info {\n    width: 150px;\n    padding: 10px; }\n", ""]);
+	exports.push([module.id, ".md-button {\n  margin: 0; }\n\nmd-list {\n  padding: 0; }\n\nbody {\n  margin: 0; }\n\n#wrap {\n  background-color: white; }\n\n#content-wrapper {\n  width: 940px;\n  margin: 0 auto; }\n  #content-wrapper #content #content-left {\n    width: 490px;\n    padding-top: 50px; }\n  #content-wrapper #content #content-right {\n    width: 450px; }\n\n#menu {\n  width: 490px;\n  height: 50px;\n  position: fixed;\n  z-index: 100;\n  background-color: white; }\n\n.list-component {\n  height: 115px; }\n  .list-component img {\n    width: 120px;\n    height: 90px; }\n  .list-component .list-info {\n    padding: 10px; }\n\n.song-component {\n  height: 60px; }\n  .song-component img {\n    width: 68px;\n    height: 51px; }\n  .song-component .song-info {\n    width: 420px;\n    padding: 10px; }\n    .song-component .song-info .info-title {\n      width: 340px;\n      white-space: nowrap;\n      text-overflow: ellipsis;\n      overflow: hidden; }\n\n.watch-more {\n  height: 40px;\n  width: 490px;\n  margin: 0; }\n\n#music-list-song {\n  height: 430px;\n  width: 450px;\n  position: fixed; }\n", ""]);
 
 	// exports
 

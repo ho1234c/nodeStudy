@@ -17,13 +17,17 @@ export default function(num, callback){
             return request(url);
         })
         .then((songInfo) => {
+            const songInfoDummy = {
+                id:"",
+                snippet:""
+            };
             return db.List.bulkCreate(_.map(listDummy, (obj) => { obj.songInfo = songInfo; return obj}))
         })
         .then(() => {
             return db.Comment.bulkCreate(commentDummy);
         })
         .then(() => {
-            callback('Complete insert' + i +' dummy data');
+            callback('Complete insert ' + num +' dummy data');
         })
         .catch((err) => {
             callback(err);

@@ -1,17 +1,28 @@
 export default class listCtrl {
     constructor(List, initList, $resource) {
         angular.extend(this, {List, initList, $resource});
-        this.list = initList.data.map((obj) => {obj.songInfo = JSON.parse(obj.songInfo); return obj;});
+        this.List = List;
+        this.musicList = initList.data;
         this.detail = [];
     }
+    watchMore(count){
+        this.List.loadList(count)
+            .then(result => {
+                for(let obj of result.data){
+                    this.musicList.push(obj);
+                }
+            });
+    }
+    viewDetail(id){
+        this.List.loadSong(id)
+            .then(result => {
+                const songInfo = JSON.parse(result.data.songInfo);
+                console.log(songInfo);
+                for(let obj in songInfo){
+                    this.detail.push(obj);
+                }
+            })
 
-    viewDetail(data){
-        let items = data.songInfo.items;
-        for(let i in items){
-            this.detail.push(items[i]);
-            console.log(items[i]);
-
-        }
     }
 }
 

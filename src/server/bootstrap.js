@@ -9,7 +9,7 @@ import dummy from './dummy'
 
 db.sequelize.sync({force: true})
     .then(() => {
-        dummy(20, console.log);
+        dummy(30, console.log);
         console.log('Connect database');
     })
     .catch(() => {

@@ -1,22 +1,35 @@
 export default class List {
     constructor($resource, $q) {
         angular.extend(this, {$q});
-        this.Rest = $resource('list/:page/:listId', {
-            page: '@page',
-            listId: '@listId'
+        this.listRequest = $resource('load/list');
+        this.songRequest = $resource('load/song/:id', {
+            id: '@id'
         });
     }
-    load(){
+
+    loadList(count){
         const q = this.$q.defer();
-        this.Rest.get({
-            page: 1,
-            listId: 1
+        this.listRequest.get({
+            count: count
         }, result => {
             q.resolve(result);
         }, err => {
             q.reject(err);
         });
         return q.promise;
+    }
+
+    loadSong(id){
+        const q = this.$q.defer();
+        this.songRequest.get({
+            id: id
+        }, result => {
+            q.resolve(result);
+        }, err => {
+            q.reject(err);
+        });
+        return q.promise;
+
     }
 }
 

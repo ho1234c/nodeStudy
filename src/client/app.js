@@ -11,8 +11,8 @@ import listSvc from './service/listSvc';
 import userSvc from './service/userSvc';
 
 // It is purpose to add css to javascript through webpack.
-import './css/style.scss';
 import './css/angular-material.scss';
+import './css/style.scss';
 
 angular
     .module('withSong', [ 'ui.router', 'ngResource', 'ngMaterial' ])
@@ -30,7 +30,7 @@ angular
                 controllerAs : "vm",
                 resolve: {
                     initList: ($resource) => {
-                        return $resource('/list/load').get().$promise;
+                        return $resource('/load/list').get().$promise;
                     }
                 }
             })
@@ -53,4 +53,4 @@ angular
     .service('List', listSvc)
     .service('User', userSvc)
     .controller('listCtrl', listCtrl)
-    .controller('userCtrl', userCtrl);
+    .controller('userCtrl', userCtrl)
