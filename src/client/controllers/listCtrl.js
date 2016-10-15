@@ -17,9 +17,8 @@ export default class listCtrl {
         this.List.loadSong(id)
             .then(result => {
                 const songInfo = JSON.parse(result.data.songInfo);
-                console.log(songInfo);
                 for(let obj in songInfo){
-                    this.detail.push(obj);
+                    this.detail.push(songInfo[obj]);
                 }
             })
 

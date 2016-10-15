@@ -1,6 +1,7 @@
 import db from './models/index'
 import request from 'request-promise';
 import _ from 'lodash'
+import {findNode} from './lib/index'
 
 export default function(num, callback){
     const url = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyAYJcoUSoEpehRGo-0XYHd4zafkiSmt9Wk&type=type&part=snippet&q=%EC%9E%84%EC%B0%BD%EC%A0%95';
@@ -17,11 +18,16 @@ export default function(num, callback){
             return request(url);
         })
         .then((songInfo) => {
-            const songInfoDummy = {
-                id:"",
-                snippet:""
-            };
-            return db.List.bulkCreate(_.map(listDummy, (obj) => { obj.songInfo = songInfo; return obj}))
+            let data = JSON.parse(songInfo);
+            let songInfoDummy = [];
+
+            _.forEach(data.items, (value) => {
+                let refinedData = {};
+                refinedData.videoId = findNode('videoId', value);
+                refinedData.snippet = findNode('snippet', value);
+                songInfoDummy.push(refinedData);
+            });
+            return db.List.bulkCreate(_.map(listDummy, (obj) => { obj.songInfo = JSON.stringify(songInfoDummy); return obj}))
         })
         .then(() => {
             return db.Comment.bulkCreate(commentDummy);

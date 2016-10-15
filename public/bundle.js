@@ -75726,9 +75726,8 @@
 
 	            this.List.loadSong(id).then(function (result) {
 	                var songInfo = JSON.parse(result.data.songInfo);
-	                console.log(songInfo);
 	                for (var obj in songInfo) {
-	                    _this2.detail.push(obj);
+	                    _this2.detail.push(songInfo[obj]);
 	                }
 	            });
 	        }
