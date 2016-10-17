@@ -4,6 +4,7 @@ import 'angular-ui-router';
 import 'angular-sanitize';
 import 'angular-resource';
 import 'angular-material';
+import 'angular-utils-pagination';
 
 import userCtrl from './controllers/userCtrl';
 import listCtrl from './controllers/listCtrl';
@@ -15,7 +16,7 @@ import './css/angular-material.scss';
 import './css/style.scss';
 
 angular
-    .module('withSong', [ 'ui.router', 'ngResource', 'ngMaterial' ])
+    .module('withSong', [ 'ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination' ])
     .config($stateProvider => {
         $stateProvider
             .state('main', {
@@ -53,4 +54,4 @@ angular
     .service('List', listSvc)
     .service('User', userSvc)
     .controller('listCtrl', listCtrl)
-    .controller('userCtrl', userCtrl)
+    .controller('userCtrl', userCtrl);

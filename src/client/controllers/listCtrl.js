@@ -1,14 +1,25 @@
 export default class listCtrl {
-    constructor(List, initList, $resource) {
-        angular.extend(this, {List, initList, $resource});
+    constructor(List, initList) {
+        angular.extend(this, {List, initList});
         this.List = List;
         this.musicList = initList.data;
         this.detail = [];
+        this.isSelectedList = null;
+        this.isSelectedSong = null;
+
+        this.pageSize = 7;
+        this.currentPage = 1;
+
+        this.yt = {
+            width: "",
+            height: "",
+            videoId: ""
+        };
     }
     watchMore(count){
         this.List.loadList(count)
             .then(result => {
-                for(let obj of result.data){
+                for(const obj of result.data){
                     this.musicList.push(obj);
                 }
             });
@@ -17,13 +28,24 @@ export default class listCtrl {
         this.List.loadSong(id)
             .then(result => {
                 const songInfo = JSON.parse(result.data.songInfo);
-                for(let obj in songInfo){
-                    this.detail.push(songInfo[obj]);
+                for(const obj of songInfo){
+                    this.detail.push(obj);
                 }
-            })
+            });
 
+        this.detail = [];
+        this.isSelectedSong = null;
+
+    }
+    selectedHighting(index, target){
+        if(target == 'list'){
+            this.isSelectedList = index;
+        }
+        else if(target == 'song'){
+            this.isSelectedSong = index;
+        }
     }
 }
 
-listCtrl.$inject = ['List', 'initList', '$resource'];
+listCtrl.$inject = ['List', 'initList'];
 

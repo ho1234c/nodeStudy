@@ -1,4 +1,4 @@
-// Overide to angular-material //
+// Override to angular-material //
 .md-button{
   margin: 0;
 }
@@ -13,10 +13,13 @@ body{
 
 #wrap{
   background-color: white;
+  position: absolute;
+  margin-left: -470px;
+  left: 50%;
 }
 
 #content-wrapper{
-  width: 940px;
+  flex-basis: 940px;
   margin: 0 auto;
 
   #content{
@@ -79,6 +82,9 @@ body{
   margin: 0;
 }
 
+.isSelected{
+  background-color: rgba(158,158,158,0.3);
+}
 
 #music-list-song{
   height: 430px;
@@ -86,3 +92,22 @@ body{
   position: fixed;
 }
 
+.pagination{
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  li a{
+    padding: 6px 12px;
+    text-decoration: none;
+  }
+}
+
+#id-box{
+  position: fixed;
+  right: 0;
+  width: 240px;
+  height: 100%;
+  background-color: #555555;
+}
