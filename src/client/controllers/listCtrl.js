@@ -1,8 +1,10 @@
 export default class listCtrl {
-    constructor(List, initList) {
-        angular.extend(this, {List, initList});
+    constructor($scope, List, initList, Youtube) {
+        angular.extend(this, {$scope, List, initList, Youtube});
+        this.$scope = $scope;
         this.List = List;
         this.musicList = initList.data;
+        this.Youtube = Youtube;
         this.detail = [];
         this.isSelectedList = null;
         this.isSelectedSong = null;
@@ -10,11 +12,17 @@ export default class listCtrl {
         this.pageSize = 7;
         this.currentPage = 1;
 
-        this.yt = {
-            width: "",
-            height: "",
-            videoId: ""
-        };
+        this.$scope.$on('videoChanged', (event, msg) => {
+            if(msg.name == 'music-list-list'){
+                this.isSelectedList = msg.index;
+            }
+            else if(msg.name == 'music-list-song'){
+                this.isSelectedSong = msg.index;
+            }
+            else{
+                this.isSelectedSong = null;
+            }
+        });
     }
     watchMore(count){
         this.List.loadList(count)
@@ -24,7 +32,10 @@ export default class listCtrl {
                 }
             });
     }
-    viewDetail(id){
+    selectList(id){
+        this.detail = [];
+        this.isSelectedSong = null;
+
         this.List.loadSong(id)
             .then(result => {
                 const songInfo = JSON.parse(result.data.songInfo);
@@ -32,20 +43,17 @@ export default class listCtrl {
                     this.detail.push(obj);
                 }
             });
-
-        this.detail = [];
-        this.isSelectedSong = null;
-
     }
-    selectedHighting(index, target){
-        if(target == 'list'){
-            this.isSelectedList = index;
-        }
-        else if(target == 'song'){
-            this.isSelectedSong = index;
-        }
+    listenList(id){
+        this.List.loadSong(id)
+            .then(result => {
+                const songInfo = JSON.parse(result.data.songInfo);
+                for(const obj of songInfo){
+                    this.Youtube.playlist.push(obj);
+                }
+            });
     }
 }
 
-listCtrl.$inject = ['List', 'initList'];
+listCtrl.$inject = ['$scope', 'List', 'initList', 'Youtube'];
 

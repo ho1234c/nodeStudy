@@ -60,13 +60,13 @@
 
 	__webpack_require__(14);
 
-	var _userCtrl = __webpack_require__(16);
-
-	var _userCtrl2 = _interopRequireDefault(_userCtrl);
-
 	var _listCtrl = __webpack_require__(17);
 
 	var _listCtrl2 = _interopRequireDefault(_listCtrl);
+
+	var _idBoxCtrl = __webpack_require__(27);
+
+	var _idBoxCtrl2 = _interopRequireDefault(_idBoxCtrl);
 
 	var _listSvc = __webpack_require__(18);
 
@@ -76,9 +76,17 @@
 
 	var _userSvc2 = _interopRequireDefault(_userSvc);
 
-	__webpack_require__(20);
+	var _youtubeSvc = __webpack_require__(28);
 
-	__webpack_require__(24);
+	var _youtubeSvc2 = _interopRequireDefault(_youtubeSvc);
+
+	var _youtube = __webpack_require__(20);
+
+	var _youtube2 = _interopRequireDefault(_youtube);
+
+	__webpack_require__(21);
+
+	__webpack_require__(25);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -109,7 +117,9 @@
 	    });
 	}).config(function ($mdThemingProvider) {
 	    $mdThemingProvider.theme('default').primaryPalette('deep-orange').accentPalette('orange');
-	}).service('List', _listSvc2.default).service('User', _userSvc2.default).controller('listCtrl', _listCtrl2.default).controller('userCtrl', _userCtrl2.default);
+	}).service('List', _listSvc2.default).service('User', _userSvc2.default).service('Youtube', _youtubeSvc2.default).controller('listCtrl', _listCtrl2.default).controller('idBoxCtrl', _idBoxCtrl2.default).directive('youtube', ['$window', function ($window) {
+	    return new _youtube2.default($window);
+	}]);
 
 /***/ },
 /* 1 */
@@ -76301,28 +76311,11 @@
 
 
 /***/ },
-/* 16 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var signUpController = function signUpController() {
-	    _classCallCheck(this, signUpController);
-	};
-
-	exports.default = signUpController;
-
-/***/ },
+/* 16 */,
 /* 17 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -76333,12 +76326,16 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var listCtrl = function () {
-	    function listCtrl(List, initList) {
+	    function listCtrl($scope, List, initList, Youtube) {
+	        var _this = this;
+
 	        _classCallCheck(this, listCtrl);
 
-	        angular.extend(this, { List: List, initList: initList });
+	        angular.extend(this, { $scope: $scope, List: List, initList: initList, Youtube: Youtube });
+	        this.$scope = $scope;
 	        this.List = List;
 	        this.musicList = initList.data;
+	        this.Youtube = Youtube;
 	        this.detail = [];
 	        this.isSelectedList = null;
 	        this.isSelectedSong = null;
@@ -76346,17 +76343,21 @@
 	        this.pageSize = 7;
 	        this.currentPage = 1;
 
-	        this.yt = {
-	            width: "",
-	            height: "",
-	            videoId: ""
-	        };
+	        this.$scope.$on('videoChanged', function (event, msg) {
+	            if (msg.name == 'music-list-list') {
+	                _this.isSelectedList = msg.index;
+	            } else if (msg.name == 'music-list-song') {
+	                _this.isSelectedSong = msg.index;
+	            } else {
+	                _this.isSelectedSong = null;
+	            }
+	        });
 	    }
 
 	    _createClass(listCtrl, [{
-	        key: "watchMore",
+	        key: 'watchMore',
 	        value: function watchMore(count) {
-	            var _this = this;
+	            var _this2 = this;
 
 	            this.List.loadList(count).then(function (result) {
 	                var _iteratorNormalCompletion = true;
@@ -76367,7 +76368,7 @@
 	                    for (var _iterator = result.data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	                        var obj = _step.value;
 
-	                        _this.musicList.push(obj);
+	                        _this2.musicList.push(obj);
 	                    }
 	                } catch (err) {
 	                    _didIteratorError = true;
@@ -76386,9 +76387,12 @@
 	            });
 	        }
 	    }, {
-	        key: "viewDetail",
-	        value: function viewDetail(id) {
-	            var _this2 = this;
+	        key: 'selectList',
+	        value: function selectList(id) {
+	            var _this3 = this;
+
+	            this.detail = [];
+	            this.isSelectedSong = null;
 
 	            this.List.loadSong(id).then(function (result) {
 	                var songInfo = JSON.parse(result.data.songInfo);
@@ -76400,7 +76404,7 @@
 	                    for (var _iterator2 = songInfo[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	                        var obj = _step2.value;
 
-	                        _this2.detail.push(obj);
+	                        _this3.detail.push(obj);
 	                    }
 	                } catch (err) {
 	                    _didIteratorError2 = true;
@@ -76417,18 +76421,39 @@
 	                    }
 	                }
 	            });
-
-	            this.detail = [];
-	            this.isSelectedSong = null;
 	        }
 	    }, {
-	        key: "selectedHighting",
-	        value: function selectedHighting(index, target) {
-	            if (target == 'list') {
-	                this.isSelectedList = index;
-	            } else if (target == 'song') {
-	                this.isSelectedSong = index;
-	            }
+	        key: 'listenList',
+	        value: function listenList(id) {
+	            var _this4 = this;
+
+	            this.List.loadSong(id).then(function (result) {
+	                var songInfo = JSON.parse(result.data.songInfo);
+	                var _iteratorNormalCompletion3 = true;
+	                var _didIteratorError3 = false;
+	                var _iteratorError3 = undefined;
+
+	                try {
+	                    for (var _iterator3 = songInfo[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	                        var obj = _step3.value;
+
+	                        _this4.Youtube.playlist.push(obj);
+	                    }
+	                } catch (err) {
+	                    _didIteratorError3 = true;
+	                    _iteratorError3 = err;
+	                } finally {
+	                    try {
+	                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                            _iterator3.return();
+	                        }
+	                    } finally {
+	                        if (_didIteratorError3) {
+	                            throw _iteratorError3;
+	                        }
+	                    }
+	                }
+	            });
 	        }
 	    }]);
 
@@ -76438,7 +76463,7 @@
 	exports.default = listCtrl;
 
 
-	listCtrl.$inject = ['List', 'initList'];
+	listCtrl.$inject = ['$scope', 'List', 'initList', 'Youtube'];
 
 /***/ },
 /* 18 */
@@ -76521,15 +76546,86 @@
 
 /***/ },
 /* 20 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Youtube = function () {
+	    function Youtube($window) {
+	        _classCallCheck(this, Youtube);
+
+	        this.$window = $window;
+	        this.template = '<div></div>';
+	        this.restrict = 'E';
+	        this.scope = {
+	            height: "@",
+	            width: "@",
+	            videoid: "@"
+	        };
+	    }
+
+	    _createClass(Youtube, [{
+	        key: 'link',
+	        value: function link(scope, element) {
+	            var tag = document.createElement('script');
+	            tag.src = "https://www.youtube.com/iframe_api";
+	            var firstScriptTag = document.getElementsByTagName('script')[0];
+	            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+	            var player = void 0;
+
+	            this.$window.onYouTubeIframeAPIReady = function () {
+
+	                player = new YT.Player(element.children()[0], {
+	                    height: scope.height,
+	                    width: scope.width,
+	                    videoId: scope.videoid
+	                });
+	            };
+
+	            scope.$watch('videoid', function (newValue, oldValue) {
+	                if (newValue == oldValue) {
+	                    return;
+	                }
+	                player.loadVideoById(scope.videoid);
+	            });
+
+	            scope.$watch('height + width', function (newValue, oldValue) {
+	                if (newValue == oldValue) {
+	                    return;
+	                }
+	                player.setSize(scope.width, scope.height);
+	            });
+	        }
+	    }]);
+
+	    return Youtube;
+	}();
+
+	exports.default = Youtube;
+
+
+	Youtube.$inject = ['$window'];
+
+/***/ },
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(21);
+	var content = __webpack_require__(22);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(23)(content, {});
+	var update = __webpack_require__(24)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -76546,10 +76642,10 @@
 	}
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(22)();
+	exports = module.exports = __webpack_require__(23)();
 	// imports
 
 
@@ -76560,7 +76656,7 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	/*
@@ -76616,7 +76712,7 @@
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -76868,16 +76964,16 @@
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(25);
+	var content = __webpack_require__(26);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(23)(content, {});
+	var update = __webpack_require__(24)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -76894,18 +76990,115 @@
 	}
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(22)();
+	exports = module.exports = __webpack_require__(23)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".md-button {\n  margin: 0; }\n\nmd-list {\n  padding: 0; }\n\nbody {\n  margin: 0; }\n\n#wrap {\n  background-color: white;\n  position: absolute;\n  margin-left: -470px;\n  left: 50%; }\n\n#content-wrapper {\n  flex-basis: 940px;\n  margin: 0 auto; }\n  #content-wrapper #content #content-left {\n    width: 490px;\n    padding-top: 50px; }\n  #content-wrapper #content #content-right {\n    width: 450px; }\n\n#menu {\n  width: 490px;\n  height: 50px;\n  position: fixed;\n  z-index: 100;\n  background-color: white; }\n\n.list-component {\n  height: 115px; }\n  .list-component img {\n    width: 120px;\n    height: 90px; }\n  .list-component .list-info {\n    padding: 10px; }\n\n.song-component {\n  height: 60px; }\n  .song-component img {\n    width: 68px;\n    height: 51px; }\n  .song-component .song-info {\n    width: 420px;\n    padding: 10px; }\n    .song-component .song-info .info-title {\n      width: 340px;\n      white-space: nowrap;\n      text-overflow: ellipsis;\n      overflow: hidden; }\n\n.watch-more {\n  height: 40px;\n  width: 490px;\n  margin: 0; }\n\n.isSelected {\n  background-color: rgba(158, 158, 158, 0.3); }\n\n#music-list-song {\n  height: 430px;\n  width: 450px;\n  position: fixed; }\n\n.pagination {\n  list-style: none;\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .pagination li a {\n    padding: 6px 12px;\n    text-decoration: none; }\n\n#id-box {\n  position: fixed;\n  right: 0;\n  width: 240px;\n  height: 100%;\n  background-color: #555555; }\n", ""]);
+	exports.push([module.id, ".md-button {\n  margin: 0; }\n\nmd-list {\n  padding: 0; }\n\n.md-button:not([disabled]):hover {\n  background-color: rgba(158, 158, 158, 0.1); }\n\nbody {\n  background-color: white;\n  height: auto; }\n\n#content-wrapper {\n  flex-basis: 940px;\n  background-color: white; }\n  #content-wrapper #content #content-left {\n    flex-basis: 490px;\n    padding-top: 50px; }\n  #content-wrapper #content #content-right {\n    flex-basis: 450px; }\n\n#menu {\n  width: 490px;\n  height: 50px;\n  position: fixed;\n  z-index: 100;\n  background-color: white; }\n\n.list-component {\n  height: 115px; }\n  .list-component img {\n    width: 120px;\n    height: 90px; }\n  .list-component .list-info {\n    padding: 10px; }\n\n.song-component {\n  height: 60px; }\n  .song-component img {\n    width: 68px;\n    height: 51px; }\n  .song-component .info-title {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden; }\n\n.watch-more {\n  height: 40px;\n  width: 490px;\n  margin: 0; }\n\n.isSelected {\n  background-color: rgba(158, 158, 158, 0.2); }\n\n#music-list-song {\n  height: 430px;\n  width: 450px;\n  position: fixed; }\n\n.pagination {\n  list-style: none;\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .pagination li a {\n    padding: 6px 12px;\n    text-decoration: none; }\n\n#id-box {\n  position: fixed;\n  right: 0;\n  top: 0;\n  width: 240px;\n  height: 100%; }\n  #id-box .md-no-style {\n    padding: 0 8px; }\n\n.id-box-song-component {\n  height: 60px;\n  font-size: 100%; }\n  .id-box-song-component img {\n    width: 48px;\n    height: 36px; }\n  .id-box-song-component .song-info {\n    padding: 0 8px; }\n  .id-box-song-component .info-title {\n    font-size: 80%;\n    line-height: 150%;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    display: -webkit-box;\n    -webkit-line-clamp: 2;\n    -webkit-box-orient: vertical;\n    word-wrap: break-word; }\n", ""]);
 
 	// exports
 
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var idBoxCtrl = function () {
+	    function idBoxCtrl($scope, Youtube) {
+	        var _this = this;
+
+	        _classCallCheck(this, idBoxCtrl);
+
+	        angular.extend(this, { $scope: $scope, Youtube: Youtube });
+	        this.$scope = $scope;
+	        this.Youtube = Youtube;
+
+	        this.isSelected = null;
+	        this.pageSize = 7;
+	        this.currentPage = 1;
+
+	        this.$scope.$on('videoChanged', function (event, msg) {
+	            if (msg.name == 'id-box') {
+	                _this.isSelected = msg.index;
+	            } else if (msg.name == 'music-list-song') {
+	                _this.isSelected = null;
+	            }
+	        });
+	    }
+
+	    _createClass(idBoxCtrl, [{
+	        key: 'selectedHighting',
+	        value: function selectedHighting(index) {
+	            this.isSelected = index;
+	        }
+	    }]);
+
+	    return idBoxCtrl;
+	}();
+
+	exports.default = idBoxCtrl;
+
+
+	idBoxCtrl.$inject = ['$scope', 'Youtube'];
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Youtube = function () {
+	    function Youtube($rootScope) {
+	        _classCallCheck(this, Youtube);
+
+	        this.$rootScope = $rootScope;
+	        this.width = 240;
+	        this.height = 180;
+	        this.videoid = "fj8sk-b6NG4";
+	        this.playlist = [];
+	    }
+
+	    _createClass(Youtube, [{
+	        key: 'playVideo',
+	        value: function playVideo(id) {
+	            this.videoid = id;
+	        }
+	    }, {
+	        key: 'highlighting',
+	        value: function highlighting(index, name) {
+	            this.$rootScope.$broadcast('videoChanged', { index: index, name: name });
+	        }
+	    }]);
+
+	    return Youtube;
+	}();
+
+	exports.default = Youtube;
+
+
+	Youtube.$inject = ['$rootScope'];
 
 /***/ }
 /******/ ]);

@@ -1,54 +1,46 @@
-export default function youtube($window) {
-    return {
-        restrict: "E",
+export default class Youtube {
+    constructor($window){
+        this.$window = $window;
+        this.template = '<div></div>';
+        this.restrict = 'E';
+        this.scope = {
+            height: "@",
+            width: "@",
+            videoid: "@"
+        };
+    }
+    link(scope, element){
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        scope: {
-            height:   "@",
-            width:    "@",
-            videoId:  "@"
-        },
+        let player;
 
-        template: '<div></div>',
+        this.$window.onYouTubeIframeAPIReady = function() {
 
-        link: (scope, element) => {
-            const tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            const firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-            let player;
-
-            $window.onYouTubeIframeAPIReady = () => {
-                player = new YT.Player(element.children()[0], {
-
-                    playerVars: {
-                        autoplay: 0,
-                        html5: 1,
-                        theme: "dark",
-                    },
-
-                    height: scope.height,
-                    width: scope.width,
-                    videoId: scope.videoId
-                });
-            };
-
-            scope.$watch('videoid', (newValue, oldValue) => {
-                if (newValue == oldValue) {
-                    return;
-                }
-
-                player.cueVideoById(scope.videoid);
-
+            player = new YT.Player(element.children()[0], {
+                height: scope.height,
+                width: scope.width,
+                videoId: scope.videoid,
             });
+        };
 
-            scope.$watch('height + width', function(newValue, oldValue) {
-                if (newValue == oldValue) {
-                    return;
-                }
+        scope.$watch('videoid', function(newValue, oldValue) {
+            if (newValue == oldValue) {
+                return;
+            }
+            player.loadVideoById(scope.videoid);
+        });
 
-                player.setSize(scope.width, scope.height);
-            })
-        }
+        scope.$watch('height + width', function(newValue, oldValue) {
+            if (newValue == oldValue) {
+                return;
+            }
+            player.setSize(scope.width, scope.height);
+        });
+
     }
 }
+
+Youtube.$inject = ['$window'];
