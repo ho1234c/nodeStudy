@@ -1,27 +1,26 @@
 export default class idBoxCtrl {
-    constructor($scope, Youtube) {
-        angular.extend(this, {$scope, Youtube});
+    constructor($scope, Player) {
+        angular.extend(this, {$scope, Player});
         this.$scope = $scope;
-        this.Youtube = Youtube;
+        this.Player = Player;
 
         this.isSelected = null;
-        this.pageSize = 7;
-        this.currentPage = 1;
 
-        this.$scope.$on('videoChanged', (event, msg) => {
-            if(msg.name == 'id-box'){
-                this.isSelected = msg.index;
-            }
-            else if(msg.name == 'music-list-song'){
+        this.$scope.$on('highlighting', (event, msg) => {
+            if(msg.index === -1){
                 this.isSelected = null;
+            }
+            else{
+                if(msg.listname == 'playlist'){
+                    this.isSelected = msg.index;
+                }
+                else if(msg.listname == 'listDetail'){
+                    this.isSelected = null;
+                }
             }
         });
     }
 
-    selectedHighting(index){
-        this.isSelected = index;
-    }
-
 }
 
-idBoxCtrl.$inject = ['$scope', 'Youtube'];
+idBoxCtrl.$inject = ['$scope', 'Player'];

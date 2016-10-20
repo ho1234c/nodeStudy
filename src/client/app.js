@@ -10,7 +10,7 @@ import listCtrl     from './controllers/listCtrl';
 import idBoxCtrl    from './controllers/idBoxCtrl';
 import listSvc      from './service/listSvc';
 import userSvc      from './service/userSvc';
-import youtubeSvc   from './service/youtubeSvc';
+import playerSvc   from './service/playerSvc';
 import youtube      from  './directives/youtube';
 
 // It is purpose to add css to javascript through webpack.
@@ -55,7 +55,7 @@ angular
     })
     .service('List', listSvc)
     .service('User', userSvc)
-    .service('Youtube', youtubeSvc)
+    .service('Player', playerSvc)
     .controller('listCtrl', listCtrl)
     .controller('idBoxCtrl', idBoxCtrl)
     .directive('youtube', ['$window', ($window) => new youtube($window)]);

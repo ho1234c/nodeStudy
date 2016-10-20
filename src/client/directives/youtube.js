@@ -17,29 +17,36 @@ export default class Youtube {
 
         let player;
 
-        this.$window.onYouTubeIframeAPIReady = function() {
-
+        this.$window.onYouTubeIframeAPIReady = () => {
             player = new YT.Player(element.children()[0], {
                 height: scope.height,
                 width: scope.width,
                 videoId: scope.videoid,
+                events: {
+                    'onStateChange':  event => {
+                        // When finished find the next video.
+                        if(event.data == YT.PlayerState.ENDED){
+                            scope.$apply(() => {
+                                scope.$emit('videoEnd');
+                            });
+                        }
+                    }
+                }
             });
         };
-
-        scope.$watch('videoid', function(newValue, oldValue) {
+        scope.$watch('videoid', (newValue, oldValue) => {
             if (newValue == oldValue) {
                 return;
             }
             player.loadVideoById(scope.videoid);
         });
 
-        scope.$watch('height + width', function(newValue, oldValue) {
+        scope.$watch('height + width', (newValue, oldValue) => {
             if (newValue == oldValue) {
                 return;
             }
             player.setSize(scope.width, scope.height);
         });
-
     }
 }
 
