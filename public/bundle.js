@@ -76649,6 +76649,10 @@
 	    }, {
 	        key: "highlighting",
 	        value: function highlighting(index, listname) {
+	            if (listname != this.currentListName) {
+	                return;
+	            }
+
 	            var highlightObj = {
 	                index: "",
 	                listname: listname
@@ -76771,6 +76775,7 @@
 	                    height: scope.height,
 	                    width: scope.width,
 	                    videoId: scope.videoid,
+	                    disablekb: 1,
 	                    events: {
 	                        'onStateChange': function onStateChange(event) {
 	                            // When finished find the next video.
