@@ -22,6 +22,7 @@ export default class Youtube {
                 height: scope.height,
                 width: scope.width,
                 videoId: scope.videoid,
+                disablekb: 1,
                 events: {
                     'onStateChange':  event => {
                         // When finished find the next video.

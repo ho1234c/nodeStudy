@@ -38,6 +38,10 @@ export default class PlayerSvc {
     }
 
     highlighting(index, listname){
+        if(listname != this.currentListName){
+            return;
+        }
+
         let highlightObj = {
             index: "",
             listname: listname
