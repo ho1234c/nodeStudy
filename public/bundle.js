@@ -58,13 +58,15 @@
 
 	__webpack_require__(8);
 
-	var _userCtrl = __webpack_require__(28);
-
-	var _userCtrl2 = _interopRequireDefault(_userCtrl);
+	__webpack_require__(14);
 
 	var _listCtrl = __webpack_require__(16);
 
 	var _listCtrl2 = _interopRequireDefault(_listCtrl);
+
+	var _idBoxCtrl = __webpack_require__(17);
+
+	var _idBoxCtrl2 = _interopRequireDefault(_idBoxCtrl);
 
 	var _listSvc = __webpack_require__(18);
 
@@ -74,6 +76,14 @@
 
 	var _userSvc2 = _interopRequireDefault(_userSvc);
 
+	var _playerSvc = __webpack_require__(20);
+
+	var _playerSvc2 = _interopRequireDefault(_playerSvc);
+
+	var _youtube = __webpack_require__(21);
+
+	var _youtube2 = _interopRequireDefault(_youtube);
+
 	__webpack_require__(22);
 
 	__webpack_require__(26);
@@ -81,7 +91,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// It is purpose to add css to javascript through webpack.
-	_angular2.default.module('withSong', ['ui.router', 'ngResource', 'ngMaterial']).config(function ($stateProvider) {
+	_angular2.default.module('withSong', ['ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination']).config(function ($stateProvider) {
 	    $stateProvider.state('main', {
 	        url: "",
 	        abstract: true,
@@ -107,7 +117,9 @@
 	    });
 	}).config(function ($mdThemingProvider) {
 	    $mdThemingProvider.theme('default').primaryPalette('deep-orange').accentPalette('orange');
-	}).service('List', _listSvc2.default).service('User', _userSvc2.default).controller('listCtrl', _listCtrl2.default).controller('userCtrl', _userCtrl2.default);
+	}).service('List', _listSvc2.default).service('User', _userSvc2.default).service('Player', _playerSvc2.default).controller('listCtrl', _listCtrl2.default).controller('idBoxCtrl', _idBoxCtrl2.default).directive('youtube', ['$window', function ($window) {
+	    return new _youtube2.default($window);
+	}]);
 
 /***/ },
 /* 1 */
@@ -75646,8 +75658,659 @@
 	})(window, window.angular);;window.ngMaterial={version:{full: "1.1.1"}};
 
 /***/ },
-/* 14 */,
-/* 15 */,
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(15);
+	module.exports = 'angularUtils.directives.dirPagination';
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	/**
+	 * dirPagination - AngularJS module for paginating (almost) anything.
+	 *
+	 *
+	 * Credits
+	 * =======
+	 *
+	 * Daniel Tabuenca: https://groups.google.com/d/msg/angular/an9QpzqIYiM/r8v-3W1X5vcJ
+	 * for the idea on how to dynamically invoke the ng-repeat directive.
+	 *
+	 * I borrowed a couple of lines and a few attribute names from the AngularUI Bootstrap project:
+	 * https://github.com/angular-ui/bootstrap/blob/master/src/pagination/pagination.js
+	 *
+	 * Copyright 2014 Michael Bromley <michael@michaelbromley.co.uk>
+	 */
+
+	(function() {
+
+	    /**
+	     * Config
+	     */
+	    var moduleName = 'angularUtils.directives.dirPagination';
+	    var DEFAULT_ID = '__default';
+
+	    /**
+	     * Module
+	     */
+	    angular.module(moduleName, [])
+	        .directive('dirPaginate', ['$compile', '$parse', 'paginationService', dirPaginateDirective])
+	        .directive('dirPaginateNoCompile', noCompileDirective)
+	        .directive('dirPaginationControls', ['paginationService', 'paginationTemplate', dirPaginationControlsDirective])
+	        .filter('itemsPerPage', ['paginationService', itemsPerPageFilter])
+	        .service('paginationService', paginationService)
+	        .provider('paginationTemplate', paginationTemplateProvider)
+	        .run(['$templateCache',dirPaginationControlsTemplateInstaller]);
+
+	    function dirPaginateDirective($compile, $parse, paginationService) {
+
+	        return  {
+	            terminal: true,
+	            multiElement: true,
+	            priority: 100,
+	            compile: dirPaginationCompileFn
+	        };
+
+	        function dirPaginationCompileFn(tElement, tAttrs){
+
+	            var expression = tAttrs.dirPaginate;
+	            // regex taken directly from https://github.com/angular/angular.js/blob/v1.4.x/src/ng/directive/ngRepeat.js#L339
+	            var match = expression.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
+
+	            var filterPattern = /\|\s*itemsPerPage\s*:\s*(.*\(\s*\w*\)|([^\)]*?(?=\s+as\s+))|[^\)]*)/;
+	            if (match[2].match(filterPattern) === null) {
+	                throw 'pagination directive: the \'itemsPerPage\' filter must be set.';
+	            }
+	            var itemsPerPageFilterRemoved = match[2].replace(filterPattern, '');
+	            var collectionGetter = $parse(itemsPerPageFilterRemoved);
+
+	            addNoCompileAttributes(tElement);
+
+	            // If any value is specified for paginationId, we register the un-evaluated expression at this stage for the benefit of any
+	            // dir-pagination-controls directives that may be looking for this ID.
+	            var rawId = tAttrs.paginationId || DEFAULT_ID;
+	            paginationService.registerInstance(rawId);
+
+	            return function dirPaginationLinkFn(scope, element, attrs){
+
+	                // Now that we have access to the `scope` we can interpolate any expression given in the paginationId attribute and
+	                // potentially register a new ID if it evaluates to a different value than the rawId.
+	                var paginationId = $parse(attrs.paginationId)(scope) || attrs.paginationId || DEFAULT_ID;
+	                
+	                // (TODO: this seems sound, but I'm reverting as many bug reports followed it's introduction in 0.11.0.
+	                // Needs more investigation.)
+	                // In case rawId != paginationId we deregister using rawId for the sake of general cleanliness
+	                // before registering using paginationId
+	                // paginationService.deregisterInstance(rawId);
+	                paginationService.registerInstance(paginationId);
+
+	                var repeatExpression = getRepeatExpression(expression, paginationId);
+	                addNgRepeatToElement(element, attrs, repeatExpression);
+
+	                removeTemporaryAttributes(element);
+	                var compiled =  $compile(element);
+
+	                var currentPageGetter = makeCurrentPageGetterFn(scope, attrs, paginationId);
+	                paginationService.setCurrentPageParser(paginationId, currentPageGetter, scope);
+
+	                if (typeof attrs.totalItems !== 'undefined') {
+	                    paginationService.setAsyncModeTrue(paginationId);
+	                    scope.$watch(function() {
+	                        return $parse(attrs.totalItems)(scope);
+	                    }, function (result) {
+	                        if (0 <= result) {
+	                            paginationService.setCollectionLength(paginationId, result);
+	                        }
+	                    });
+	                } else {
+	                    paginationService.setAsyncModeFalse(paginationId);
+	                    scope.$watchCollection(function() {
+	                        return collectionGetter(scope);
+	                    }, function(collection) {
+	                        if (collection) {
+	                            var collectionLength = (collection instanceof Array) ? collection.length : Object.keys(collection).length;
+	                            paginationService.setCollectionLength(paginationId, collectionLength);
+	                        }
+	                    });
+	                }
+
+	                // Delegate to the link function returned by the new compilation of the ng-repeat
+	                compiled(scope);
+	                 
+	                // (TODO: Reverting this due to many bug reports in v 0.11.0. Needs investigation as the
+	                // principle is sound)
+	                // When the scope is destroyed, we make sure to remove the reference to it in paginationService
+	                // so that it can be properly garbage collected
+	                // scope.$on('$destroy', function destroyDirPagination() {
+	                //     paginationService.deregisterInstance(paginationId);
+	                // });
+	            };
+	        }
+
+	        /**
+	         * If a pagination id has been specified, we need to check that it is present as the second argument passed to
+	         * the itemsPerPage filter. If it is not there, we add it and return the modified expression.
+	         *
+	         * @param expression
+	         * @param paginationId
+	         * @returns {*}
+	         */
+	        function getRepeatExpression(expression, paginationId) {
+	            var repeatExpression,
+	                idDefinedInFilter = !!expression.match(/(\|\s*itemsPerPage\s*:[^|]*:[^|]*)/);
+
+	            if (paginationId !== DEFAULT_ID && !idDefinedInFilter) {
+	                repeatExpression = expression.replace(/(\|\s*itemsPerPage\s*:\s*[^|\s]*)/, "$1 : '" + paginationId + "'");
+	            } else {
+	                repeatExpression = expression;
+	            }
+
+	            return repeatExpression;
+	        }
+
+	        /**
+	         * Adds the ng-repeat directive to the element. In the case of multi-element (-start, -end) it adds the
+	         * appropriate multi-element ng-repeat to the first and last element in the range.
+	         * @param element
+	         * @param attrs
+	         * @param repeatExpression
+	         */
+	        function addNgRepeatToElement(element, attrs, repeatExpression) {
+	            if (element[0].hasAttribute('dir-paginate-start') || element[0].hasAttribute('data-dir-paginate-start')) {
+	                // using multiElement mode (dir-paginate-start, dir-paginate-end)
+	                attrs.$set('ngRepeatStart', repeatExpression);
+	                element.eq(element.length - 1).attr('ng-repeat-end', true);
+	            } else {
+	                attrs.$set('ngRepeat', repeatExpression);
+	            }
+	        }
+
+	        /**
+	         * Adds the dir-paginate-no-compile directive to each element in the tElement range.
+	         * @param tElement
+	         */
+	        function addNoCompileAttributes(tElement) {
+	            angular.forEach(tElement, function(el) {
+	                if (el.nodeType === 1) {
+	                    angular.element(el).attr('dir-paginate-no-compile', true);
+	                }
+	            });
+	        }
+
+	        /**
+	         * Removes the variations on dir-paginate (data-, -start, -end) and the dir-paginate-no-compile directives.
+	         * @param element
+	         */
+	        function removeTemporaryAttributes(element) {
+	            angular.forEach(element, function(el) {
+	                if (el.nodeType === 1) {
+	                    angular.element(el).removeAttr('dir-paginate-no-compile');
+	                }
+	            });
+	            element.eq(0).removeAttr('dir-paginate-start').removeAttr('dir-paginate').removeAttr('data-dir-paginate-start').removeAttr('data-dir-paginate');
+	            element.eq(element.length - 1).removeAttr('dir-paginate-end').removeAttr('data-dir-paginate-end');
+	        }
+
+	        /**
+	         * Creates a getter function for the current-page attribute, using the expression provided or a default value if
+	         * no current-page expression was specified.
+	         *
+	         * @param scope
+	         * @param attrs
+	         * @param paginationId
+	         * @returns {*}
+	         */
+	        function makeCurrentPageGetterFn(scope, attrs, paginationId) {
+	            var currentPageGetter;
+	            if (attrs.currentPage) {
+	                currentPageGetter = $parse(attrs.currentPage);
+	            } else {
+	                // If the current-page attribute was not set, we'll make our own.
+	                // Replace any non-alphanumeric characters which might confuse
+	                // the $parse service and give unexpected results.
+	                // See https://github.com/michaelbromley/angularUtils/issues/233
+	                var defaultCurrentPage = (paginationId + '__currentPage').replace(/\W/g, '_');
+	                scope[defaultCurrentPage] = 1;
+	                currentPageGetter = $parse(defaultCurrentPage);
+	            }
+	            return currentPageGetter;
+	        }
+	    }
+
+	    /**
+	     * This is a helper directive that allows correct compilation when in multi-element mode (ie dir-paginate-start, dir-paginate-end).
+	     * It is dynamically added to all elements in the dir-paginate compile function, and it prevents further compilation of
+	     * any inner directives. It is then removed in the link function, and all inner directives are then manually compiled.
+	     */
+	    function noCompileDirective() {
+	        return {
+	            priority: 5000,
+	            terminal: true
+	        };
+	    }
+
+	    function dirPaginationControlsTemplateInstaller($templateCache) {
+	        $templateCache.put('angularUtils.directives.dirPagination.template', '<ul class="pagination" ng-if="1 < pages.length || !autoHide"><li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }"><a href="" ng-click="setCurrent(1)">&laquo;</a></li><li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }"><a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a></li><li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == \'...\' || ( ! autoHide && pages.length === 1 ) }"><a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a></li><li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }"><a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a></li><li ng-if="boundaryLinks"  ng-class="{ disabled : pagination.current == pagination.last }"><a href="" ng-click="setCurrent(pagination.last)">&raquo;</a></li></ul>');
+	    }
+
+	    function dirPaginationControlsDirective(paginationService, paginationTemplate) {
+
+	        var numberRegex = /^\d+$/;
+
+	        var DDO = {
+	            restrict: 'AE',
+	            scope: {
+	                maxSize: '=?',
+	                onPageChange: '&?',
+	                paginationId: '=?',
+	                autoHide: '=?'
+	            },
+	            link: dirPaginationControlsLinkFn
+	        };
+
+	        // We need to check the paginationTemplate service to see whether a template path or
+	        // string has been specified, and add the `template` or `templateUrl` property to
+	        // the DDO as appropriate. The order of priority to decide which template to use is
+	        // (highest priority first):
+	        // 1. paginationTemplate.getString()
+	        // 2. attrs.templateUrl
+	        // 3. paginationTemplate.getPath()
+	        var templateString = paginationTemplate.getString();
+	        if (templateString !== undefined) {
+	            DDO.template = templateString;
+	        } else {
+	            DDO.templateUrl = function(elem, attrs) {
+	                return attrs.templateUrl || paginationTemplate.getPath();
+	            };
+	        }
+	        return DDO;
+
+	        function dirPaginationControlsLinkFn(scope, element, attrs) {
+
+	            // rawId is the un-interpolated value of the pagination-id attribute. This is only important when the corresponding dir-paginate directive has
+	            // not yet been linked (e.g. if it is inside an ng-if block), and in that case it prevents this controls directive from assuming that there is
+	            // no corresponding dir-paginate directive and wrongly throwing an exception.
+	            var rawId = attrs.paginationId ||  DEFAULT_ID;
+	            var paginationId = scope.paginationId || attrs.paginationId ||  DEFAULT_ID;
+
+	            if (!paginationService.isRegistered(paginationId) && !paginationService.isRegistered(rawId)) {
+	                var idMessage = (paginationId !== DEFAULT_ID) ? ' (id: ' + paginationId + ') ' : ' ';
+	                if (window.console) {
+	                    console.warn('Pagination directive: the pagination controls' + idMessage + 'cannot be used without the corresponding pagination directive, which was not found at link time.');
+	                }
+	            }
+
+	            if (!scope.maxSize) { scope.maxSize = 9; }
+	            scope.autoHide = scope.autoHide === undefined ? true : scope.autoHide;
+	            scope.directionLinks = angular.isDefined(attrs.directionLinks) ? scope.$parent.$eval(attrs.directionLinks) : true;
+	            scope.boundaryLinks = angular.isDefined(attrs.boundaryLinks) ? scope.$parent.$eval(attrs.boundaryLinks) : false;
+
+	            var paginationRange = Math.max(scope.maxSize, 5);
+	            scope.pages = [];
+	            scope.pagination = {
+	                last: 1,
+	                current: 1
+	            };
+	            scope.range = {
+	                lower: 1,
+	                upper: 1,
+	                total: 1
+	            };
+
+	            scope.$watch('maxSize', function(val) {
+	                if (val) {
+	                    paginationRange = Math.max(scope.maxSize, 5);
+	                    generatePagination();
+	                }
+	            });
+
+	            scope.$watch(function() {
+	                if (paginationService.isRegistered(paginationId)) {
+	                    return (paginationService.getCollectionLength(paginationId) + 1) * paginationService.getItemsPerPage(paginationId);
+	                }
+	            }, function(length) {
+	                if (0 < length) {
+	                    generatePagination();
+	                }
+	            });
+
+	            scope.$watch(function() {
+	                if (paginationService.isRegistered(paginationId)) {
+	                    return (paginationService.getItemsPerPage(paginationId));
+	                }
+	            }, function(current, previous) {
+	                if (current != previous && typeof previous !== 'undefined') {
+	                    goToPage(scope.pagination.current);
+	                }
+	            });
+
+	            scope.$watch(function() {
+	                if (paginationService.isRegistered(paginationId)) {
+	                    return paginationService.getCurrentPage(paginationId);
+	                }
+	            }, function(currentPage, previousPage) {
+	                if (currentPage != previousPage) {
+	                    goToPage(currentPage);
+	                }
+	            });
+
+	            scope.setCurrent = function(num) {
+	                if (paginationService.isRegistered(paginationId) && isValidPageNumber(num)) {
+	                    num = parseInt(num, 10);
+	                    paginationService.setCurrentPage(paginationId, num);
+	                }
+	            };
+
+	            /**
+	             * Custom "track by" function which allows for duplicate "..." entries on long lists,
+	             * yet fixes the problem of wrongly-highlighted links which happens when using
+	             * "track by $index" - see https://github.com/michaelbromley/angularUtils/issues/153
+	             * @param id
+	             * @param index
+	             * @returns {string}
+	             */
+	            scope.tracker = function(id, index) {
+	                return id + '_' + index;
+	            };
+
+	            function goToPage(num) {
+	                if (paginationService.isRegistered(paginationId) && isValidPageNumber(num)) {
+	                    var oldPageNumber = scope.pagination.current;
+
+	                    scope.pages = generatePagesArray(num, paginationService.getCollectionLength(paginationId), paginationService.getItemsPerPage(paginationId), paginationRange);
+	                    scope.pagination.current = num;
+	                    updateRangeValues();
+
+	                    // if a callback has been set, then call it with the page number as the first argument
+	                    // and the previous page number as a second argument
+	                    if (scope.onPageChange) {
+	                        scope.onPageChange({
+	                            newPageNumber : num,
+	                            oldPageNumber : oldPageNumber
+	                        });
+	                    }
+	                }
+	            }
+
+	            function generatePagination() {
+	                if (paginationService.isRegistered(paginationId)) {
+	                    var page = parseInt(paginationService.getCurrentPage(paginationId)) || 1;
+	                    scope.pages = generatePagesArray(page, paginationService.getCollectionLength(paginationId), paginationService.getItemsPerPage(paginationId), paginationRange);
+	                    scope.pagination.current = page;
+	                    scope.pagination.last = scope.pages[scope.pages.length - 1];
+	                    if (scope.pagination.last < scope.pagination.current) {
+	                        scope.setCurrent(scope.pagination.last);
+	                    } else {
+	                        updateRangeValues();
+	                    }
+	                }
+	            }
+
+	            /**
+	             * This function updates the values (lower, upper, total) of the `scope.range` object, which can be used in the pagination
+	             * template to display the current page range, e.g. "showing 21 - 40 of 144 results";
+	             */
+	            function updateRangeValues() {
+	                if (paginationService.isRegistered(paginationId)) {
+	                    var currentPage = paginationService.getCurrentPage(paginationId),
+	                        itemsPerPage = paginationService.getItemsPerPage(paginationId),
+	                        totalItems = paginationService.getCollectionLength(paginationId);
+
+	                    scope.range.lower = (currentPage - 1) * itemsPerPage + 1;
+	                    scope.range.upper = Math.min(currentPage * itemsPerPage, totalItems);
+	                    scope.range.total = totalItems;
+	                }
+	            }
+	            function isValidPageNumber(num) {
+	                return (numberRegex.test(num) && (0 < num && num <= scope.pagination.last));
+	            }
+	        }
+
+	        /**
+	         * Generate an array of page numbers (or the '...' string) which is used in an ng-repeat to generate the
+	         * links used in pagination
+	         *
+	         * @param currentPage
+	         * @param rowsPerPage
+	         * @param paginationRange
+	         * @param collectionLength
+	         * @returns {Array}
+	         */
+	        function generatePagesArray(currentPage, collectionLength, rowsPerPage, paginationRange) {
+	            var pages = [];
+	            var totalPages = Math.ceil(collectionLength / rowsPerPage);
+	            var halfWay = Math.ceil(paginationRange / 2);
+	            var position;
+
+	            if (currentPage <= halfWay) {
+	                position = 'start';
+	            } else if (totalPages - halfWay < currentPage) {
+	                position = 'end';
+	            } else {
+	                position = 'middle';
+	            }
+
+	            var ellipsesNeeded = paginationRange < totalPages;
+	            var i = 1;
+	            while (i <= totalPages && i <= paginationRange) {
+	                var pageNumber = calculatePageNumber(i, currentPage, paginationRange, totalPages);
+
+	                var openingEllipsesNeeded = (i === 2 && (position === 'middle' || position === 'end'));
+	                var closingEllipsesNeeded = (i === paginationRange - 1 && (position === 'middle' || position === 'start'));
+	                if (ellipsesNeeded && (openingEllipsesNeeded || closingEllipsesNeeded)) {
+	                    pages.push('...');
+	                } else {
+	                    pages.push(pageNumber);
+	                }
+	                i ++;
+	            }
+	            return pages;
+	        }
+
+	        /**
+	         * Given the position in the sequence of pagination links [i], figure out what page number corresponds to that position.
+	         *
+	         * @param i
+	         * @param currentPage
+	         * @param paginationRange
+	         * @param totalPages
+	         * @returns {*}
+	         */
+	        function calculatePageNumber(i, currentPage, paginationRange, totalPages) {
+	            var halfWay = Math.ceil(paginationRange/2);
+	            if (i === paginationRange) {
+	                return totalPages;
+	            } else if (i === 1) {
+	                return i;
+	            } else if (paginationRange < totalPages) {
+	                if (totalPages - halfWay < currentPage) {
+	                    return totalPages - paginationRange + i;
+	                } else if (halfWay < currentPage) {
+	                    return currentPage - halfWay + i;
+	                } else {
+	                    return i;
+	                }
+	            } else {
+	                return i;
+	            }
+	        }
+	    }
+
+	    /**
+	     * This filter slices the collection into pages based on the current page number and number of items per page.
+	     * @param paginationService
+	     * @returns {Function}
+	     */
+	    function itemsPerPageFilter(paginationService) {
+
+	        return function(collection, itemsPerPage, paginationId) {
+	            if (typeof (paginationId) === 'undefined') {
+	                paginationId = DEFAULT_ID;
+	            }
+	            if (!paginationService.isRegistered(paginationId)) {
+	                throw 'pagination directive: the itemsPerPage id argument (id: ' + paginationId + ') does not match a registered pagination-id.';
+	            }
+	            var end;
+	            var start;
+	            if (angular.isObject(collection)) {
+	                itemsPerPage = parseInt(itemsPerPage) || 9999999999;
+	                if (paginationService.isAsyncMode(paginationId)) {
+	                    start = 0;
+	                } else {
+	                    start = (paginationService.getCurrentPage(paginationId) - 1) * itemsPerPage;
+	                }
+	                end = start + itemsPerPage;
+	                paginationService.setItemsPerPage(paginationId, itemsPerPage);
+
+	                if (collection instanceof Array) {
+	                    // the array just needs to be sliced
+	                    return collection.slice(start, end);
+	                } else {
+	                    // in the case of an object, we need to get an array of keys, slice that, then map back to
+	                    // the original object.
+	                    var slicedObject = {};
+	                    angular.forEach(keys(collection).slice(start, end), function(key) {
+	                        slicedObject[key] = collection[key];
+	                    });
+	                    return slicedObject;
+	                }
+	            } else {
+	                return collection;
+	            }
+	        };
+	    }
+
+	    /**
+	     * Shim for the Object.keys() method which does not exist in IE < 9
+	     * @param obj
+	     * @returns {Array}
+	     */
+	    function keys(obj) {
+	        if (!Object.keys) {
+	            var objKeys = [];
+	            for (var i in obj) {
+	                if (obj.hasOwnProperty(i)) {
+	                    objKeys.push(i);
+	                }
+	            }
+	            return objKeys;
+	        } else {
+	            return Object.keys(obj);
+	        }
+	    }
+
+	    /**
+	     * This service allows the various parts of the module to communicate and stay in sync.
+	     */
+	    function paginationService() {
+
+	        var instances = {};
+	        var lastRegisteredInstance;
+
+	        this.registerInstance = function(instanceId) {
+	            if (typeof instances[instanceId] === 'undefined') {
+	                instances[instanceId] = {
+	                    asyncMode: false
+	                };
+	                lastRegisteredInstance = instanceId;
+	            }
+	        };
+
+	        this.deregisterInstance = function(instanceId) {
+	            delete instances[instanceId];
+	        };
+	        
+	        this.isRegistered = function(instanceId) {
+	            return (typeof instances[instanceId] !== 'undefined');
+	        };
+
+	        this.getLastInstanceId = function() {
+	            return lastRegisteredInstance;
+	        };
+
+	        this.setCurrentPageParser = function(instanceId, val, scope) {
+	            instances[instanceId].currentPageParser = val;
+	            instances[instanceId].context = scope;
+	        };
+	        this.setCurrentPage = function(instanceId, val) {
+	            instances[instanceId].currentPageParser.assign(instances[instanceId].context, val);
+	        };
+	        this.getCurrentPage = function(instanceId) {
+	            var parser = instances[instanceId].currentPageParser;
+	            return parser ? parser(instances[instanceId].context) : 1;
+	        };
+
+	        this.setItemsPerPage = function(instanceId, val) {
+	            instances[instanceId].itemsPerPage = val;
+	        };
+	        this.getItemsPerPage = function(instanceId) {
+	            return instances[instanceId].itemsPerPage;
+	        };
+
+	        this.setCollectionLength = function(instanceId, val) {
+	            instances[instanceId].collectionLength = val;
+	        };
+	        this.getCollectionLength = function(instanceId) {
+	            return instances[instanceId].collectionLength;
+	        };
+
+	        this.setAsyncModeTrue = function(instanceId) {
+	            instances[instanceId].asyncMode = true;
+	        };
+
+	        this.setAsyncModeFalse = function(instanceId) {
+	            instances[instanceId].asyncMode = false;
+	        };
+
+	        this.isAsyncMode = function(instanceId) {
+	            return instances[instanceId].asyncMode;
+	        };
+	    }
+
+	    /**
+	     * This provider allows global configuration of the template path used by the dir-pagination-controls directive.
+	     */
+	    function paginationTemplateProvider() {
+
+	        var templatePath = 'angularUtils.directives.dirPagination.template';
+	        var templateString;
+
+	        /**
+	         * Set a templateUrl to be used by all instances of <dir-pagination-controls>
+	         * @param {String} path
+	         */
+	        this.setPath = function(path) {
+	            templatePath = path;
+	        };
+
+	        /**
+	         * Set a string of HTML to be used as a template by all instances
+	         * of <dir-pagination-controls>. If both a path *and* a string have been set,
+	         * the string takes precedence.
+	         * @param {String} str
+	         */
+	        this.setString = function(str) {
+	            templateString = str;
+	        };
+
+	        this.$get = function() {
+	            return {
+	                getPath: function() {
+	                    return templatePath;
+	                },
+	                getString: function() {
+	                    return templateString;
+	                }
+	            };
+	        };
+	    }
+	})();
+
+
+/***/ },
 /* 16 */
 /***/ function(module, exports) {
 
@@ -75662,19 +76325,38 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var listCtrl = function () {
-	    function listCtrl(List, initList, $resource) {
+	    function listCtrl($scope, List, initList, Player) {
+	        var _this = this;
+
 	        _classCallCheck(this, listCtrl);
 
-	        angular.extend(this, { List: List, initList: initList, $resource: $resource });
+	        angular.extend(this, { $scope: $scope, List: List, initList: initList, Player: Player });
+	        this.$scope = $scope;
 	        this.List = List;
 	        this.musicList = initList.data;
-	        this.detail = [];
+	        this.Player = Player;
+	        this.isSelectedList = null;
+	        this.isSelectedSong = null;
+
+	        this.$scope.$on('highlighting', function (event, msg) {
+	            if (msg.index === -1) {
+	                _this.isSelectedSong = null;
+	            } else {
+	                if (msg.listname == 'musicList') {
+	                    _this.isSelectedList = msg.index;
+	                } else if (msg.listname == 'listDetail') {
+	                    _this.isSelectedSong = msg.index;
+	                } else {
+	                    _this.isSelectedSong = null;
+	                }
+	            }
+	        });
 	    }
 
 	    _createClass(listCtrl, [{
 	        key: 'watchMore',
 	        value: function watchMore(count) {
-	            var _this = this;
+	            var _this2 = this;
 
 	            this.List.loadList(count).then(function (result) {
 	                var _iteratorNormalCompletion = true;
@@ -75685,7 +76367,7 @@
 	                    for (var _iterator = result.data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	                        var obj = _step.value;
 
-	                        _this.musicList.push(obj);
+	                        _this2.musicList.push(obj);
 	                    }
 	                } catch (err) {
 	                    _didIteratorError = true;
@@ -75704,14 +76386,75 @@
 	            });
 	        }
 	    }, {
-	        key: 'viewDetail',
-	        value: function viewDetail(id) {
-	            var _this2 = this;
+	        key: 'selectList',
+	        value: function selectList(id) {
+	            var _this3 = this;
+
+	            this.Player.listDetail = [];
+	            this.isSelectedSong = null;
+	            this.Player.listDetailCurrentPage = 1;
 
 	            this.List.loadSong(id).then(function (result) {
 	                var songInfo = JSON.parse(result.data.songInfo);
-	                for (var obj in songInfo) {
-	                    _this2.detail.push(songInfo[obj]);
+	                var _iteratorNormalCompletion2 = true;
+	                var _didIteratorError2 = false;
+	                var _iteratorError2 = undefined;
+
+	                try {
+	                    for (var _iterator2 = songInfo[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	                        var obj = _step2.value;
+
+	                        _this3.Player.listDetail.push(obj);
+	                    }
+	                } catch (err) {
+	                    _didIteratorError2 = true;
+	                    _iteratorError2 = err;
+	                } finally {
+	                    try {
+	                        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	                            _iterator2.return();
+	                        }
+	                    } finally {
+	                        if (_didIteratorError2) {
+	                            throw _iteratorError2;
+	                        }
+	                    }
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'listenList',
+	        value: function listenList(id) {
+	            var _this4 = this;
+
+	            this.Player.playlistCurrentPage = 1;
+	            this.Player.playlist = [];
+
+	            this.List.loadSong(id).then(function (result) {
+	                var songInfo = JSON.parse(result.data.songInfo);
+	                var _iteratorNormalCompletion3 = true;
+	                var _didIteratorError3 = false;
+	                var _iteratorError3 = undefined;
+
+	                try {
+	                    for (var _iterator3 = songInfo[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	                        var obj = _step3.value;
+
+	                        _this4.Player.playlist.push(obj);
+	                    }
+	                } catch (err) {
+	                    _didIteratorError3 = true;
+	                    _iteratorError3 = err;
+	                } finally {
+	                    try {
+	                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                            _iterator3.return();
+	                        }
+	                    } finally {
+	                        if (_didIteratorError3) {
+	                            throw _iteratorError3;
+	                        }
+	                    }
 	                }
 	            });
 	        }
@@ -75723,10 +76466,50 @@
 	exports.default = listCtrl;
 
 
-	listCtrl.$inject = ['List', 'initList', '$resource'];
+	listCtrl.$inject = ['$scope', 'List', 'initList', 'Player'];
 
 /***/ },
-/* 17 */,
+/* 17 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var idBoxCtrl = function idBoxCtrl($scope, Player) {
+	    var _this = this;
+
+	    _classCallCheck(this, idBoxCtrl);
+
+	    angular.extend(this, { $scope: $scope, Player: Player });
+	    this.$scope = $scope;
+	    this.Player = Player;
+
+	    this.isSelected = null;
+
+	    this.$scope.$on('highlighting', function (event, msg) {
+	        if (msg.index === -1) {
+	            _this.isSelected = null;
+	        } else {
+	            if (msg.listname == 'playlist') {
+	                _this.isSelected = msg.index;
+	            } else if (msg.listname == 'listDetail') {
+	                _this.isSelected = null;
+	            }
+	        }
+	    });
+	};
+
+	exports.default = idBoxCtrl;
+
+
+	idBoxCtrl.$inject = ['$scope', 'Player'];
+
+/***/ },
 /* 18 */
 /***/ function(module, exports) {
 
@@ -75806,8 +76589,225 @@
 	exports.default = User;
 
 /***/ },
-/* 20 */,
-/* 21 */,
+/* 20 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var PlayerSvc = function () {
+	    function PlayerSvc($rootScope) {
+	        var _this = this;
+
+	        _classCallCheck(this, PlayerSvc);
+
+	        this.$rootScope = $rootScope;
+	        this.width = 240;
+	        this.height = 180;
+
+	        this.videoid = "fj8sk-b6NG4";
+
+	        this.listDetail = [];
+	        this.listDetailPageNum = 7;
+	        this.listDetailCurrentPage = 1;
+
+	        this.playlist = [];
+	        this.playlistPageNum = 7;
+	        this.playlistCurrentPage = 1;
+
+	        this.currentListName = null;
+	        this.currentIndex = null;
+	        this.currentVideoIndex = null;
+
+	        this.$rootScope.$on('videoEnd', function () {
+	            _this.pageControl(_this.currentIndex, _this.currentListName); // increment current index and change into next page.
+
+	            var context = _this[_this.currentListName];
+	            _this.currentVideoIndex += 1;
+	            _this.videoid = context[_this.currentVideoIndex].videoId;
+
+	            _this.highlighting(_this.currentIndex, _this.currentListName);
+	        });
+	    }
+
+	    _createClass(PlayerSvc, [{
+	        key: "playVideo",
+	        value: function playVideo(index, listname) {
+	            var list = this[listname]; // find context list
+	            this.currentListName = listname;
+	            this.currentIndex = index;
+	            this.currentVideoIndex = this.findVideoIndex(listname);
+	            this.videoid = list[this.currentVideoIndex].videoId;
+	        }
+	    }, {
+	        key: "highlighting",
+	        value: function highlighting(index, listname) {
+	            var highlightObj = {
+	                index: "",
+	                listname: listname
+	            };
+
+	            if (listname == 'musicList') {
+	                highlightObj.index = index;
+	            } else if (listname == 'listDetail' || listname == 'playlist') {
+	                if (this.checkViewPage()) {
+	                    highlightObj.index = index;
+	                } else {
+	                    highlightObj.index = -1;
+	                }
+	            }
+	            this.$rootScope.$broadcast('highlighting', highlightObj);
+	        }
+	    }, {
+	        key: "pageControl",
+	        value: function pageControl(index, listName) {
+	            if (listName == 'listDetail' && (index + 1) % this.listDetailPageNum === 0) {
+	                if (this.checkViewPage()) {
+	                    this.listDetailCurrentPage += 1;
+	                }
+	                this.currentIndex = 0;
+	            } else if (listName == 'playlist' && (index + 1) % this.playlistPageNum === 0) {
+	                if (this.checkViewPage()) {
+	                    this.playlistCurrentPage += 1;
+	                }
+	                this.currentIndex = 0;
+	            } else {
+	                this.currentIndex += 1;
+	            }
+	        }
+
+	        // index of object in ng-repeat and real array is different.
+
+	    }, {
+	        key: "findVideoIndex",
+	        value: function findVideoIndex(listName) {
+	            var videoIndex = void 0;
+
+	            if (listName == 'listDetail') {
+	                videoIndex = this.listDetailPageNum * (this.listDetailCurrentPage - 1) + this.currentIndex;
+	            } else if (listName == 'playlist') {
+	                videoIndex = this.playlistPageNum * (this.playlistCurrentPage - 1) + this.currentIndex;
+	            }
+	            return videoIndex;
+	        }
+
+	        // this method is made for checking that whether user is viewing the page containing current played video.
+
+	    }, {
+	        key: "checkViewPage",
+	        value: function checkViewPage() {
+	            var temp = void 0;
+
+	            if (this.currentListName == 'listDetail') {
+	                temp = this.listDetailPageNum * (this.listDetailCurrentPage - 1) + this.currentIndex;
+	                if (temp == this.currentVideoIndex) {
+	                    return true;
+	                }
+	            } else if (this.currentListName == 'playlist') {
+	                temp = this.playlistPageNum * (this.playlistCurrentPage - 1) + this.currentIndex;
+	                if (temp == this.currentVideoIndex) {
+	                    return true;
+	                }
+	            }
+	            return false;
+	        }
+	    }]);
+
+	    return PlayerSvc;
+	}();
+
+	exports.default = PlayerSvc;
+
+
+	PlayerSvc.$inject = ['$rootScope'];
+
+/***/ },
+/* 21 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Youtube = function () {
+	    function Youtube($window) {
+	        _classCallCheck(this, Youtube);
+
+	        this.$window = $window;
+	        this.template = '<div></div>';
+	        this.restrict = 'E';
+	        this.scope = {
+	            height: "@",
+	            width: "@",
+	            videoid: "@"
+	        };
+	    }
+
+	    _createClass(Youtube, [{
+	        key: 'link',
+	        value: function link(scope, element) {
+	            var tag = document.createElement('script');
+	            tag.src = "https://www.youtube.com/iframe_api";
+	            var firstScriptTag = document.getElementsByTagName('script')[0];
+	            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+	            var player = void 0;
+
+	            this.$window.onYouTubeIframeAPIReady = function () {
+	                player = new YT.Player(element.children()[0], {
+	                    height: scope.height,
+	                    width: scope.width,
+	                    videoId: scope.videoid,
+	                    events: {
+	                        'onStateChange': function onStateChange(event) {
+	                            // When finished find the next video.
+	                            if (event.data == YT.PlayerState.ENDED) {
+	                                scope.$apply(function () {
+	                                    scope.$emit('videoEnd');
+	                                });
+	                            }
+	                        }
+	                    }
+	                });
+	            };
+	            scope.$watch('videoid', function (newValue, oldValue) {
+	                if (newValue == oldValue) {
+	                    return;
+	                }
+	                player.loadVideoById(scope.videoid);
+	            });
+
+	            scope.$watch('height + width', function (newValue, oldValue) {
+	                if (newValue == oldValue) {
+	                    return;
+	                }
+	                player.setSize(scope.width, scope.height);
+	            });
+	        }
+	    }]);
+
+	    return Youtube;
+	}();
+
+	exports.default = Youtube;
+
+
+	Youtube.$inject = ['$window'];
+
+/***/ },
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -76190,28 +77190,10 @@
 
 
 	// module
-	exports.push([module.id, ".md-button {\n  margin: 0; }\n\nmd-list {\n  padding: 0; }\n\nbody {\n  margin: 0; }\n\n#wrap {\n  background-color: white; }\n\n#content-wrapper {\n  width: 940px;\n  margin: 0 auto; }\n  #content-wrapper #content #content-left {\n    width: 490px;\n    padding-top: 50px; }\n  #content-wrapper #content #content-right {\n    width: 450px; }\n\n#menu {\n  width: 490px;\n  height: 50px;\n  position: fixed;\n  z-index: 100;\n  background-color: white; }\n\n.list-component {\n  height: 115px; }\n  .list-component img {\n    width: 120px;\n    height: 90px; }\n  .list-component .list-info {\n    padding: 10px; }\n\n.song-component {\n  height: 60px; }\n  .song-component img {\n    width: 68px;\n    height: 51px; }\n  .song-component .song-info {\n    width: 420px;\n    padding: 10px; }\n    .song-component .song-info .info-title {\n      width: 340px;\n      white-space: nowrap;\n      text-overflow: ellipsis;\n      overflow: hidden; }\n\n.watch-more {\n  height: 40px;\n  width: 490px;\n  margin: 0; }\n\n#music-list-song {\n  height: 430px;\n  width: 450px;\n  position: fixed; }\n", ""]);
+	exports.push([module.id, ".md-button {\n  margin: 0; }\n\nmd-list {\n  padding: 0; }\n\n.md-button:not([disabled]):hover {\n  background-color: rgba(158, 158, 158, 0.1); }\n\nbody {\n  background-color: white;\n  height: auto; }\n\n#content-wrapper {\n  flex-basis: 940px;\n  background-color: white; }\n  #content-wrapper #content #content-left {\n    flex-basis: 490px;\n    padding-top: 50px; }\n  #content-wrapper #content #content-right {\n    flex-basis: 450px; }\n\n#menu {\n  width: 490px;\n  height: 50px;\n  position: fixed;\n  z-index: 100;\n  background-color: white; }\n\n.list-component {\n  height: 115px; }\n  .list-component img {\n    width: 120px;\n    height: 90px; }\n  .list-component .list-info {\n    padding: 10px; }\n\n.song-component {\n  height: 60px; }\n  .song-component img {\n    width: 68px;\n    height: 51px; }\n  .song-component .info-title {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden; }\n\n.watch-more {\n  height: 40px;\n  width: 490px;\n  margin: 0; }\n\n.isSelected {\n  background-color: rgba(158, 158, 158, 0.2); }\n\n#music-list-song {\n  height: 430px;\n  width: 450px;\n  position: fixed; }\n\n.pagination {\n  list-style: none;\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .pagination li a {\n    padding: 6px 12px;\n    text-decoration: none; }\n\n#id-box {\n  position: fixed;\n  right: 0;\n  top: 0;\n  width: 240px;\n  height: 100%; }\n  #id-box .md-no-style {\n    padding: 0 8px; }\n\n.id-box-song-component {\n  height: 60px;\n  font-size: 100%; }\n  .id-box-song-component img {\n    width: 48px;\n    height: 36px; }\n  .id-box-song-component .song-info {\n    padding: 0 8px; }\n  .id-box-song-component .info-title {\n    font-size: 80%;\n    line-height: 150%;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    display: -webkit-box;\n    -webkit-line-clamp: 2;\n    -webkit-box-orient: vertical;\n    word-wrap: break-word; }\n", ""]);
 
 	// exports
 
-
-/***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var signUpController = function signUpController() {
-	    _classCallCheck(this, signUpController);
-	};
-
-	exports.default = signUpController;
 
 /***/ }
 /******/ ]);
