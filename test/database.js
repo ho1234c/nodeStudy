@@ -1,5 +1,4 @@
 import chai from 'chai';
-import sequelize from 'sequelize';
 import promise from 'bluebird';
 import db from '../src/server/models';
 
@@ -51,7 +50,7 @@ describe('Database test', () => {
 
     it('user authentication', done => {
         db.User.findOne({where: {email: 'mocha@mocha.com'}})
-            .then((user)=>{
+            .then(user => {
                 user.authenticate('mocha', (err, res) => {
                     (err === null).should.be.true;
                     res.should.be.true;

@@ -17,7 +17,9 @@ export default (sequelize, DataTypes) => {
             instanceMethods:{
                 authenticate: function (password, callback) {
                     bcrypt.compare(password, this.password_hash, function(err, isMatch) {
-                        if (err) return callback(err);
+                        if (err) {
+                            callback(err);
+                        }
                         callback(null, isMatch);
                     })
 

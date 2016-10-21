@@ -4,7 +4,7 @@ export default class PlayerSvc {
         this.width = 240;
         this.height = 180;
 
-        this.videoid = "fj8sk-b6NG4";
+        this.videoid = null;
 
         this.listDetail = [];
         this.listDetailPageNum = 7;
@@ -38,7 +38,7 @@ export default class PlayerSvc {
     }
 
     highlighting(index, listname){
-        if(listname != this.currentListName){
+        if(listname != this.currentListName && listname != 'musicList'){
             return;
         }
 

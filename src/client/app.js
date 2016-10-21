@@ -13,7 +13,7 @@ import userSvc      from './service/userSvc';
 import playerSvc   from './service/playerSvc';
 import youtube      from  './directives/youtube';
 
-// It is purpose to add css to javascript through webpack.
+// It is purpose to add css to javascript using webpack.
 import './css/angular-material.scss';
 import './css/style.scss';
 
@@ -22,13 +22,22 @@ angular
     .config($stateProvider => {
         $stateProvider
             .state('main', {
-                url: "",
                 abstract: true,
-                templateUrl: 'main.html'
+                views:{
+                    main: {
+                        url: "",
+                        templateUrl: '/partials/main.html'
+                    },
+                    idBox: {
+                        url: "",
+                        templateUrl: '/partials/id-box.html'
+                    }
+                }
+
             })
             .state('main.music-list', {
                 url: "",
-                templateUrl: 'main.music-list.html',
+                templateUrl: '/partials/main.music-list.html',
                 controller: "listCtrl",
                 controllerAs : "vm",
                 resolve: {
@@ -39,12 +48,12 @@ angular
             })
             .state('main.search-add', {
                 url: "",
-                templateUrl: 'main.search-add.html',
+                templateUrl: '/partials/main.search-add.html',
                 controller: "searchAddCtrl"
             })
             .state('sign-up', {
                 url: '/sign-up',
-                templateUrl: 'sign-up.html',
+                templateUrl: '/partials/sign-up.html',
                 controller: 'userCtrl'
             });
     })

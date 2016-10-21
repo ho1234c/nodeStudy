@@ -12,6 +12,7 @@ export default class Youtube {
     link(scope, element){
         const tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
+
         const firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
@@ -22,8 +23,11 @@ export default class Youtube {
                 height: scope.height,
                 width: scope.width,
                 videoId: scope.videoid,
-                disablekb: 1,
+                disablekb: 1, // user can manipulate player through keyboard
                 events: {
+                    'onReady': event => {
+                        event.target.playVideo();
+                    },
                     'onStateChange':  event => {
                         // When finished find the next video.
                         if(event.data == YT.PlayerState.ENDED){

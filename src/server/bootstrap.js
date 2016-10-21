@@ -1,15 +1,13 @@
-import express from 'express'
-import configExpress from './config/express'
+import express from 'express';
+import configExpress from './config/express';
 import routeIndex from './routes/index';
-import routeList from './routes/list'
-import db from './models'
+import routeList from './routes/list';
+import db from './models';
+import dummy from './dummy';
 
-import dummy from './dummy'
-
-
-db.sequelize.sync({force: true})
+db.sequelize.sync()
     .then(() => {
-        dummy(30, console.log);
+        // dummy(30, console.log);
         console.log('Connect database');
     })
     .catch(() => {

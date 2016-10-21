@@ -90,15 +90,24 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// It is purpose to add css to javascript through webpack.
+	// It is purpose to add css to javascript using webpack.
 	_angular2.default.module('withSong', ['ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination']).config(function ($stateProvider) {
 	    $stateProvider.state('main', {
-	        url: "",
 	        abstract: true,
-	        templateUrl: 'main.html'
+	        views: {
+	            main: {
+	                url: "",
+	                templateUrl: '/partials/main.html'
+	            },
+	            idBox: {
+	                url: "",
+	                templateUrl: '/partials/id-box.html'
+	            }
+	        }
+
 	    }).state('main.music-list', {
 	        url: "",
-	        templateUrl: 'main.music-list.html',
+	        templateUrl: '/partials/main.music-list.html',
 	        controller: "listCtrl",
 	        controllerAs: "vm",
 	        resolve: {
@@ -108,11 +117,11 @@
 	        }
 	    }).state('main.search-add', {
 	        url: "",
-	        templateUrl: 'main.search-add.html',
+	        templateUrl: '/partials/main.search-add.html',
 	        controller: "searchAddCtrl"
 	    }).state('sign-up', {
 	        url: '/sign-up',
-	        templateUrl: 'sign-up.html',
+	        templateUrl: '/partials/sign-up.html',
 	        controller: 'userCtrl'
 	    });
 	}).config(function ($mdThemingProvider) {
@@ -76592,7 +76601,7 @@
 /* 20 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -76612,7 +76621,7 @@
 	        this.width = 240;
 	        this.height = 180;
 
-	        this.videoid = "fj8sk-b6NG4";
+	        this.videoid = null;
 
 	        this.listDetail = [];
 	        this.listDetailPageNum = 7;
@@ -76638,7 +76647,7 @@
 	    }
 
 	    _createClass(PlayerSvc, [{
-	        key: "playVideo",
+	        key: 'playVideo',
 	        value: function playVideo(index, listname) {
 	            var list = this[listname]; // find context list
 	            this.currentListName = listname;
@@ -76647,9 +76656,9 @@
 	            this.videoid = list[this.currentVideoIndex].videoId;
 	        }
 	    }, {
-	        key: "highlighting",
+	        key: 'highlighting',
 	        value: function highlighting(index, listname) {
-	            if (listname != this.currentListName) {
+	            if (listname != this.currentListName && listname != 'musicList') {
 	                return;
 	            }
 
@@ -76670,7 +76679,7 @@
 	            this.$rootScope.$broadcast('highlighting', highlightObj);
 	        }
 	    }, {
-	        key: "pageControl",
+	        key: 'pageControl',
 	        value: function pageControl(index, listName) {
 	            if (listName == 'listDetail' && (index + 1) % this.listDetailPageNum === 0) {
 	                if (this.checkViewPage()) {
@@ -76690,7 +76699,7 @@
 	        // index of object in ng-repeat and real array is different.
 
 	    }, {
-	        key: "findVideoIndex",
+	        key: 'findVideoIndex',
 	        value: function findVideoIndex(listName) {
 	            var videoIndex = void 0;
 
@@ -76705,7 +76714,7 @@
 	        // this method is made for checking that whether user is viewing the page containing current played video.
 
 	    }, {
-	        key: "checkViewPage",
+	        key: 'checkViewPage',
 	        value: function checkViewPage() {
 	            var temp = void 0;
 
@@ -76765,6 +76774,7 @@
 	        value: function link(scope, element) {
 	            var tag = document.createElement('script');
 	            tag.src = "https://www.youtube.com/iframe_api";
+
 	            var firstScriptTag = document.getElementsByTagName('script')[0];
 	            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
@@ -76775,8 +76785,11 @@
 	                    height: scope.height,
 	                    width: scope.width,
 	                    videoId: scope.videoid,
-	                    disablekb: 1,
+	                    disablekb: 1, // user can manipulate player through keyboard
 	                    events: {
+	                        'onReady': function onReady(event) {
+	                            event.target.playVideo();
+	                        },
 	                        'onStateChange': function onStateChange(event) {
 	                            // When finished find the next video.
 	                            if (event.data == YT.PlayerState.ENDED) {
@@ -77195,7 +77208,7 @@
 
 
 	// module
-	exports.push([module.id, ".md-button {\n  margin: 0; }\n\nmd-list {\n  padding: 0; }\n\n.md-button:not([disabled]):hover {\n  background-color: rgba(158, 158, 158, 0.1); }\n\nbody {\n  background-color: white;\n  height: auto; }\n\n#content-wrapper {\n  flex-basis: 940px;\n  background-color: white; }\n  #content-wrapper #content #content-left {\n    flex-basis: 490px;\n    padding-top: 50px; }\n  #content-wrapper #content #content-right {\n    flex-basis: 450px; }\n\n#menu {\n  width: 490px;\n  height: 50px;\n  position: fixed;\n  z-index: 100;\n  background-color: white; }\n\n.list-component {\n  height: 115px; }\n  .list-component img {\n    width: 120px;\n    height: 90px; }\n  .list-component .list-info {\n    padding: 10px; }\n\n.song-component {\n  height: 60px; }\n  .song-component img {\n    width: 68px;\n    height: 51px; }\n  .song-component .info-title {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden; }\n\n.watch-more {\n  height: 40px;\n  width: 490px;\n  margin: 0; }\n\n.isSelected {\n  background-color: rgba(158, 158, 158, 0.2); }\n\n#music-list-song {\n  height: 430px;\n  width: 450px;\n  position: fixed; }\n\n.pagination {\n  list-style: none;\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .pagination li a {\n    padding: 6px 12px;\n    text-decoration: none; }\n\n#id-box {\n  position: fixed;\n  right: 0;\n  top: 0;\n  width: 240px;\n  height: 100%; }\n  #id-box .md-no-style {\n    padding: 0 8px; }\n\n.id-box-song-component {\n  height: 60px;\n  font-size: 100%; }\n  .id-box-song-component img {\n    width: 48px;\n    height: 36px; }\n  .id-box-song-component .song-info {\n    padding: 0 8px; }\n  .id-box-song-component .info-title {\n    font-size: 80%;\n    line-height: 150%;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    display: -webkit-box;\n    -webkit-line-clamp: 2;\n    -webkit-box-orient: vertical;\n    word-wrap: break-word; }\n", ""]);
+	exports.push([module.id, ".md-button {\n  margin: 0; }\n\nmd-list {\n  padding: 0; }\n\n.md-button:not([disabled]):hover {\n  background-color: rgba(158, 158, 158, 0.1); }\n\nbody {\n  background-color: white;\n  height: auto; }\n\n#content-wrapper {\n  flex-basis: 940px;\n  background-color: white; }\n  #content-wrapper #content #content-left {\n    flex-basis: 490px;\n    padding-top: 50px; }\n  #content-wrapper #content #content-right {\n    flex-basis: 450px; }\n\n#menu {\n  width: 490px;\n  height: 50px;\n  position: fixed;\n  z-index: 100;\n  background-color: white; }\n\n.list-component {\n  height: 115px; }\n  .list-component img {\n    width: 120px;\n    height: 90px; }\n  .list-component .list-info {\n    padding: 10px; }\n\n.song-component {\n  height: 60px; }\n  .song-component img {\n    width: 68px;\n    height: 51px; }\n  .song-component .info-title {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden; }\n\n.watch-more {\n  height: 40px;\n  width: 490px;\n  margin: 0; }\n\n.isSelected {\n  background-color: rgba(158, 158, 158, 0.2); }\n\n#music-list-song {\n  height: 430px;\n  width: 450px;\n  position: fixed; }\n\n.pagination {\n  list-style: none;\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .pagination li a {\n    padding: 6px 12px;\n    text-decoration: none; }\n\n#id-box {\n  position: fixed;\n  right: 0;\n  top: 0;\n  width: 240px;\n  height: 100%;\n  border-left: 1px solid rgba(0, 0, 0, 0.12);\n  background-color: white; }\n  #id-box .md-no-style {\n    padding: 0 8px; }\n\n.id-box-song-component {\n  height: 60px;\n  font-size: 100%; }\n  .id-box-song-component img {\n    width: 48px;\n    height: 36px; }\n  .id-box-song-component .song-info {\n    padding: 0 8px; }\n  .id-box-song-component .info-title {\n    font-size: 80%;\n    line-height: 150%;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    display: -webkit-box;\n    -webkit-line-clamp: 2;\n    -webkit-box-orient: vertical;\n    word-wrap: break-word; }\n", ""]);
 
 	// exports
 

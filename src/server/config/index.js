@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const env = {
+const config = {
     port: process.env.PORT || 8000,
     cwd: process.cwd(),
     path: {
@@ -9,13 +9,18 @@ const env = {
 
 };
 
-const db = {
+const database = {
     localhost: {
         uri: 'postgres://postgres:1234@localhost:5432/withSong_v2',
     },
     production: {
         uri: '',
     },
+    redis: {
+        secretKey: 'abcdefg123456',
+        host: 'localhost',
+        port: 6379
+    }
 };
 
 const api = {
@@ -26,4 +31,4 @@ const api = {
     }
 };
 
-export default _.merge(env, db, api);
+export default _.merge(config, database, api);

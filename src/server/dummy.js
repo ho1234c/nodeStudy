@@ -1,10 +1,10 @@
-import db from './models/index'
+import db from './models'
 import request from 'request-promise';
 import _ from 'lodash'
 import {findNode} from './lib/index'
 
 export default function(num, callback){
-    const url = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyAYJcoUSoEpehRGo-0XYHd4zafkiSmt9Wk&type=video&part=snippet&q=%EC%9E%84%EC%B0%BD%EC%A0%95&maxResults=30';
+    const url = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyAYJcoUSoEpehRGo-0XYHd4zafkiSmt9Wk&type=video&part=snippet&q=%EC%9E%84%EC%B0%BD%EC%A0%95&maxResults=20';
     const userDummy = [], listDummy = [], commentDummy = [];
 
     for(let i=0; i<num; i++){
