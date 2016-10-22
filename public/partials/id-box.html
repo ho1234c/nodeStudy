@@ -1,14 +1,11 @@
 <div id="id-box" ng-controller="idBoxCtrl as vm">
-    <md-content>
-        <md-input-container>
-            <label>Email</label>
-            <input ng-model="user.email">
-        </md-input-container>
-
-        <md-input-container>
-            <label>Password</label>
-            <input ng-model="user.password" type="email">
-        </md-input-container>
+    <md-content id="login-box" layout-padding>
+        <form id="login-form" action="/user/login" method="post" layout="column">
+            <input ng-model="user.email" type="email" name="email" placeholder="아이디">
+            <input ng-model="user.password" type="password" name="password" placeholder="비밀번호">
+            <!--<md-button class="md-raised md-primary">로그인</md-button>-->
+            <input type="submit" value="로그인">
+        </form>
     </md-content>
     <youtube ng-if="vm.Player.videoid" width="{{ vm.Player.width }}" height="{{ vm.Player.height }}" videoid="{{ vm.Player.videoid }}"></youtube>
     <md-list layout="column">

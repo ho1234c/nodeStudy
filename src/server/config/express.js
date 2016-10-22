@@ -24,11 +24,14 @@ export default function (app) {
 
     app.use(cookieParser());
     app.use(bodyParser.json());
-    app.use(express.static(config.path.public));
-    app.use(router);
-
-    redisConfig(app);
+    app.use(bodyParser.urlencoded({ extended: true }));
     passportConfig(app);
+
+    app.use(express.static(config.path.public));
+
+    // **router apply point**
+    app.use(router);
+    redisConfig(app);
 
     return router
 }

@@ -1,4 +1,5 @@
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs';
+import Promise from 'bluebird';
 
 export default (sequelize, DataTypes) => {
     const User = sequelize.define('User',
@@ -11,6 +12,7 @@ export default (sequelize, DataTypes) => {
         },
         {
             hooks:{
+                beforeBulkCreate: hashPasswordHook,
                 beforeCreate: hashPasswordHook,
                 beforeUpdate: hashPasswordHook
             },
@@ -53,11 +55,24 @@ export default (sequelize, DataTypes) => {
 }
 
 const hashPasswordHook = (user, options, callback) => {
-    bcrypt.hash(user.get('password'), 10, (err, hash)=>{
-        if (err){
-            return callback(err)
-        }
-        user.set('password_hash', hash);
-        return callback(null, options)
-    })
+    let userList = user.length ? user : [user];
+    Promise.all(userList.map(userObj => {
+        return hashPromise(userObj.get('password'), 10);
+    }))
+        .then(hash => {
+            for(let i=0; i<userList.length; i++){
+                userList[i].set('password_hash', hash[i]);
+            }
+            return callback(null, options)
+        });
 };
+
+const hashPromise = (password, salt) => {
+    salt = salt || 10;
+    return new Promise((resolve, reject) => {
+        bcrypt.hash(password, salt, (err, hash) => {
+            if (err) return reject(err);
+            resolve(hash)
+        })
+    })
+}

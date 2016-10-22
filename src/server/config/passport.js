@@ -12,18 +12,21 @@ export default function(app){
             passwordField: 'password'
         },
         (email, password, done) => {
-            db.User.findOne({where: {email: email}})
+            db.User.findOne({where: {email: email}, include: {model: db.List}})
                 .then(user => {
+                    console.log(user);
+                    if(!user){
+                        return done(null, false, {message: 'not found'})
+                    }
                     user.authenticate(password, (err, isMatch) => {
                         if(err){
                             return done(err);
                         }
-                        if(isMatch){
-                            done(null, user);
+                        if(!isMatch){
+                            return done(null, false, {message: 'Invalid'});
                         }
-                        else{
-                            done(null, {message: 'Invalid'})
-                        }
+                        return done(null, user);
+
                     });
                 })
         }

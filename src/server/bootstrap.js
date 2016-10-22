@@ -2,12 +2,13 @@ import express from 'express';
 import configExpress from './config/express';
 import routeIndex from './routes/index';
 import routeList from './routes/list';
+import routeUser from './routes/user'
 import db from './models';
 import dummy from './dummy';
 
-db.sequelize.sync()
+db.sequelize.sync({force: true})
     .then(() => {
-        // dummy(30, console.log);
+        dummy(5, 15, console.log);
         console.log('Connect database');
     })
     .catch(() => {
@@ -19,5 +20,6 @@ const route = configExpress(app);
 
 routeIndex(route);
 routeList(route);
+routeUser(route);
 
 export default app;
