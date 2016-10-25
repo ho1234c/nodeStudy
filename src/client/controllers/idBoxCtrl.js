@@ -1,11 +1,13 @@
 export default class idBoxCtrl {
     constructor($scope, Player, User, Session, List) {
-        angular.extend(this, {$scope, Player, User, Session});
+        angular.extend(this, {$scope, Player, User, Session, List});
         this.$scope = $scope;
-        this.List = List;
 
         this.isSelectedList = null;
         this.isSelectedSong = null;
+
+        this.listStart = 0;
+        this.listEnd = 4;
 
         this.$scope.$on('highlighting', (event, msg) => {
             if(msg.index == -1){
@@ -40,18 +42,29 @@ export default class idBoxCtrl {
         this.isSelectedList = index;
     }
 
+    listControl(dir){
+        if(dir == 'up' && this.listStart > 0){
+            this.listStart -= 5;
+            this.listEnd -= 5;
+        }else if(dir == 'down' && this.listEnd < this.Session.user.list.length - 1){
+            this.listStart += 5;
+            this.listEnd += 5;
+        }
+    }
+
     login(){
         this.User.login(this.user)
             .then(data => {
                 this.Session.set(data);
+                this.user = {};
             });
     }
 
     logout(){
         this.User.logout()
             .then(result => {
-                console.log(result);
                 this.Session.destroy();
+                this.Player.playlist = [];
             });
     }
 

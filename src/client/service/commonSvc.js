@@ -13,7 +13,6 @@ export class Session {
                 }
             });
     }
-
     set(data) {
         if (!data) {
             return false;
@@ -22,7 +21,6 @@ export class Session {
         this.user = data.user;
         return data;
     }
-
     destroy() {
         this.isLogin = false;
         this.user = this.guest;

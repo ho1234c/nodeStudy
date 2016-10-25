@@ -11,7 +11,7 @@ import idBoxCtrl    from './controllers/idBoxCtrl';
 import listSvc      from './service/listSvc';
 import userSvc      from './service/userSvc';
 import playerSvc    from './service/playerSvc';
-import * as common from './service/commonSvc';
+import * as common  from './service/commonSvc';
 import youtube      from  './directives/youtube';
 
 // It is purpose to add css to javascript using webpack.

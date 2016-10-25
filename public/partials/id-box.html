@@ -1,7 +1,7 @@
 <div id="id-box" ng-controller="idBoxCtrl as vm" layout="column">
-    <md-content id="id-box-top" ng-if="vm.Session.isLogin" layout="row">
-        <div>{{ vm.Session.user.email }}</div>
-        <button ng-click="vm.logout()">로그아웃</button>
+    <md-content id="id-box-top" ng-if="vm.Session.isLogin" layout="row" flex="5" layout-align="center center">
+        <div>{{ vm.Session.user.name }}</div>
+        <div class="logout" ng-click="vm.logout()">로그아웃</div>
     </md-content>
     <md-content id="login-box" layout-padding ng-if="!vm.Session.isLogin">
         <form id="login-form" ng-submit="vm.login()" method="post" layout="column">
@@ -11,46 +11,47 @@
             <input type="submit" value="로그인">
         </form>
     </md-content>
-    <youtube ng-if="vm.Player.videoid" width="{{ vm.Player.width }}" height="{{ vm.Player.height }}" videoid="{{ vm.Player.videoid }}"></youtube>
-    <div id="id-box-list" ng-if="vm.Session.isLogin">
-        <md-list layout="column">
-            <md-list-item ng-repeat="item in vm.Session.user.list track by $index"
-                          ng-if="$index < 5" ng-click="vm.selectList(this.item.id); vm.highlighting($index)"
-                          ng-class="{ isSelected: vm.isSelectedList == $index }">
-                <div class="md-list-item-text" layout="row">
-                    <div class="list-info" layout="row" layout-align="start center">
-                        <div class="info-wrapper" layout="column">
-                            <div class="info-name">{{ item.name }}</div>
+    <youtube ng-if="vm.Player.videoid" width="{{ vm.Player.width }}" height="{{ vm.Player.height }}" videoid="{{ vm.Player.videoid }}" class="player"></youtube>
+    <div id="id-box-list" ng-if="vm.Session.isLogin" layout="column">
+        <md-button ng-click="vm.listControl('up')">UP</md-button>
+        <div ng-repeat="item in vm.Session.user.list track by $index"
+             ng-if="$index >= vm.listStart && $index <= vm.listEnd" ng-click="vm.selectList(this.item.id); vm.highlighting($index)"
+             ng-class="{ isSelected: vm.isSelectedList == $index }">
+            <div class="md-list-item-text id-box-list-component" layout="row">
+                <div class="list-info" layout="row" layout-align="start center">
+                    <div class="info-wrapper" layout="column">
+                        <div class="info-name">{{ item.name }}</div>
+                    </div>
+                </div>
+            </div>
+            <md-divider></md-divider>
+        </div>
+        <md-button ng-click="vm.listControl('down')">DOWN</md-button>
+    </div>
+    <div id="id-box-song-wrap">
+        <md-content id="id-box-song">
+            <md-list layout="column">
+                <md-list-item dir-paginate="item in vm.Player.playlist | itemsPerPage: vm.Player.playlistPageNum"
+                              current-page="vm.Player.playlistCurrentPage"
+                              ng-click="vm.Player.playVideo($index, 'playlist'); vm.Player.highlighting($index, 'playlist')"
+                              ng-class="{ isSelected: vm.isSelectedSong == $index }"
+                              pagination-id="playlist">
+                    <div class="md-list-item-text id-box-song-component" layout="row" flex="100">
+                        <div class="song-img" layout="row" layout-align="center center" flex="20">
+                            <img ng-src="{{ item.snippet.thumbnails.default.url }}"/>
+                        </div>
+                        <div class="song-info" layout="column" layout-align="center center" flex="80">
+                            <div class="info-title">{{ item.snippet.title }}</div>
                         </div>
                     </div>
-                </div>
-                <md-divider></md-divider>
-            </md-list-item>
-        </md-list>
-
-    </div>
-    <md-content id="id-box-song">
-        <md-list layout="column">
-            <md-list-item dir-paginate="item in vm.Player.playlist | itemsPerPage: vm.Player.playlistPageNum"
-                          current-page="vm.Player.playlistCurrentPage"
-                          ng-click="vm.Player.playVideo($index, 'playlist'); vm.Player.highlighting($index, 'playlist')"
-                          ng-class="{ isSelected: vm.isSelectedSong == $index }"
-                          pagination-id="playlist">
-                <div class="md-list-item-text id-box-song-component" layout="row" flex="100">
-                    <div class="song-img" layout="row" layout-align="center center" flex="20">
-                        <img ng-src="{{ item.snippet.thumbnails.default.url }}"/>
-                    </div>
-                    <div class="song-info" layout="column" layout-align="center center" flex="80">
-                        <div class="info-title">{{ item.snippet.title }}</div>
-                    </div>
-                </div>
-                <md-divider></md-divider>
-            </md-list-item>
-        </md-list>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </md-list>
+        </md-content>
         <dir-pagination-controls boundary-links="true"
                                  template-url="/partials/dirPagination.tpl.html"
                                  pagination-id="playlist"
                                  on-page-change="vm.Player.highlighting(vm.Player.status.listIndex || 0, 'playlist')">
         </dir-pagination-controls>
-    </md-content>
+    </div>
 </div>

@@ -16,10 +16,6 @@ body{
   height: auto;
 }
 
-#wrap{
-
-}
-
 #content-wrapper{
   flex-basis: 940px;
   background-color: white;
@@ -28,10 +24,53 @@ body{
     #content-left{
       flex-basis: 490px;
       padding-top: 50px;
+
+      .list-component{
+        height: 115px;
+
+        img{
+          width: 120px;
+          height: 90px;
+        }
+
+        .list-info{
+          padding: 10px;
+        }
+      }
+
+      .watch-more{
+        height: 40px;
+        width: 490px;
+        margin: 0;
+      }
     }
 
     #content-right{
       flex-basis: 450px;
+
+      #right-wrap{
+        position: fixed;
+      }
+
+      #music-list-song{
+        height: 430px;
+        width: 450px;
+      }
+
+      .song-component{
+        height: 60px;
+
+        img{
+          width: 68px;
+          height: 51px;
+        }
+
+        .info-title{
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
     }
   }
 }
@@ -44,49 +83,8 @@ body{
   background-color: white;
 }
 
-.list-component{
-  height: 115px;
-
-  img{
-    width: 120px;
-    height: 90px;
-  }
-
-  .list-info{
-    padding: 10px;
-  }
-}
-
-.song-component{
-  height: 60px;
-
-  img{
-    width: 68px;
-    height: 51px;
-  }
-
-  .info-title{
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-
-}
-
-.watch-more{
-  height: 40px;
-  width: 490px;
-  margin: 0;
-}
-
 .isSelected{
   background-color: rgba(158,158,158,0.2);
-}
-
-#music-list-song{
-  height: 430px;
-  width: 450px;
-  position: fixed;
 }
 
 .pagination{
@@ -94,6 +92,20 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .md-button{
+    min-width: 25px;
+    min-height: 25px;
+    line-height: 25px;
+  }
+
+  .active{
+    background-color: rgba(158,158,158,0.2);
+  }
+  
+  li{
+    width: 35px;
+  }
 
   li a{
     padding: 6px 12px;
@@ -110,34 +122,79 @@ body{
   border-left: 1px solid rgba(0,0,0,0.12);
   background-color: white;
 
+  .logout{
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: auto;
+  }
+
+  .player{
+    width: 240px;
+    height: 180px;
+  }
+
   .md-no-style{
     padding: 0 8px;
   }
-}
 
+  #id-box-list{
 
-.id-box-song-component{
-  height: 60px;
-  font-size: 100%;
+    > .md-button{
+      line-height: 20px;
+      min-height: 20px;
+      background-color: rgba(158,158,158,0.4);
+    }
 
-  img{
-    width: 48px;
-    height: 36px;
+    .id-box-list-component{
+      height: 30px;
+
+      &:hover{
+        background-color: rgba(158,158,158,0.2);
+        cursor: pointer;
+        outline: none;
+      }
+    }
   }
 
-  .song-info{
-    padding: 0 8px;
-  }
 
-  .info-title{
-    font-size: 80%;
-    line-height: 150%;
+  #id-box-song{
     overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    word-wrap:break-word;
+    height: 430px;
+    .id-box-song-component{
+      height: 60px;
+      font-size: 100%;
+
+      img{
+        width: 48px;
+        height: 36px;
+      }
+
+      .song-info{
+        padding: 0 8px;
+      }
+
+      .info-title{
+        font-size: 80%;
+        line-height: 150%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        word-wrap:break-word;
+      }
+
+    }
   }
 
+  ul{
+    padding: 0;
+  }
 }
+
+*:focus {
+  outline: none;
+}
+
+
+

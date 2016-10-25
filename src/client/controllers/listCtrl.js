@@ -1,8 +1,8 @@
 export default class listCtrl {
     constructor($scope, List, initList, Player) {
-        angular.extend(this, {$scope, initList, Player});
+        angular.extend(this, {$scope, initList, Player, List});
         this.$scope = $scope;
-        this.List = List;
+
         this.musicList = initList.data;
 
         // for highlighting control
