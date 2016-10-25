@@ -10,7 +10,8 @@ import listCtrl     from './controllers/listCtrl';
 import idBoxCtrl    from './controllers/idBoxCtrl';
 import listSvc      from './service/listSvc';
 import userSvc      from './service/userSvc';
-import playerSvc   from './service/playerSvc';
+import playerSvc    from './service/playerSvc';
+import * as common from './service/commonSvc';
 import youtube      from  './directives/youtube';
 
 // It is purpose to add css to javascript using webpack.
@@ -33,7 +34,6 @@ angular
                         templateUrl: '/partials/id-box.html'
                     }
                 }
-
             })
             .state('main.music-list', {
                 url: "",
@@ -65,6 +65,7 @@ angular
     .service('List', listSvc)
     .service('User', userSvc)
     .service('Player', playerSvc)
+    .service('Session', common.Session)
     .controller('listCtrl', listCtrl)
     .controller('idBoxCtrl', idBoxCtrl)
     .directive('youtube', ['$window', ($window) => new youtube($window)]);

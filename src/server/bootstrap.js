@@ -6,9 +6,9 @@ import routeUser from './routes/user'
 import db from './models';
 import dummy from './dummy';
 
-db.sequelize.sync({force: true})
+db.sequelize.sync()
     .then(() => {
-        dummy(5, 15, console.log);
+        // dummy(20, 15, console.log);
         console.log('Connect database');
     })
     .catch(() => {

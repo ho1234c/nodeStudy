@@ -12,9 +12,8 @@ export default function(app){
             passwordField: 'password'
         },
         (email, password, done) => {
-            db.User.findOne({where: {email: email}, include: {model: db.List}})
+            db.User.findOne({where: {email: email}, include: {model: db.List, as: 'listFavor', attributes: ['id', 'name']}})
                 .then(user => {
-                    console.log(user);
                     if(!user){
                         return done(null, false, {message: 'not found'})
                     }

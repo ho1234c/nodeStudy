@@ -6,105 +6,112 @@ export default class PlayerSvc {
 
         this.videoid = null;
 
+        // in main-music-list
         this.listDetail = [];
         this.listDetailPageNum = 7;
         this.listDetailCurrentPage = 1;
 
+        // in id-box
         this.playlist = [];
         this.playlistPageNum = 7;
         this.playlistCurrentPage = 1;
 
-        this.currentListName = null;
-        this.currentIndex = null;
-        this.currentVideoIndex = null;
+        // current status
+        this.status = {
+            listName: null,     // playing array name
+            listIndex: null,    // playing array index
+            videoIndex: null,   // playing video index
+            playingListId: null,// playing musicList id
+            musicListId: null,  // selected musicList id
+            userListId: null,   // selected user.list id
+        };
 
         this.$rootScope.$on('videoEnd', () => {
-            this.pageControl(this.currentIndex, this.currentListName); // increment current index and change into next page.
+            this._pageControl(this.status.listIndex, this.status.listName); // increment video index and change current page into next page.
 
-            let context = this[this.currentListName];
-            this.currentVideoIndex += 1;
-            this.videoid = context[this.currentVideoIndex].videoId;
+            let context = this[this.status.listName];
+            this.videoid = context[this.status.videoIndex].videoId;
 
-            this.highlighting(this.currentIndex, this.currentListName);
         });
     }
 
     playVideo(index, listname){
+        this.status.playingListId = listname  == 'listDetail' ? this.status.musicListId : this.status.userListId;
+
+        // update status
+        this.status.listName = listname;
+        this.status.listIndex = index;
+        this.status.videoIndex = this._findVideoIndex(listname);
+
         let list = this[listname]; // find context list
-        this.currentListName = listname;
-        this.currentIndex = index;
-        this.currentVideoIndex = this.findVideoIndex(listname);
-        this.videoid = list[this.currentVideoIndex].videoId;
+        this.videoid = list[this.status.videoIndex].videoId;
     }
 
     highlighting(index, listname){
-        if(listname != this.currentListName && listname != 'musicList'){
+        if((listname == 'listDetail' && this.status.playingListId != this.status.musicListId) ||  // 현재 플레이되고 있는 비디오가 포함된 리스트와
+            (listname == 'playlist' && this.status.playingListId != this.status.userListId) ||    // 유저가 조회하고있는 리스트가 다를 경우 하이라이팅하지 않는다.
+            (listname != this.status.listName)) // 클릭한 리스트만 하이라이팅한다.
+        {
             return;
         }
 
         let highlightObj = {
-            index: "",
-            listname: listname
+            index: this._checkViewPage() ? index : -1, // 유저가 조회하고 있는 페이지가 재생중인 비디오가 포함된 페이지가 아니라면 하이라이팅 하지 않는다.
+            listname: listname,
+            listId: this.status.playingListId
         };
 
-        if(listname == 'musicList'){
-            highlightObj.index = index;
-        }
-        else if(listname == 'listDetail' || listname == 'playlist'){
-            if (this.checkViewPage()){
-                highlightObj.index = index;
-            }
-            else{
-                highlightObj.index = -1;
-            }
-        }
         this.$rootScope.$broadcast('highlighting', highlightObj);
     }
 
-    pageControl(index, listName){
+    // determine whether page increase or not.
+    _pageControl(index, listName){
         if(listName == 'listDetail' && ((index + 1) % this.listDetailPageNum === 0)){
-            if(this.checkViewPage()){
+            if(this._checkViewPage()){
                 this.listDetailCurrentPage += 1;
+                this.status.videoIndex += 1;
             }
-            this.currentIndex = 0;
+            this.status.listIndex = 0;
         }
         else if(listName == 'playlist' && ((index + 1)% this.playlistPageNum === 0)){
-            if(this.checkViewPage()){
+            if(this._checkViewPage()){
                 this.playlistCurrentPage += 1;
+                this.status.videoIndex += 1;
             }
-            this.currentIndex = 0;
+            this.status.listIndex = 0;
         }
         else{
-            this.currentIndex += 1;
+            this.status.listIndex += 1;
+            this.status.videoIndex += 1;
+            this.highlighting(this.status.listIndex, this.status.listName);
         }
     }
 
     // index of object in ng-repeat and real array is different.
-    findVideoIndex(listName){
+    _findVideoIndex(listName){
         let videoIndex;
 
         if(listName == 'listDetail'){
-            videoIndex = this.listDetailPageNum * (this.listDetailCurrentPage - 1) + this.currentIndex;
+            videoIndex = this.listDetailPageNum * (this.listDetailCurrentPage - 1) + this.status.listIndex;
         }
         else if(listName == 'playlist'){
-            videoIndex = this.playlistPageNum * (this.playlistCurrentPage - 1) + this.currentIndex;
+            videoIndex = this.playlistPageNum * (this.playlistCurrentPage - 1) + this.status.listIndex;
         }
         return videoIndex;
     }
 
     // this method is made for checking that whether user is viewing the page containing current played video.
-    checkViewPage(){
+    _checkViewPage(){
         let temp;
-
-        if(this.currentListName == 'listDetail'){
-            temp = this.listDetailPageNum * (this.listDetailCurrentPage - 1) + this.currentIndex;
-            if(temp == this.currentVideoIndex){
+        if(this.status.listName == 'listDetail'){
+            temp = this.listDetailPageNum * (this.listDetailCurrentPage - 1) + this.status.listIndex;
+            if(temp == this.status.videoIndex){
                 return true;
             }
         }
-        else if(this.currentListName == 'playlist'){
-            temp = this.playlistPageNum * (this.playlistCurrentPage - 1) + this.currentIndex;
-            if(temp == this.currentVideoIndex){
+        else if(this.status.listName == 'playlist'){
+            temp = this.playlistPageNum * (this.playlistCurrentPage - 1) + this.status.listIndex;
+            if(temp == this.status.videoIndex){
                 return true;
             }
         }
