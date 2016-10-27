@@ -1,7 +1,6 @@
 export default class idBoxCtrl {
     constructor($scope, Player, User, Session, List) {
         angular.extend(this, {$scope, Player, User, Session, List});
-        this.$scope = $scope;
 
         this.isSelectedList = null;
         this.isSelectedSong = null;
@@ -37,11 +36,9 @@ export default class idBoxCtrl {
                 }
             });
     }
-
     highlighting(index){
         this.isSelectedList = index;
     }
-
     listControl(dir){
         if(dir == 'up' && this.listStart > 0){
             this.listStart -= 5;
@@ -51,7 +48,6 @@ export default class idBoxCtrl {
             this.listEnd += 5;
         }
     }
-
     login(){
         this.User.login(this.user)
             .then(data => {
@@ -59,7 +55,6 @@ export default class idBoxCtrl {
                 this.user = {};
             });
     }
-
     logout(){
         this.User.logout()
             .then(result => {
@@ -67,7 +62,6 @@ export default class idBoxCtrl {
                 this.Player.playlist = [];
             });
     }
-
 }
 
 idBoxCtrl.$inject = ['$scope', 'Player', 'User', 'Session', 'List'];

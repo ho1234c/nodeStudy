@@ -33,7 +33,7 @@ export default {
     },
     //:listId
     like(req, res){
-        console.log('test');
+
     },
     //:listId
     createComment(req, res){

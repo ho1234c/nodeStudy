@@ -34,7 +34,6 @@ export default class PlayerSvc {
 
         });
     }
-
     playVideo(index, listname){
         this.status.playingListId = listname  == 'listDetail' ? this.status.musicListId : this.status.userListId;
 
@@ -46,7 +45,6 @@ export default class PlayerSvc {
         let list = this[listname]; // find context list
         this.videoid = list[this.status.videoIndex].videoId;
     }
-
     highlighting(index, listname){
         if((listname == 'listDetail' && this.status.playingListId != this.status.musicListId) ||  // 현재 플레이되고 있는 비디오가 포함된 리스트와
             (listname == 'playlist' && this.status.playingListId != this.status.userListId) ||    // 유저가 조회하고있는 리스트가 다를 경우 하이라이팅하지 않는다.
@@ -63,7 +61,6 @@ export default class PlayerSvc {
 
         this.$rootScope.$broadcast('highlighting', highlightObj);
     }
-
     // determine whether page increase or not.
     _pageControl(index, listName){
         if(listName == 'listDetail' && ((index + 1) % this.listDetailPageNum === 0)){
@@ -86,7 +83,6 @@ export default class PlayerSvc {
             this.highlighting(this.status.listIndex, this.status.listName);
         }
     }
-
     // index of object in ng-repeat and real array is different.
     _findVideoIndex(listName){
         let videoIndex;
@@ -99,7 +95,6 @@ export default class PlayerSvc {
         }
         return videoIndex;
     }
-
     // this method is made for checking that whether user is viewing the page containing current played video.
     _checkViewPage(){
         let temp;

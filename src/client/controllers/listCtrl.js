@@ -1,13 +1,15 @@
 export default class listCtrl {
     constructor($scope, List, initList, Player) {
         angular.extend(this, {$scope, initList, Player, List});
-        this.$scope = $scope;
 
-        this.musicList = initList.data;
+        // only first time
+        if(!this.Player.musicList){
+            this.Player.musicList = initList.data;
+        }
 
         // for highlighting control
-        this.isSelectedList = null;
-        this.isSelectedSong = null;
+        this.isSelectedList = this.List.selectedIndex;
+        this.isSelectedSong = this.Player.status.listName == 'listDetail' ? this.Player.status.listIndex : null;
 
         this.$scope.$on('highlighting', (event, msg) => {
             if(msg.index === -1){
@@ -23,19 +25,26 @@ export default class listCtrl {
             }
         });
     }
-    watchMore(count){
-        this.List.loadList(count)
+    watchMore(){
+        this.List.loadList(this.Player.musicList.length)
             .then(result => {
                 for(const obj of result.data){
-                    this.musicList.push(obj);
+                    this.Player.musicList.push(obj);
                 }
             });
     }
-    selectList(id){
+    selectList(id, index){
         this.isSelectedSong = null;
+
+        // init status
         this.Player.listDetail = [];
         this.Player.listDetailCurrentPage = 1;
         this.Player.status.musicListId = id;
+
+        // for highlighting
+        this.List.selectedIndex = index;
+        this.isSelectedList = index;
+
         this.Player.highlighting(this.Player.status.listIndex, this.Player.status.listName);
 
         this.List.loadSong(id)
@@ -57,9 +66,6 @@ export default class listCtrl {
                     this.Player.playlist.push(obj);
                 }
             });
-    }
-    highlighting(index){
-        this.isSelectedList = index;
     }
 }
 

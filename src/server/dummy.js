@@ -24,7 +24,7 @@ export default function(num, infoNum, callback){
             let data = JSON.parse(songInfo);
             let songInfoDummy = [];
 
-            _.forEach(data.items, (value) => {
+            _.forEach(data.items, value => {
                 let refinedData = {};
                 refinedData.videoId = findNode('videoId', value);
                 refinedData.snippet = findNode('snippet', value);

@@ -6,20 +6,22 @@ import 'angular-resource';
 import 'angular-material';
 import 'angular-utils-pagination';
 
-import listCtrl     from './controllers/listCtrl';
-import idBoxCtrl    from './controllers/idBoxCtrl';
-import listSvc      from './service/listSvc';
-import userSvc      from './service/userSvc';
-import playerSvc    from './service/playerSvc';
-import * as common  from './service/commonSvc';
-import youtube      from  './directives/youtube';
+import listCtrl         from './controllers/listCtrl';
+import idBoxCtrl        from './controllers/idBoxCtrl';
+import searchAddCtrl    from './controllers/searchAddCtrl';
+import listSvc          from './service/listSvc';
+import userSvc          from './service/userSvc';
+import playerSvc        from './service/playerSvc';
+import searchSvc        from './service/searchSvc';
+import * as common      from './service/commonSvc';
+import youtube          from  './directives/youtube';
 
 // It is purpose to add css to javascript using webpack.
 import './css/angular-material.scss';
 import './css/style.scss';
 
 angular
-    .module('withSong', [ 'ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination' ])
+    .module('withSong', [ 'ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination', 'ngSanitize' ])
     .config($stateProvider => {
         $stateProvider
             .state('main', {
@@ -49,7 +51,8 @@ angular
             .state('main.search-add', {
                 url: "",
                 templateUrl: '/partials/main.search-add.html',
-                controller: "searchAddCtrl"
+                controller: "searchAddCtrl",
+                controllerAs : "vm"
             })
             .state('sign-up', {
                 url: '/sign-up',
@@ -66,6 +69,8 @@ angular
     .service('User', userSvc)
     .service('Player', playerSvc)
     .service('Session', common.Session)
+    .service('Search', searchSvc)
     .controller('listCtrl', listCtrl)
     .controller('idBoxCtrl', idBoxCtrl)
+    .controller('searchAddCtrl', searchAddCtrl)
     .directive('youtube', ['$window', ($window) => new youtube($window)]);

@@ -5,8 +5,10 @@ export default class List {
         this.songRequest = $resource('load/song/:id', {
             id: '@id'
         });
-    }
 
+        this.musicList = [];
+        this.selectedIndex = null;
+    }
     loadList(count){
         const q = this.$q.defer();
         this.listRequest.get({
@@ -18,7 +20,6 @@ export default class List {
         });
         return q.promise;
     }
-
     loadSong(id){
         const q = this.$q.defer();
         this.songRequest.get({
@@ -29,7 +30,6 @@ export default class List {
             q.reject(err);
         });
         return q.promise;
-
     }
 }
 

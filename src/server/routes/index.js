@@ -6,4 +6,7 @@ export default router => {
 
     router.route('/session')
         .get(index.session);
+
+    router.route('/search/:word')
+        .get(index.search);
 };
