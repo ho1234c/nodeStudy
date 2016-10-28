@@ -8,6 +8,10 @@ export default class List {
 
         this.musicList = [];
         this.selectedIndex = null;
+
+        this.createdList = [];
+        this.pageNum = 7;
+        this.currentPage = 1;
     }
     loadList(count){
         const q = this.$q.defer();
@@ -24,6 +28,17 @@ export default class List {
         const q = this.$q.defer();
         this.songRequest.get({
             id: id
+        }, result => {
+            q.resolve(result);
+        }, err => {
+            q.reject(err);
+        });
+        return q.promise;
+    }
+    create(data){
+        const q = this.$q.defer();
+        this.listRequest.save({
+            data: data
         }, result => {
             q.resolve(result);
         }, err => {

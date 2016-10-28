@@ -1,6 +1,6 @@
 export default class searchAddCtrl {
-    constructor(Search, Player) {
-        angular.extend(this, {Search, Player});
+    constructor(Search, Player, List) {
+        angular.extend(this, {Search, Player, List});
     }
     search(){
         this.Search.searchArray = [];
@@ -24,6 +24,16 @@ export default class searchAddCtrl {
     playVideo(id){
         this.Player.videoid = id;
     }
+    createList(data){
+        this.List.create(data)
+            .then(res => {
+                console.log(res);
+            });
+    }
+    insertSong(obj){
+        this.List.createdList.push(obj);
+    }
+
 }
 
-searchAddCtrl.$inject = ['Search', 'Player'];
+searchAddCtrl.$inject = ['Search', 'Player', 'List'];

@@ -1,5 +1,5 @@
 export default class listCtrl {
-    constructor($scope, List, initList, Player) {
+    constructor($scope, initList, Player, List) {
         angular.extend(this, {$scope, initList, Player, List});
 
         // only first time
@@ -69,5 +69,5 @@ export default class listCtrl {
     }
 }
 
-listCtrl.$inject = ['$scope', 'List', 'initList', 'Player'];
+listCtrl.$inject = ['$scope', 'initList', 'Player', 'List'];
 

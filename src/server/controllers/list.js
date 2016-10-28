@@ -29,6 +29,7 @@ export default {
             })
     },
     createList(req, res){
+        console.log(req.body);
 
     },
     //:listId
