@@ -20,7 +20,7 @@ export default function(num, infoNum, callback){
             // get song info dummy.
             return request(url);
         })
-        .then((songInfo) => {
+        .then(songInfo => {
             let data = JSON.parse(songInfo);
             let songInfoDummy = [];
 

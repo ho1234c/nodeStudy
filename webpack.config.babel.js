@@ -32,5 +32,11 @@ export default {
                 loaders: [ 'style', 'css', 'sass' ]
             }
         ]
-    }
+    },
+    // plugins: [
+    //     new webpack.optimize.UglifyJsPlugin({
+    //         sourceMap: false,
+    //         mangle: false
+    //     })
+    // ]
 };

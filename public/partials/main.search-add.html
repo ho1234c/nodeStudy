@@ -35,15 +35,15 @@
     <div id="right-create" layout="column">
         <div id="create-form" layout="column">
             <div id="header" layout="row">
-                <div id="thumbnail">thumnail</div>
+                <div id="thumbnail" layout-align="center center" layout="row">thumnail</div>
                 <div id="info" layout="column">
-                    <input type="text">
+                    <input type="text" ng-model="vm.List.listForm.name" placeholder="제목을 입력해 주세요">
                     <p>info</p>
                     <p>info</p>
                 </div>
             </div>
             <div id="content">
-                <textarea></textarea>
+                <textarea ng-model="vm.List.listForm.detail" placeholder="리스트에 대한 소개를 입력해 주세요"></textarea>
             </div>
         </div>
         <div id="create-list">
@@ -76,7 +76,7 @@
             </div>
         </div>
         <div id="submit" layout="row" layout-align="center center">
-            <md-button class="md-raised" flex="100">등록</md-button>
+            <md-button class="md-raised" flex="100" ng-click="vm.createList()">등록</md-button>
         </div>
     </div>
 </div>

@@ -9,6 +9,8 @@ export default class List {
         this.musicList = [];
         this.selectedIndex = null;
 
+        // created list config
+        this.listForm = {};
         this.createdList = [];
         this.pageNum = 7;
         this.currentPage = 1;
@@ -37,9 +39,7 @@ export default class List {
     }
     create(data){
         const q = this.$q.defer();
-        this.listRequest.save({
-            data: data
-        }, result => {
+        this.listRequest.save(data, result => {
             q.resolve(result);
         }, err => {
             q.reject(err);

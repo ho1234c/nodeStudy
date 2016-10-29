@@ -11,7 +11,10 @@
                     </div>
                     <div class="list-info" layout="row" layout-align="start center" flex="50">
                         <div class="info-wrapper" layout="column">
-                            <div class="info-name">{{ item.name }}</div>
+                            <md-tooltip>
+                                Play Music
+                            </md-tooltip>
+                            <div class="info-name">{{ item.name }} </div>
                             <div class="info-nickname">{{ item.User.nickname }}</div>
                             <div class="info-createAt">{{ item.createdAt | date }}</div>
                         </div>
