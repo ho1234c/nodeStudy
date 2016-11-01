@@ -17,11 +17,9 @@
         <div ng-repeat="item in vm.Session.user.list track by $index"
              ng-if="$index >= vm.listStart && $index <= vm.listEnd" ng-click="vm.selectList(this.item.id); vm.highlighting($index)"
              ng-class="{ isSelected: vm.isSelectedList == $index }">
-            <div class="md-list-item-text id-box-list-component" layout="row">
-                <div class="list-info" layout="row" layout-align="start center">
-                    <div class="info-wrapper" layout="column">
+            <div class="md-list-item-text id-box-list-component" layout="row" layout-align="center center">
+                <div class="list-info" layout="column" layout-align="center center">
                         <div class="info-name">{{ item.name }}</div>
-                    </div>
                 </div>
             </div>
             <md-divider></md-divider>

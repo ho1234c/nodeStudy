@@ -1,4 +1,5 @@
 import webpack from 'webpack'
+import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 import path from 'path';
 
 export default {
@@ -33,10 +34,12 @@ export default {
             }
         ]
     },
-    // plugins: [
-    //     new webpack.optimize.UglifyJsPlugin({
-    //         sourceMap: false,
-    //         mangle: false
-    //     })
-    // ]
+    plugins: [
+        new ProgressBarPlugin(),
+        new webpack.OldWatchingPlugin(),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     sourceMap: false,
+        //     mangle: false
+        // })
+    ]
 };

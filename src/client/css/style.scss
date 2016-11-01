@@ -10,12 +10,25 @@ md-list{
 .md-button:not([disabled]):hover{
   background-color: rgba(158,158,158,0.1);
 }
+
+body.md-toast-open-bottom{
+  overflow-y: scroll !important;
+}
+body.md-toast-animating{
+  overflow-y: scroll !important;
+}
 /////////////////////////////////
 
 body{
   background-color: white;
   height: auto;
-  overflow-y:scroll;
+  overflow-y: scroll;
+}
+
+md-toast.md-success-toast-theme {
+  .md-toast-content {
+    background-color: rgb(255,171,64);
+  }
 }
 
 #content-wrapper{
@@ -172,7 +185,7 @@ body{
   width: 490px;
   height: 50px;
   position: fixed;
-  z-index: 100;
+  z-index: 70;
   background-color: white;
 }
 

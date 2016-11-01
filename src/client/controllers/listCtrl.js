@@ -1,6 +1,6 @@
 export default class listCtrl {
-    constructor($scope, initList, Player, List) {
-        angular.extend(this, {$scope, initList, Player, List});
+    constructor($rootScope, initList, Player, List) {
+        angular.extend(this, {$rootScope, initList, Player, List});
 
         // only first time
         if(!this.Player.musicList){
@@ -11,7 +11,7 @@ export default class listCtrl {
         this.isSelectedList = this.List.selectedIndex;
         this.isSelectedSong = this.Player.status.listName == 'listDetail' ? this.Player.status.listIndex : null;
 
-        this.$scope.$on('highlighting', (event, msg) => {
+        this.$rootScope.$on('highlighting', (event, msg) => {
             if(msg.index === -1){
                 this.isSelectedSong = null;
             }
@@ -69,5 +69,5 @@ export default class listCtrl {
     }
 }
 
-listCtrl.$inject = ['$scope', 'initList', 'Player', 'List'];
+listCtrl.$inject = ['$rootScope', 'initList', 'Player', 'List'];
 

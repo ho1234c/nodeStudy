@@ -32,7 +32,7 @@ export default class searchAddCtrl {
         this.List.listForm.makerId = this.Session.user.id;
         this.List.create(this.List.listForm)
             .then(res => {
-                console.log(res);
+                console.log(res.status);
             });
     }
 

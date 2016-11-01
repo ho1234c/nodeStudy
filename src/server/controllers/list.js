@@ -33,7 +33,7 @@ export default {
         data.songInfo = JSON.stringify(data.songInfo);
         db.List.create(data)
             .then(result => {
-                console.log(result);
+                res.status(200).json(result);
             })
 
     },

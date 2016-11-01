@@ -18,8 +18,9 @@ db.sequelize.sync()
 const app = express();
 const route = configExpress(app);
 
-routeIndex(route);
+
 routeList(route);
 routeUser(route);
+routeIndex(route);
 
 export default app;

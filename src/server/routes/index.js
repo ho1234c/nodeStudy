@@ -9,4 +9,7 @@ export default router => {
 
     router.route('/search/:word')
         .get(index.search);
+
+    router.route('/*')
+        .get(index.render);
 };

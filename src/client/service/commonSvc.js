@@ -1,5 +1,6 @@
 export class Session {
-    constructor($http) {
+    constructor($http, $q) {
+        angular.extend(this, {$q});
         this.guest = { id: null, name: 'Guest', email: '@', list: [] };
         this.isLogin = false;
         this.user = {};
@@ -26,4 +27,4 @@ export class Session {
         this.user = this.guest;
     }
 }
-Session.$inject = ['$http'];
+Session.$inject = ['$http', '$q'];

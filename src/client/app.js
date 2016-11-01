@@ -6,6 +6,7 @@ import 'angular-resource';
 import 'angular-material';
 import 'angular-utils-pagination';
 
+import mainCtrl         from './controllers/mainCtrl';
 import listCtrl         from './controllers/listCtrl';
 import idBoxCtrl        from './controllers/idBoxCtrl';
 import searchAddCtrl    from './controllers/searchAddCtrl';
@@ -22,43 +23,58 @@ import './css/style.scss';
 
 angular
     .module('withSong', [ 'ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination', 'ngSanitize' ])
-    .config($stateProvider => {
+    .config(($stateProvider, $locationProvider) => {
         $stateProvider
             .state('main', {
                 abstract: true,
                 views:{
                     main: {
-                        url: "",
-                        templateUrl: '/partials/main.html'
+                        url: '',
+                        templateUrl: '/partials/main.html',
+                        controller: 'mainCtrl',
+                        controllerAs: 'vm'
                     },
                     idBox: {
-                        url: "",
+                        url: '',
                         templateUrl: '/partials/id-box.html'
                     }
-                }
+                },
             })
             .state('main.music-list', {
-                url: "",
+                url: '/',
                 templateUrl: '/partials/main.music-list.html',
-                controller: "listCtrl",
-                controllerAs : "vm",
+                controller: 'listCtrl',
+                controllerAs : 'vm',
                 resolve: {
-                    initList: ($resource) => {
+                    initList: $resource => {
                         return $resource('/load/list').get().$promise;
                     }
                 }
             })
             .state('main.search-add', {
-                url: "",
+                url: '/',
                 templateUrl: '/partials/main.search-add.html',
-                controller: "searchAddCtrl",
-                controllerAs : "vm"
+                controller: 'searchAddCtrl',
+                controllerAs : 'vm',
+                resolve: {
+                    isLogin: (Session, $q)=> {
+                        const q = $q.defer();
+                        if(Session.isLogin){
+                            q.resolve();
+                        }else{
+                            q.reject();
+                        }
+                        return q.promise;
+                    }
+                }
             })
             .state('sign-up', {
                 url: '/sign-up',
                 templateUrl: '/partials/sign-up.html',
                 controller: 'userCtrl'
             });
+
+        $locationProvider.html5Mode(true);
     })
     .config($mdThemingProvider => {
         $mdThemingProvider.theme('default')
@@ -70,6 +86,7 @@ angular
     .service('Player', playerSvc)
     .service('Session', common.Session)
     .service('Search', searchSvc)
+    .controller('mainCtrl', mainCtrl)
     .controller('listCtrl', listCtrl)
     .controller('idBoxCtrl', idBoxCtrl)
     .controller('searchAddCtrl', searchAddCtrl)
