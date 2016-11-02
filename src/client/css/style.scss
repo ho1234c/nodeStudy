@@ -41,6 +41,17 @@ md-toast.md-success-toast-theme {
       padding-top: 50px;
 
       #left-list{
+        #order-wrap{
+          position: fixed;
+          width: 490px;
+          z-index: 10;
+          background-color: white;
+        }
+
+        #music-list-wrap{
+          padding-top: 48px;
+        }
+
         .list-component{
           height: 115px;
 
@@ -67,15 +78,15 @@ md-toast.md-success-toast-theme {
           position: fixed;
           width: 490px;
           z-index: 10;
-          height: 42px;
+          height: 48px;
           background-color: white;
 
           #search-input{
             width: 490px;
           }
 
-          md-input-container{
-            margin: 10px 0;
+          input{
+            padding-left: 10px;
           }
 
           #search-button{

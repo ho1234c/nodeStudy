@@ -43,9 +43,9 @@
                         <label>제목을 입력해 주세요</label>
                         <input ng-model="vm.List.listForm.name" md-maxlength="20">
                     </md-input-container>
-                    <div id="info-text" layout="column">
-                        <div layout="row" layout-align="start center" flex-grow="1">{{ vm.List.createdList.length }}곡</div>
-                        <div layout="row" layout-align="start center" flex-grow="1">{{ vm.date | date:'yyyy. MM. dd'}}</div>
+                    <div id="info-text" layout="row">
+                        <div flex="50" layout="row" layout-align="start center">{{ vm.List.createdList.length }}곡</div>
+                        <div flex="50" layout="row" layout-align="start center">{{ vm.date | date:'yyyy. MM. dd'}}</div>
                     </div>
 
                 </div>

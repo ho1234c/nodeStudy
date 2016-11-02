@@ -1,6 +1,6 @@
 export default class idBoxCtrl {
-    constructor($scope, Player, User, Session, List, $state) {
-        angular.extend(this, {$scope, Player, User, Session, List, $state});
+    constructor($scope, Player, User, Session, List, Search, $state) {
+        angular.extend(this, {$scope, Player, User, Session, List, Search, $state});
 
         this.isSelectedList = null;
         this.isSelectedSong = null;
@@ -64,11 +64,11 @@ export default class idBoxCtrl {
                 this.Player.playlist = [];
                 this.List.listForm = {};
                 this.List.createdList = [];
-                this.List.musicList = [];
+                this.Search.searchArray = [];
 
                 this.$state.go('main.music-list');
             });
     }
 }
 
-idBoxCtrl.$inject = ['$scope', 'Player', 'User', 'Session', 'List', '$state'];
+idBoxCtrl.$inject = ['$scope', 'Player', 'User', 'Session', 'List', 'Search', '$state'];

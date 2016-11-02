@@ -1,29 +1,37 @@
 <div id="content-left">
     <div id="left-list">
-        <md-list layout="column">
-            <md-list-item ng-repeat="item in vm.Player.musicList track by $index"
-                          ng-click="vm.selectList(this.item.id, $index)"
-                          ng-class="{ isSelected: vm.isSelectedList == $index }">
-                <div class="md-list-item-text list-component" layout="row" flex="100">
-                    <!--todo: list thumbnail image -->
-                    <div class="list-img" layout="row" layout-align="center center" flex="30">
-                        <img ng-src="https://i.ytimg.com/vi/wZKXgZ1rTqY/default.jpg"/>
-                    </div>
-                    <div class="list-info" layout="row" layout-align="start center" flex="50">
-                        <div class="info-wrapper" layout="column">
-                            <div class="info-name">{{ item.name }} </div>
-                            <div class="info-nickname">{{ item.User.nickname }}</div>
-                            <div class="info-createAt">{{ item.createdAt | date }}</div>
+        <div id="order-wrap">
+            <md-tabs md-selected="a"  md-border-bottom md-autoselect >
+                <md-tab label="Date"></md-tab>
+                <md-tab label="Like"></md-tab>
+            </md-tabs>
+        </div>
+        <div id="music-list-wrap">
+            <md-list layout="column">
+                <md-list-item ng-repeat="item in vm.Player.musicList track by $index"
+                              ng-click="vm.selectList(this.item.id, $index)"
+                              ng-class="{ isSelected: vm.isSelectedList == $index }">
+                    <div class="md-list-item-text list-component" layout="row" flex="100">
+                        <!--todo: list thumbnail image -->
+                        <div class="list-img" layout="row" layout-align="center center" flex="30">
+                            <img ng-src="https://i.ytimg.com/vi/wZKXgZ1rTqY/default.jpg"/>
+                        </div>
+                        <div class="list-info" layout="row" layout-align="start center" flex="50">
+                            <div class="info-wrapper" layout="column">
+                                <div class="info-name">{{ item.name }} </div>
+                                <div class="info-nickname">{{ item.User.nickname }}</div>
+                                <div class="info-createAt">{{ item.createdAt | date }}</div>
+                            </div>
+                        </div>
+                        <div class="list-icon" layout="row" layout-align="center center" flex="20">
+                            <md-button class="md-hue-2" ng-click="vm.listenList(this.item.id)">듣기</md-button>
                         </div>
                     </div>
-                    <div class="list-icon" layout="row" layout-align="center center" flex="20">
-                        <md-button class="md-hue-2" ng-click="vm.listenList(this.item.id)">듣기</md-button>
-                    </div>
-                </div>
-                <md-divider></md-divider>
-            </md-list-item>
-        </md-list>
-        <div layout="row" layout-align="center center"><md-button class="watch-more" ng-click="vm.watchMore()">더보기</md-button></div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </md-list>
+            <div layout="row" layout-align="center center"><md-button class="watch-more" ng-click="vm.watchMore()">더보기</md-button></div>
+        </div>
     </div>
     <!--<div id="search-bar"></div>-->
 </div>
