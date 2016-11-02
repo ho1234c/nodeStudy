@@ -2,8 +2,10 @@
     <div id="left-search" layout="column">
         <div id="search-input-wrap">
             <div id="search-input" layout="row">
-                <input type="text" ng-model="vm.Search.searchWord" flex="90">
-                <div id="search-button" flex="10" ng-click="vm.search()" layout="row" layout-align="center center">
+                <md-input-container id="input-container" md-no-float>
+                    <input ng-model="vm.Search.searchWord" placeholder="검색어를 입력해주세요">
+                </md-input-container>
+                <div id="search-button" ng-click="vm.search()" layout="row" layout-align="center center">
                     <img src="/icon/search.png"/>
                 </div>
             </div>
@@ -32,18 +34,28 @@
     </div>
 </div>
 <div id="content-right">
-    <div id="right-create" layout="column">
-        <div id="create-form" layout="column">
+    <div id="right-create" layout="column" ng-if="vm.List.createdList.length">
+        <div id="create-form" layout="column" flex="noshrink">
             <div id="header" layout="row">
                 <div id="thumbnail" layout-align="center center" layout="row">thumnail</div>
                 <div id="info" layout="column">
-                    <input type="text" ng-model="vm.List.listForm.name" placeholder="제목을 입력해 주세요">
-                    <p>info</p>
-                    <p>info</p>
+                    <md-input-container class="md-block">
+                        <label>제목을 입력해 주세요</label>
+                        <input ng-model="vm.List.listForm.name" md-maxlength="20">
+                    </md-input-container>
+                    <div id="info-text" layout="column">
+                        <div layout="row" layout-align="start center" flex-grow="1">{{ vm.List.createdList.length }}곡</div>
+                        <div layout="row" layout-align="start center" flex-grow="1">{{ vm.date | date:'yyyy. MM. dd'}}</div>
+                    </div>
+
                 </div>
             </div>
+
             <div id="content">
-                <textarea ng-model="vm.List.listForm.detail" placeholder="리스트에 대한 소개를 입력해 주세요"></textarea>
+                <md-input-container class="md-block">
+                    <label>리스트에 대한 소개를 입력해 주세요</label>
+                    <textarea ng-model="vm.List.listForm.detail" md-maxlength="50" rows="2" md-select-on-focus></textarea>
+                </md-input-container>
             </div>
         </div>
         <div id="create-list">
@@ -51,7 +63,7 @@
                 <md-list layout="column">
                     <md-list-item dir-paginate="item in vm.List.createdList | itemsPerPage: vm.List.pageNum: 'createdList' track by $index"
                                   current-page="vm.List.currentPage"
-                                  ng-click="null"
+                                  ng-click="vm.playVideo(item.videoId)"
                                   ng-class="{ isSelected: vm.isSelectedSong == $index }"
                                   pagination-id="createdList">
                         <div class="md-list-item-text song-component" layout="row" layout-align="center center" flex="100">

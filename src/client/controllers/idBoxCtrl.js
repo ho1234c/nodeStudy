@@ -59,7 +59,13 @@ export default class idBoxCtrl {
         this.User.logout()
             .then(result => {
                 this.Session.destroy();
+
+                //init object related to create list
                 this.Player.playlist = [];
+                this.List.listForm = {};
+                this.List.createdList = [];
+                this.List.musicList = [];
+
                 this.$state.go('main.music-list');
             });
     }

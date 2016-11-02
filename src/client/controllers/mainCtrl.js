@@ -2,9 +2,8 @@ export default class mainCtrl {
     constructor(Session, $timeout, $scope, $rootScope, $mdToast) {
         angular.extend(this, { Session, $timeout, $scope, $rootScope, $mdToast });
 
-        // ui-router의 상태 변화에 따라서 md-tab의 상태를 변화시키기위함
+        // for binding ui-router state to md-tabs
         $rootScope.$on('$stateChangeStart', (event, toState) => {
-            console.log(toState);
             if(!this.Session.isLogin){
                 if(toState.name == 'main.search-add'){
                     $mdToast.show(
@@ -17,10 +16,10 @@ export default class mainCtrl {
                         .then(() => {
                             this.$scope.selectedIndex = 0;
                         });
-                }else{
+                }
+                else{
                     this.$scope.selectedIndex = 0;
                 }
-
             }
         });
     }

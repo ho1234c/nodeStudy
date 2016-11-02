@@ -1,6 +1,8 @@
 export default class searchAddCtrl {
     constructor(Search, Player, List, Session) {
         angular.extend(this, {Search, Player, List, Session});
+        this.date = new Date();
+
     }
     search(){
         this.Search.searchArray = [];
