@@ -28,7 +28,6 @@ export default class PlayerSvc {
 
         this.$rootScope.$on('videoEnd', () => {
             this._pageControl(this.status.listIndex, this.status.listName); // increment video index and change current page into next page.
-
             let context = this[this.status.listName];
             this.videoid = context[this.status.videoIndex].videoId;
 

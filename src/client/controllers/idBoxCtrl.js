@@ -62,8 +62,7 @@ export default class idBoxCtrl {
 
                 //init object related to create list
                 this.Player.playlist = [];
-                this.List.listForm = {};
-                this.List.createdList = [];
+                this.List.initForm();
                 this.Search.searchArray = [];
 
                 this.$state.go('main.music-list');

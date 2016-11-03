@@ -1,6 +1,5 @@
 export class Session {
-    constructor($http, $q) {
-        angular.extend(this, {$q});
+    constructor($http) {
         this.guest = { id: null, name: 'Guest', email: '@', list: [] };
         this.isLogin = false;
         this.user = {};
@@ -27,4 +26,49 @@ export class Session {
         this.user = this.guest;
     }
 }
-Session.$inject = ['$http', '$q'];
+Session.$inject = ['$http'];
+
+export class Toast {
+    constructor($mdToast, $q){
+        angular.extend(this, {$mdToast, $q});
+
+        this.simple = this.$mdToast.simple()
+            .position('top')
+            .hideDelay(700);
+    }
+    success(message){
+        const q = this.$q.defer();
+
+        this.$mdToast.show(
+            this.simple
+                .textContent(message)
+                .theme("success-toast")
+                .parent(angular.element(document.querySelector('#id-box'))))
+            .then(() => {
+                q.resolve();
+            })
+            .catch(() => {
+                q.reject();
+            });
+        return q.promise;
+    }
+
+    fail(message){
+        const q = this.$q.defer();
+
+        this.$mdToast.show(
+            this.simple
+                .textContent(message)
+                .theme("fail-toast")
+                .parent(angular.element(document.querySelector('#id-box'))))
+            .then(() => {
+                q.resolve();
+            })
+            .catch(() => {
+                q.reject();
+            });
+        return q.promise;
+    }
+}
+
+Toast.$inject = ['$mdToast', '$q'];

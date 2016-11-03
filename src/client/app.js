@@ -5,6 +5,7 @@ import 'angular-sanitize';
 import 'angular-resource';
 import 'angular-material';
 import 'angular-utils-pagination';
+import 'angular-messages';
 
 import mainCtrl         from './controllers/mainCtrl';
 import listCtrl         from './controllers/listCtrl';
@@ -22,7 +23,7 @@ import './css/angular-material.scss';
 import './css/style.scss';
 
 angular
-    .module('withSong', [ 'ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination', 'ngSanitize' ])
+    .module('withSong', [ 'ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination', 'ngSanitize', 'ngMessages' ])
     .config(($stateProvider, $locationProvider) => {
         $stateProvider
             .state('main', {
@@ -85,6 +86,7 @@ angular
     .service('User', userSvc)
     .service('Player', playerSvc)
     .service('Session', common.Session)
+    .service('Toast', common.Toast)
     .service('Search', searchSvc)
     .controller('mainCtrl', mainCtrl)
     .controller('listCtrl', listCtrl)

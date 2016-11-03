@@ -26,6 +26,11 @@ body{
 }
 
 md-toast.md-success-toast-theme {
+   .md-toast-content {
+     background-color: rgb(74, 87, 238);
+   }
+}
+md-toast.md-fail-toast-theme {
   .md-toast-content {
     background-color: rgb(255,171,64);
   }

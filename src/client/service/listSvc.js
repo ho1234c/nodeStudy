@@ -7,7 +7,6 @@ export default class List {
         });
 
         this.musicList = [];
-        this.selectedIndex = null;
 
         // created list config
         this.listForm = {};
@@ -45,6 +44,30 @@ export default class List {
             q.reject(err);
         });
         return q.promise;
+    }
+    validation(list){
+        let message;
+
+        if(list.$valid){
+            message = 'valid';
+        }
+        else if('required' in list.name.$error){
+            message = '이름을 입력해 주세요';
+        }
+        else if('md-maxlength' in list.name.$error){
+            message = '이름이 너무 깁니다';
+        }
+        else if('required' in list.content.$error){
+            message = '소개를 입력해 주세요';
+        }
+        else if('md-maxlength' in list.content.$error){
+            message = '소개가 너무 깁니다.';
+        }
+        return message;
+    }
+    initForm(){
+        this.listForm = {};
+        this.createdList = [];
     }
 }
 
