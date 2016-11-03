@@ -7,6 +7,7 @@ export default class List {
         });
 
         this.musicList = [];
+        this.order = 0; // md-selected directive가 tab의 index를 가져오게 되어있음. 0: createdAt, 1: like
 
         // created list config
         this.listForm = {};
@@ -16,8 +17,22 @@ export default class List {
     }
     loadList(count){
         const q = this.$q.defer();
+        let order;
+
+        switch(this.order){
+            case 0:
+                order = 'createdAt';
+                break;
+            case 1:
+                order = 'like';
+                break;
+            default:
+                order = 'createdAt';
+        }
+
         this.listRequest.get({
-            count: count
+            count: count,
+            order: order
         }, result => {
             q.resolve(result);
         }, err => {

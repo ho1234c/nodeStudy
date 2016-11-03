@@ -4,12 +4,15 @@ export default {
     //query.count
     load(req, res){
         const count = req.query.count || 0;
+        const order = req.query.order || 'createdAt';
+
         db.List.findAll({
-                attributes: ['id', 'name', 'detail', 'like', 'createdAt'],
-                offset: count,
-                limit: 10,
-                include: {model: db.User, attributes: ['email', 'nickname']}
-            })
+            attributes: ['id', 'name', 'detail', 'like', 'createdAt'],
+            order: [[order, 'DESC']],
+            offset: count,
+            limit: 10,
+            include: {model: db.User, attributes: ['email', 'nickname']},
+        })
             .then(data => {
                 res.json({
                     data: data
@@ -19,9 +22,9 @@ export default {
     //params.id
     listDetail(req, res){
         db.List.findOne({
-                where: {id: req.params.id},
-                attributes: ['songInfo']
-            })
+            where: {id: req.params.id},
+            attributes: ['songInfo']
+        })
             .then(data => {
                 res.json({
                     data: data

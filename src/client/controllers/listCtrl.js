@@ -3,8 +3,8 @@ export default class listCtrl {
         angular.extend(this, {$rootScope, initList, Player, List});
 
         // only first time
-        if(!this.Player.musicList){
-            this.Player.musicList = initList.data;
+        if(this.List.musicList.length === 0){
+            this.List.musicList = initList.data;
         }
 
         // for highlighting control
@@ -25,11 +25,11 @@ export default class listCtrl {
             }
         });
     }
-    watchMore(){
-        this.List.loadList(this.Player.musicList.length)
+    watchMore(order){
+        this.List.loadList(this.List.musicList.length, order)
             .then(result => {
                 for(const obj of result.data){
-                    this.Player.musicList.push(obj);
+                    this.List.musicList.push(obj);
                 }
             });
     }
@@ -67,6 +67,16 @@ export default class listCtrl {
                 }
             });
     }
+    changeListOrder(){
+        this.List.musicList = [];
+        this.List.loadList()
+            .then(result => {
+                for(const obj of result.data){
+                    this.List.musicList.push(obj);
+                }
+            });
+    }
+
 }
 
 listCtrl.$inject = ['$rootScope', 'initList', 'Player', 'List'];

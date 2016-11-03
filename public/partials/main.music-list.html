@@ -1,14 +1,14 @@
 <div id="content-left">
     <div id="left-list">
         <div id="order-wrap">
-            <md-tabs md-selected="a"  md-border-bottom md-autoselect >
+            <md-tabs md-selected="vm.List.order" ng-click="vm.changeListOrder()" md-border-bottom md-autoselect>
                 <md-tab label="Date"></md-tab>
                 <md-tab label="Like"></md-tab>
             </md-tabs>
         </div>
         <div id="music-list-wrap">
             <md-list layout="column">
-                <md-list-item ng-repeat="item in vm.Player.musicList track by $index"
+                <md-list-item ng-repeat="item in vm.List.musicList track by $index"
                               ng-click="vm.selectList(this.item.id, $index)"
                               ng-class="{ isSelected: vm.isSelectedList == $index }">
                     <div class="md-list-item-text list-component" layout="row" flex="100">
