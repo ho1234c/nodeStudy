@@ -26,9 +26,9 @@ export default {
                 if (err) {
                     return next(err);
                 }
-                    return res.json({user: userData});
-                });
-            })(req, res, next)
+                return res.json({user: userData});
+            });
+        })(req, res, next)
     },
 
     logout(req, res){

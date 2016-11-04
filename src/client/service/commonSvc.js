@@ -1,3 +1,27 @@
+import nprogress from 'nprogress';
+
+export class httpInterceptors {
+    constructor($q){
+        angular.extend(this, {$q});
+    }
+    request(req){
+        nprogress.start();
+        return req || this.$q.when(req);
+    }
+    requestError(){
+        console.log('req err');
+    }
+    response(res){
+        nprogress.done();
+        return res || this.$q.when(res);
+    }
+    responseError(){
+        console.log('res err');
+        nprogress.done();
+    }
+}
+httpInterceptors.$inject = ['$q'];
+
 export class Session {
     constructor($http) {
         this.guest = { id: null, name: 'Guest', email: '@', list: [] };
