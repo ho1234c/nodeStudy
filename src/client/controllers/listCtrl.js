@@ -69,6 +69,10 @@ export default class listCtrl {
     }
     changeListOrder(){
         this.List.musicList = [];
+        this.Player.listDetail = [];
+        this.isSelectedList = null;
+        this.isSelectedSong = null;
+
         this.List.loadList()
             .then(result => {
                 for(const obj of result.data){

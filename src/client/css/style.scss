@@ -30,10 +30,24 @@ md-toast.md-success-toast-theme {
      background-color: rgb(74, 87, 238);
    }
 }
+
 md-toast.md-fail-toast-theme {
   .md-toast-content {
     background-color: rgb(255,171,64);
   }
+}
+
+#wrap{
+  display: flex;
+  justify-content: center;
+}
+
+#main-wrap{
+  flex-basis: 940px;
+}
+
+#id-box-wrap{
+  flex-basis: 240px;
 }
 
 #content-wrapper{
