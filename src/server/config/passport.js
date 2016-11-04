@@ -15,14 +15,14 @@ export default function(app){
             db.User.findOne({where: {email: email}, include: {model: db.List, as: 'listFavor', attributes: ['id', 'name']}})
                 .then(user => {
                     if(!user){
-                        return done(null, false, {message: 'not found'})
+                        return done(null, false, {message: 'Can not found Email'})
                     }
                     user.authenticate(password, (err, isMatch) => {
                         if(err){
                             return done(err);
                         }
                         if(!isMatch){
-                            return done(null, false, {message: 'Invalid'});
+                            return done(null, false, {message: 'Password incorrect'});
                         }
                         return done(null, user);
 

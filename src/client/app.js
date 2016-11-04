@@ -32,7 +32,7 @@ angular
     .service('Session', common.Session)
     .service('Toast', common.Toast)
     .service('Search', searchSvc)
-    .service('httpInterceptors', common.httpInterceptors)
+    .factory('httpInterceptors', common.httpInterceptors)
     .controller('mainCtrl', mainCtrl)
     .controller('listCtrl', listCtrl)
     .controller('idBoxCtrl', idBoxCtrl)

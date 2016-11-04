@@ -1,6 +1,6 @@
 export default class idBoxCtrl {
-    constructor($scope, Player, User, Session, List, Search, $state) {
-        angular.extend(this, {$scope, Player, User, Session, List, Search, $state});
+    constructor(Player, User, Session, List, Search, Toast, $scope, $state) {
+        angular.extend(this, {Player, User, Session, List, Search, Toast, $scope, $state});
 
         this.isSelectedList = null;
         this.isSelectedSong = null;
@@ -51,8 +51,12 @@ export default class idBoxCtrl {
     login(){
         this.User.login(this.user)
             .then(data => {
+                this.Toast.success('Welcome!');
                 this.Session.set(data);
                 this.user = {};
+            })
+            .catch(err => {
+                this.Toast.fail(err);
             });
     }
     logout(){
@@ -70,4 +74,4 @@ export default class idBoxCtrl {
     }
 }
 
-idBoxCtrl.$inject = ['$scope', 'Player', 'User', 'Session', 'List', 'Search', '$state'];
+idBoxCtrl.$inject = ['Player', 'User', 'Session', 'List', 'Search', 'Toast', '$scope', '$state'];
