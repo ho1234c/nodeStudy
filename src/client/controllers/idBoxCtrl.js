@@ -2,28 +2,28 @@ export default class idBoxCtrl {
     constructor(Player, User, Session, List, Search, Toast, $scope, $state) {
         angular.extend(this, {Player, User, Session, List, Search, Toast, $scope, $state});
 
-        this.isSelectedList = null;
-        this.isSelectedSong = null;
-
+        this.selectedList = null;
+        this.selectedSong = null;
         this.listStart = 0;
         this.listEnd = 4;
+        this.isShowForm = false;
 
         this.$scope.$on('highlighting', (event, msg) => {
             if(msg.index == -1){
-                this.isSelectedSong = null;
+                this.selectedSong = null;
             }
             else{
                 if(msg.listname == 'playlist'){
-                    this.isSelectedSong = msg.index;
+                    this.selectedSong = msg.index;
                 }
                 else {
-                    this.isSelectedSong = null;
+                    this.selectedSong = null;
                 }
             }
         });
     }
     selectList(id){
-        this.isSelectedSong = null;
+        this.selectedSong = null;
         this.Player.playlist = [];
         this.Player.status.userListId = id;
         this.Player.highlighting(this.Player.status.listIndex, this.Player.status.listName);
@@ -37,7 +37,7 @@ export default class idBoxCtrl {
             });
     }
     highlighting(index){
-        this.isSelectedList = index;
+        this.selectedList = index;
     }
     listControl(dir){
         if(dir == 'up' && this.listStart > 0){
@@ -49,6 +49,8 @@ export default class idBoxCtrl {
         }
     }
     login(){
+        this.isShowForm = false;
+
         this.User.login(this.user)
             .then(data => {
                 this.Toast.success('Welcome!');

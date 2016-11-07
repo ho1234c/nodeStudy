@@ -37,7 +37,7 @@
     <form id="right-create" name="list" layout="column" ng-if="vm.List.createdList.length">
             <div id="create-form" layout="column" flex="noshrink">
                 <div id="header" layout="row">
-                    <div id="thumbnail" layout-align="center center" layout="row">thumnail</div>
+                    <div id="thumbnail" layout-align="center center" layout="row">thumbnail</div>
                     <div id="info" layout="column">
                         <md-input-container class="md-block">
                             <label>제목을 입력해 주세요</label>
@@ -45,7 +45,7 @@
                         </md-input-container>
                         <div id="info-text" layout="row">
                             <div flex="50" layout="row" layout-align="start center">{{ vm.List.createdList.length }}곡</div>
-                            <div flex="50" layout="row" layout-align="start center">{{ vm.date | date:'yyyy. MM. dd'}}</div>
+                            <div flex="50" layout="row" layout-align="end center">{{ vm.date | date:'yyyy. MM. dd'}}</div>
                         </div>
 
                     </div>

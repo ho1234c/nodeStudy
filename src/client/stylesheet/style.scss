@@ -104,9 +104,9 @@ body{
 }
 
 md-toast.md-success-toast-theme {
-   .md-toast-content {
-     background-color: rgb(74, 87, 238);
-   }
+  .md-toast-content {
+    background-color: rgb(74, 87, 238);
+  }
 }
 
 md-toast.md-fail-toast-theme {
@@ -364,29 +364,36 @@ md-toast.md-fail-toast-theme {
   border-left: 1px solid rgba(0,0,0,0.12);
   background-color: rgb(250,250,250);
 
+  form{
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  }
+
   #login-input-area{
     width: 190px;
-    border: 1px solid rgb(204,204,204);;
+    border: 1px solid rgb(204,204,204);
+    margin: 10px;
+
+    input{
+      padding: 0 7px;
+      border: 0;
+      width: 100%;
+      height: 30px;
+    }
+
+    input[name="password"]{
+      border-top: 1px solid rgb(229,229,229);
+    }
   }
 
   #signUp-btn{
     font-size: 12px;
     margin-left: auto;
     padding: 3px;
+    cursor: pointer;
+    text-decoration: underline;
   }
 
-  input{
-    padding: 0 7px;
-    border: 0;
-    width: 100%;
-    height: 30px;
-  }
-
-  input[name="password"]{
-    border-top: 1px solid rgb(229,229,229);;
-  }
-
-  #submit-btn{
+  #login-submit-btn{
     background-color: $primary-color;
     width: 190px;
     margin-top: 20px;
@@ -472,6 +479,9 @@ md-toast.md-fail-toast-theme {
     }
   }
 
+  #signUp-submit-btn{
+    @extend #login-submit-btn
+  }
 
   ul{
     margin: 0;

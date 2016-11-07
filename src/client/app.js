@@ -1,5 +1,4 @@
 import angular      from 'angular';
-import nprogress    from 'nprogress';
 
 import 'angular-ui-router';
 import 'angular-sanitize';
@@ -8,15 +7,16 @@ import 'angular-material';
 import 'angular-utils-pagination';
 import 'angular-messages';
 
-import mainCtrl         from './controllers/mainCtrl';
-import listCtrl         from './controllers/listCtrl';
-import idBoxCtrl        from './controllers/idBoxCtrl';
-import searchAddCtrl    from './controllers/searchAddCtrl';
 import listSvc          from './service/listSvc';
 import userSvc          from './service/userSvc';
 import playerSvc        from './service/playerSvc';
 import searchSvc        from './service/searchSvc';
 import * as common      from './service/commonSvc';
+import mainCtrl         from './controllers/mainCtrl';
+import listCtrl         from './controllers/listCtrl';
+import idBoxCtrl        from './controllers/idBoxCtrl';
+import searchAddCtrl    from './controllers/searchAddCtrl';
+import signUpCtrl       from './controllers/signUpCtrl';
 import youtube          from './directives/youtube';
 import config           from './config';
 
@@ -37,11 +37,11 @@ angular
     .controller('listCtrl', listCtrl)
     .controller('idBoxCtrl', idBoxCtrl)
     .controller('searchAddCtrl', searchAddCtrl)
+    .controller('signUpCtrl', signUpCtrl)
     .directive('youtube', ['$window', $window => new youtube($window)])
     .config($stateProvider => {
         $stateProvider
             .state('main', {
-                abstract: true,
                 views:{
                     main: {
                         url: '',
@@ -51,7 +51,9 @@ angular
                     },
                     idBox: {
                         url: '',
-                        templateUrl: '/partials/id-box.html'
+                        templateUrl: '/partials/id-box.html',
+                        controller: 'idBoxCtrl',
+                        controllerAs: 'vm'
                     }
                 },
             })
@@ -83,10 +85,13 @@ angular
                     }
                 }
             })
-            .state('sign-up', {
-                url: '/sign-up',
-                templateUrl: '/partials/sign-up.html',
-                controller: 'userCtrl'
+            .state('idBox.main', {
+                url: '',
+                templateUrl: '/partials/id-box.html',
+                controller: 'idBoxCtrl',
+            })
+            .state('idBox.signUp', {
+
             });
     })
     .config(config);

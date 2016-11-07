@@ -7,7 +7,7 @@ export default class List {
         });
 
         this.musicList = [];
-        this.order = 0; // md-selected directive가 tab의 index를 가져오게 되어있음. 0: createdAt, 1: like
+        this.order = 0; // md-selected directive가 tab의 index를 가져옴. 0: createdAt, 1: like
 
         // created list config
         this.listForm = {};

@@ -10,7 +10,7 @@
             <md-list layout="column">
                 <md-list-item ng-repeat="item in vm.List.musicList track by $index"
                               ng-click="vm.selectList(this.item.id, $index)"
-                              ng-class="{ isSelected: vm.isSelectedList == $index }">
+                              ng-class="{ isSelected: vm.selectedList == $index }">
                     <div class="md-list-item-text list-component" layout="row" flex="100">
                         <!--todo: list thumbnail image -->
                         <div class="list-img" layout="row" layout-align="center center" flex="30">
@@ -23,8 +23,8 @@
                                 <div class="info-createAt">{{ item.createdAt | date }}</div>
                             </div>
                         </div>
-                        <div class="list-icon" layout="row" layout-align="center center" flex="20">
-                            <md-button class="md-hue-2" ng-click="vm.listenList(this.item.id)">듣기</md-button>
+                        <div class="list-icon" layout="column" layout-align="center center" flex="20">
+                            <md-button class="md-hue-2">하트</md-button>
                         </div>
                     </div>
                     <md-divider></md-divider>
@@ -42,7 +42,7 @@
                 <md-list-item dir-paginate="item in vm.Player.listDetail | itemsPerPage: vm.Player.listDetailPageNum"
                               current-page="vm.Player.listDetailCurrentPage"
                               ng-click="vm.Player.playVideo($index, 'listDetail'); vm.Player.highlighting($index, 'listDetail')"
-                              ng-class="{ isSelected: vm.isSelectedSong == $index }"
+                              ng-class="{ isSelected: vm.selectedSong == $index }"
                               pagination-id="listDetail">
                     <div class="md-list-item-text song-component" layout="row" layout-align="center center" flex="100">
                         <div class="song-img" layout="row" flex="20">

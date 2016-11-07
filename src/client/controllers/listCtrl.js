@@ -8,19 +8,19 @@ export default class listCtrl {
         }
 
         // for highlighting control
-        this.isSelectedList = this.List.selectedIndex;
-        this.isSelectedSong = this.Player.status.listName == 'listDetail' ? this.Player.status.listIndex : null;
+        this.selectedList = this.List.selectedIndex;
+        this.selectedSong = this.Player.status.listName == 'listDetail' ? this.Player.status.listIndex : null;
 
         this.$rootScope.$on('highlighting', (event, msg) => {
             if(msg.index === -1){
-                this.isSelectedSong = null;
+                this.selectedSong = null;
             }
             else{
                 if(msg.listname == 'listDetail'){
-                    this.isSelectedSong = msg.index;
+                    this.selectedSong = msg.index;
                 }
                 else {
-                    this.isSelectedSong = null;
+                    this.selectedSong = null;
                 }
             }
         });
@@ -34,7 +34,7 @@ export default class listCtrl {
             });
     }
     selectList(id, index){
-        this.isSelectedSong = null;
+        this.selectedSong = null;
 
         // init status
         this.Player.listDetail = [];
@@ -43,7 +43,7 @@ export default class listCtrl {
 
         // for highlighting
         this.List.selectedIndex = index;
-        this.isSelectedList = index;
+        this.selectedList = index;
 
         this.Player.highlighting(this.Player.status.listIndex, this.Player.status.listName);
 
@@ -55,23 +55,11 @@ export default class listCtrl {
                 }
             });
     }
-    listenList(id){
-        this.Player.playlistCurrentPage = 1;
-        this.Player.playlist = [];
-
-        this.List.loadSong(id)
-            .then(result => {
-                const songInfo = JSON.parse(result.data.songInfo);
-                for(const obj of songInfo){
-                    this.Player.playlist.push(obj);
-                }
-            });
-    }
     changeListOrder(){
         this.List.musicList = [];
         this.Player.listDetail = [];
-        this.isSelectedList = null;
-        this.isSelectedSong = null;
+        this.selectedList = null;
+        this.selectedSong = null;
 
         this.List.loadList()
             .then(result => {
