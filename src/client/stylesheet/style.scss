@@ -465,6 +465,9 @@ md-toast.md-fail-toast-theme {
       font-size: 12px;
       color: rgb(203,203,203);
     }
+    md-input-container{
+      width: 185px;
+    }
   }
 
   #player-wrap{
@@ -523,5 +526,3 @@ md-toast.md-fail-toast-theme {
 *:focus {
   outline: none;
 }
-
-

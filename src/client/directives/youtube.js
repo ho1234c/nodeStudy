@@ -27,6 +27,7 @@ export default class Youtube {
                 events: {
                     'onReady': event => {
                         event.target.playVideo();
+                        event.target.setVolume(100);
                     },
                     'onStateChange':  event => {
                         // When finished find the next video.
@@ -39,6 +40,7 @@ export default class Youtube {
                 }
             });
         };
+
         scope.$watch('videoid', (newValue, oldValue) => {
             if (newValue == oldValue) {
                 return;
