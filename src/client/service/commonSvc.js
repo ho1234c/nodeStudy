@@ -28,7 +28,7 @@ export class Session {
         this.isLogin = false;
         this.user = {};
         $http.get('/session')
-            .then((res) => {
+            .then(res => {
                 if(res.data.user){
                     this.set(res.data);
                 }

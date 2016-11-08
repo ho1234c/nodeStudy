@@ -1,11 +1,26 @@
 import passport from 'passport';
+import db from '../models';
 
 export default {
-    create(req, res){
+    create(req, res, next){
+        db.User.create(req.body)
+            .then(() => {
+                passport.authenticate('local', (err, user) => {
+                    const userData = {
+                        id: user.id,
+                        name: user.nickname,
+                        email: user.email,
+                        list: user.listFavor
+                    };
 
-    },
-    read(req, res){
-
+                    req.logIn(userData, err => {
+                        if(err) {
+                            return next(err);
+                        }
+                        return res.json({user: userData});
+                    })
+                })(req, res, next)
+            })
     },
     login(req, res, next){
         passport.authenticate('local', (err, user, info) => {

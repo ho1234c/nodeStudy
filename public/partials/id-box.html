@@ -1,7 +1,7 @@
 <div id="id-box" layout="column">
     <md-content id="id-box-top" ng-if="vm.Session.isLogin" layout="row" layout-align="center center" flex="noshrink">
         <div>{{ vm.Session.user.name }}</div>
-        <div class="logout" ng-click="vm.logout()">로그아웃</div>
+        <div id="logout-btn" ng-click="vm.logout()">로그아웃</div>
     </md-content>
     <md-content id="login-box" ng-if="!vm.Session.isLogin" layout="column" layout-padding>
         <form id="login-form" ng-submit="vm.login()" method="post" layout="column" layout-align="center center">
@@ -16,8 +16,8 @@
     <div id="player-wrap" ng-if="vm.Player.videoid">
         <youtube width="{{ vm.Player.width }}" height="{{ vm.Player.height }}" videoid="{{ vm.Player.videoid }}" class="player"></youtube>
     </div>
-    <div id="id-box-list" ng-if="vm.Session.isLogin" layout="column">
-        <md-button ng-click="vm.listControl('up')">UP</md-button>
+    <md-content id="id-box-list" ng-if="vm.Session.isLogin" layout="column">
+        <md-button id="list-up-btn" ng-click="vm.listControl('up')">UP</md-button>
         <div ng-repeat="item in vm.Session.user.list track by $index"
              ng-if="$index >= vm.listStart && $index <= vm.listEnd" ng-click="vm.selectList(this.item.id); vm.highlighting($index)"
              ng-class="{ isSelected: vm.selectedList == $index }">
@@ -28,9 +28,10 @@
             </div>
             <md-divider></md-divider>
         </div>
-        <md-button ng-click="vm.listControl('down')">DOWN</md-button>
-    </div>
-    <div id="id-box-song-wrap" ng-if="vm.Session.isLogin">
+        <div id="id-box-list-message" ng-if="!vm.Session.user.list.length">하트를 누르면 등록됩니다.</div>
+        <md-button id="list-down-btn" ng-click="vm.listControl('down')">DOWN</md-button>
+    </md-content>
+    <md-content id="id-box-song-wrap" ng-if="vm.Player.playlist.length">
         <md-content id="id-box-song">
             <md-list layout="column">
                 <md-list-item dir-paginate="item in vm.Player.playlist | itemsPerPage: vm.Player.playlistPageNum"
@@ -50,39 +51,40 @@
                 </md-list-item>
             </md-list>
         </md-content>
-        <dir-pagination-controls boundary-links="true"
+        <dir-pagination-controls max-size="5"
                                  template-url="/partials/dirPagination.tpl.html"
                                  pagination-id="playlist"
                                  on-page-change="vm.Player.highlighting(vm.Player.status.listIndex || 0, 'playlist')">
         </dir-pagination-controls>
-    </div>
-        <md-content id="signUp-form" ng-if="vm.isShowForm" layout="column" layout-padding>
-            <form name="signUp" layout="column"layout-align="center center">
-                <md-input-container class="md-block">
-                    <label>Email</label>
-                    <input name="email" ng-model="vm.signUp.email" ng-pattern="/^.+@.+\..+$/" required>
-                    <div ng-messages="signUp.email.$error">
-                        <div ng-message="required">반드시 필요한 항목입니다.</div>
-                        <div ng-message="pattern">유효하지 않은 이메일입니다.</div>
-                    </div>
-                </md-input-container>
-                <md-input-container class="md-block">
-                    <label>Nickname</label>
-                    <input name="nickname" ng-model="vm.signUp.Nickname" minlength="2" maxlength="10" required>
-                    <div ng-messages="signUp.nickname.$error">
-                        <div ng-message="required">반드시 필요한 항목입니다.</div>
-                        <div ng-message-exp="['minlength', 'maxlength']">2자 이상 10자 이하로 설정해주세요.</div>
-                    </div>
-                </md-input-container>
-                <md-input-container class="md-block">
-                    <label>Password</label>
-                    <input name="password" ng-model="vm.signUp.Password" type="password" minlength="8" maxlength="20" required>
-                    <div ng-messages="signUp.password.$error">
-                        <div ng-message="required">반드시 필요한 항목입니다.</div>
-                        <div ng-message-exp="['minlength', 'maxlength']">8자 이상 20자 이하로 설정해주세요.</div>
-                    </div>
-                </md-input-container>
-                <md-button id="signUp-submit-btn" class="md-raised md-primary" type="submit">확인</md-button>
-            </form>
-        </md-content>
+    </md-content>
+    <md-content id="signUp-form" ng-if="vm.isShowForm" layout="column" layout-padding>
+        <div id="signUp-description">회원가입</div>
+        <form name="signUp" layout="column" ng-submit="vm.signUp()" method="post" layout-align="center center">
+            <md-input-container class="md-block">
+                <label>Email</label>
+                <input name="email" ng-model="vm.signUpForm.email" ng-pattern="/^.+@.+\..+$/" required>
+                <div ng-messages="signUp.email.$error">
+                    <div ng-message="required">반드시 필요한 항목입니다.</div>
+                    <div ng-message="pattern">유효하지 않은 이메일입니다.</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Nickname</label>
+                <input name="nickname" ng-model="vm.signUpForm.nickname" minlength="2" maxlength="10" required>
+                <div ng-messages="signUp.nickname.$error">
+                    <div ng-message="required">반드시 필요한 항목입니다.</div>
+                    <div ng-message-exp="['minlength', 'maxlength']">2-10자로 설정해주세요.</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Password</label>
+                <input name="password" ng-model="vm.signUpForm.password" type="password" minlength="8" maxlength="20" required>
+                <div ng-messages="signUp.password.$error">
+                    <div ng-message="required">반드시 필요한 항목입니다.</div>
+                    <div ng-message-exp="['minlength', 'maxlength']">8-20자로 설정해주세요.</div>
+                </div>
+            </md-input-container>
+            <md-button id="signUp-submit-btn" class="md-raised md-primary" ng-submit="vm.signUp()" method="post" type="submit">확인</md-button>
+        </form>
+    </md-content>
 </div>

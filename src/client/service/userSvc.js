@@ -5,8 +5,7 @@ export default class User {
             controller: '@controller',
         }, {
             login: { method: 'POST', params: { controller: 'login' }},
-            logout: { method: 'GET', params: { controller: 'logout' }},
-            create: { method: "POST", params: { controller: 'create' }}
+            logout: { method: 'GET', params: { controller: 'logout' }}
         });
     }
     login({email, password}) {

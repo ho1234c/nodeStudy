@@ -7,6 +7,7 @@ export default class idBoxCtrl {
         this.listStart = 0;
         this.listEnd = 4;
         this.isShowForm = false;
+        this.signUpForm = new User.userRequest();
 
         this.$scope.$on('highlighting', (event, msg) => {
             if(msg.index == -1){
@@ -73,6 +74,14 @@ export default class idBoxCtrl {
 
                 this.$state.go('main.music-list');
             });
+    }
+    signUp(){
+        this.isShowForm = false;
+
+        this.signUpForm.$save(data => {
+            this.Toast.success('가입완료');
+            this.Session.set(data);
+        });
     }
 }
 
