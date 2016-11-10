@@ -1,6 +1,6 @@
 export default class List {
-    constructor($resource, $q) {
-        angular.extend(this, {$q});
+    constructor($resource, $q, Upload) {
+        angular.extend(this, {$q, Upload});
         this.listRequest = $resource('load/list');
         this.songRequest = $resource('load/song/:id', {
             id: '@id'
@@ -53,7 +53,10 @@ export default class List {
     }
     create(data){
         const q = this.$q.defer();
-        this.listRequest.save(data, result => {
+        this.Upload.upload({
+            url: 'load/list',
+            data: data
+        }).then(result => {
             q.resolve(result);
         }, err => {
             q.reject(err);
@@ -86,4 +89,4 @@ export default class List {
     }
 }
 
-List.$inject = ['$resource', '$q'];
+List.$inject = ['$resource', '$q', 'Upload'];

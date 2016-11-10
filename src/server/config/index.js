@@ -4,7 +4,8 @@ const config = {
     port: process.env.PORT || 8000,
     cwd: process.cwd(),
     path: {
-        public: process.cwd() + '/public'
+        public: process.cwd() + '/public',
+        thumbnails: process.cwd() + '/public/thumbnails'
     },
 
 };

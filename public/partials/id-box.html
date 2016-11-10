@@ -17,7 +17,7 @@
         <youtube width="{{ vm.Player.width }}" height="{{ vm.Player.height }}" videoid="{{ vm.Player.videoid }}" class="player"></youtube>
     </div>
     <md-content id="id-box-list" ng-if="vm.Session.isLogin" layout="column">
-        <md-button id="list-up-btn" ng-click="vm.listControl('up')">UP</md-button>
+        <md-button id="list-up-btn" ng-click="vm.listControl('up')">▲</md-button>
         <div ng-repeat="item in vm.Session.user.list track by $index"
              ng-if="$index >= vm.listStart && $index <= vm.listEnd" ng-click="vm.selectList(this.item.id); vm.highlighting($index)"
              ng-class="{ isSelected: vm.selectedList == $index }">
@@ -29,7 +29,7 @@
             <md-divider></md-divider>
         </div>
         <div id="id-box-list-message" ng-if="!vm.Session.user.list.length">하트를 누르면 등록됩니다.</div>
-        <md-button id="list-down-btn" ng-click="vm.listControl('down')">DOWN</md-button>
+        <md-button id="list-down-btn" ng-click="vm.listControl('down')">▼</md-button>
     </md-content>
     <md-content id="id-box-song-wrap" ng-if="vm.Player.playlist.length">
         <md-content id="id-box-song">

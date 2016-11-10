@@ -1,4 +1,8 @@
 import db from '../models';
+import config from '../config';
+import multer from  'multer';
+import crypto from 'crypto';
+import path from 'path';
 
 export default {
     //query.count
@@ -33,12 +37,11 @@ export default {
     },
     createList(req, res){
         let data = req.body;
-        data.songInfo = JSON.stringify(data.songInfo);
+        data.songInfo = JSON.stringify(listData.songInfo);
         db.List.create(data)
             .then(result => {
                 res.status(200).json(result);
             })
-
     },
     //:listId
     like(req, res){
@@ -47,6 +50,19 @@ export default {
     //:listId
     createComment(req, res){
 
-    }
+    },
+
+    //multer setting to image upload
+    multerConfig: multer({ storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, config.path.thumbnails)
+        },
+        filename: (req, file, cb) => {
+            crypto.pseudoRandomBytes(16, (err, raw) => {
+                if (err) return cb(err);
+                cb(null, raw.toString('hex') + path.extname(file.originalname));
+            })
+        }
+    })}).single('thumbnail')
 
 }

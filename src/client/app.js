@@ -6,6 +6,7 @@ import 'angular-resource';
 import 'angular-material';
 import 'angular-utils-pagination';
 import 'angular-messages';
+import 'ng-file-upload';
 
 import listSvc          from './service/listSvc';
 import userSvc          from './service/userSvc';
@@ -25,7 +26,7 @@ import 'angular-material/angular-material.scss';
 import './stylesheet/style.scss';
 
 angular
-    .module('withSong', [ 'ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination', 'ngSanitize', 'ngMessages' ])
+    .module('withSong', [ 'ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination', 'ngSanitize', 'ngMessages', 'ngFileUpload' ])
     .service('List', listSvc)
     .service('User', userSvc)
     .service('Player', playerSvc)

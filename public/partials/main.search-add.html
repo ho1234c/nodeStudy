@@ -34,10 +34,14 @@
     </div>
 </div>
 <div id="content-right">
-    <form id="right-create" name="list" layout="column" ng-if="vm.List.createdList.length">
+    <form id="right-create" name="myList" layout="column" ng-if="vm.List.createdList.length">
             <div id="create-form" layout="column" flex="noshrink">
                 <div id="header" layout="row">
-                    <div id="thumbnail" layout-align="center center" layout="row">thumbnail</div>
+                    <div id="thumbnail" layout="column" layout-align="center center">
+                        <div ngf-select ng-model="vm.List.listForm.thumbnail" id="pic-btn" ngf-max-size="2MB" accept="image/*"></div>
+                        <img ngf-thumbnail="vm.List.listForm.thumbnail" id="image">
+                    </div>
+
                     <div id="info" layout="column">
                         <md-input-container class="md-block">
                             <label>제목을 입력해 주세요</label>
@@ -87,7 +91,7 @@
                 </div>
             </div>
             <div id="submit" layout="row" layout-align="center center">
-                <md-button class="md-raised" flex="100" ng-click="vm.createList(this.list)">등록</md-button>
+                <md-button class="md-raised" flex="100" ng-click="vm.createList(this.myList)">등록</md-button>
             </div>
     </form>
 </div>
