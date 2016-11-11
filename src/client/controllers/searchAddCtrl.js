@@ -29,9 +29,7 @@ export default class searchAddCtrl {
         this.List.createdList.push(obj);
     }
     createList(list){
-        let result = this.List.validation(list);
-
-        if(result == 'valid'){
+        if(this.List.validation(list) == 'valid'){
             this.List.listForm.songInfo = this.List.createdList;
             this.List.listForm.makerId = this.Session.user.id;
             this.List.create(this.List.listForm)

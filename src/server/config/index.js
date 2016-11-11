@@ -2,10 +2,10 @@ import _ from 'lodash';
 
 const config = {
     port: process.env.PORT || 8000,
+    env: process.env.NODE_ENV.trim(),
     cwd: process.cwd(),
     path: {
         public: process.cwd() + '/public',
-        thumbnails: process.cwd() + '/public/thumbnails'
     },
 
 };

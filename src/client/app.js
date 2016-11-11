@@ -23,6 +23,7 @@ import config           from './config';
 
 // It is purpose to add stylesheet to javascript using webpack.
 import 'angular-material/angular-material.scss';
+import 'font-awesome/scss/font-awesome.scss';
 import './stylesheet/style.scss';
 
 angular

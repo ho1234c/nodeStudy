@@ -11,20 +11,21 @@
                 <md-list-item ng-repeat="item in vm.List.musicList track by $index"
                               ng-click="vm.selectList(this.item.id, $index)"
                               ng-class="{ isSelected: vm.selectedList == $index }">
-                    <div class="md-list-item-text list-component" layout="row" flex="100">
-                        <!--todo: list thumbnail image -->
-                        <div class="list-img" layout="row" layout-align="center center" flex="30">
-                            <img ng-src="https://i.ytimg.com/vi/wZKXgZ1rTqY/default.jpg"/>
+                    <div class="md-list-item-text list-component" layout="row" flex="100" layout-align="center center">
+                        <div class="list-img" layout="row" layout-align="center center">
+                            <div class="img-wrap" layout="row" layout-align="center center">
+                                <img ng-src="/thumbnails/{{ item.thumbnail }}"/>
+                            </div>
                         </div>
-                        <div class="list-info" layout="row" layout-align="start center" flex="50">
+                        <div class="list-info" layout="row" layout-align="start center">
                             <div class="info-wrapper" layout="column">
                                 <div class="info-name">{{ item.name }} </div>
                                 <div class="info-nickname">{{ item.User.nickname }}</div>
                                 <div class="info-createAt">{{ item.createdAt | date }}</div>
                             </div>
                         </div>
-                        <div class="list-icon" layout="column" layout-align="center center" flex="20">
-                            <md-button class="md-hue-2">하트 {{ item.like }}</md-button>
+                        <div class="list-icon" layout="column" layout-align="center center">
+                            <md-button class="md-hue-2"><i class="fa fa-heart" aria-hidden="true"></i> {{ item.like }}</md-button>
                         </div>
                     </div>
                     <md-divider></md-divider>

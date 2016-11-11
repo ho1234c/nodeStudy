@@ -147,14 +147,41 @@ md-toast.md-fail-toast-theme {
 
         #music-list-wrap{
           padding-top: 48px;
+
+          md-list-item > .md-button{
+            padding: 0;
+          }
         }
 
         .list-component{
           height: 115px;
 
-          img{
-            width: 120px;
-            height: 90px;
+          .list-img{
+            flex-basis: 130px;
+
+            .img-wrap{
+              width: 120px;
+              height: 90px;
+              background-color: black;
+            }
+
+            img{
+              max-width: 120px;
+              max-height: 90px;
+            }
+          }
+
+          .list-info{
+            flex-basis: 250px;
+            font-size: 15px;
+
+            .info-wrapper > * {
+              line-height: 30px;
+            }
+          }
+
+          .list-icon{
+            flex-basis: 110px;
           }
 
           .list-info{
@@ -245,6 +272,10 @@ md-toast.md-fail-toast-theme {
 
         #create-form{
           max-height: 250px;
+
+          input, textarea{
+            padding-left: 10px;
+          }
 
           #thumbnail{
             width: 160px;
@@ -447,7 +478,6 @@ md-toast.md-fail-toast-theme {
 
       &:hover{
         background-color: rgba(225,225,225, 0.9);
-
       }
     }
 

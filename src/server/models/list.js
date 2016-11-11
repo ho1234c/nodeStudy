@@ -5,7 +5,8 @@ export default (sequelize, DataTypes) => {
             name: {type: DataTypes.STRING, allowNull: false},
             detail: {type: DataTypes.STRING, allowNull: false, defaultValue: 'No description'},
             like: {type: DataTypes.INTEGER, allowNull: false, defaultValue: 0},
-            songInfo: {type: DataTypes.TEXT, allowNull: false}
+            songInfo: {type: DataTypes.TEXT, allowNull: false},
+            thumbnail: {type: DataTypes.STRING, defaultValue: 'default.png'}
         },
         {
             classMethods:{

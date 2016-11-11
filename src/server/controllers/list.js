@@ -11,7 +11,7 @@ export default {
         const order = req.query.order || 'createdAt';
 
         db.List.findAll({
-            attributes: ['id', 'name', 'detail', 'like', 'createdAt'],
+            attributes: ['id', 'name', 'detail', 'like', 'createdAt', 'thumbnail'],
             order: [[order, 'DESC']],
             offset: count,
             limit: 10,
@@ -37,7 +37,8 @@ export default {
     },
     createList(req, res){
         let data = req.body;
-        data.songInfo = JSON.stringify(listData.songInfo);
+        data.thumbnail = req.file.filename;
+        data.songInfo = JSON.stringify(data.songInfo);
         db.List.create(data)
             .then(result => {
                 res.status(200).json(result);
@@ -51,11 +52,10 @@ export default {
     createComment(req, res){
 
     },
-
     //multer setting to image upload
     multerConfig: multer({ storage: multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, config.path.thumbnails)
+            cb(null, path.join(config.path.public, '/thumbnails'))
         },
         filename: (req, file, cb) => {
             crypto.pseudoRandomBytes(16, (err, raw) => {
@@ -64,5 +64,4 @@ export default {
             })
         }
     })}).single('thumbnail')
-
 }

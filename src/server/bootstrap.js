@@ -5,19 +5,26 @@ import routeList from './routes/list';
 import routeUser from './routes/user'
 import db from './models';
 import dummy from './dummy';
+import config from './config'
 
-db.sequelize.sync()
+db.sequelize.sync({ force: config.env == 'localhost' })
     .then(() => {
-        // dummy(20, 15, console.log);
-        console.log('Connect database');
+        if (config.env == 'localhost'){
+            return dummy(20, 15);
+        }
+        else{
+            return;
+        }
+    })
+    .then(message => {
+        if(message) console.log(message);
     })
     .catch(() => {
-        console.log('Fail to database connection');
+        console.log('Fail to insert database');
     });
 
 const app = express();
 const route = configExpress(app);
-
 
 routeList(route);
 routeUser(route);
