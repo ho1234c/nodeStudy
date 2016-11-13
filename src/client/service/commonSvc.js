@@ -27,7 +27,7 @@ export class Session {
         this.guest = { id: null, name: 'Guest', email: '@', list: [] };
         this.isLogin = false;
         this.user = {};
-        $http.get('/session')
+        this.init = $http.get('/session')
             .then(res => {
                 if(res.data.user){
                     this.set(res.data);

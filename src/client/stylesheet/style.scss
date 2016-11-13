@@ -182,6 +182,14 @@ md-toast.md-fail-toast-theme {
 
           .list-icon{
             flex-basis: 110px;
+
+            button{
+              font-weight: bold;
+            }
+
+            i{
+              color: red;
+            }
           }
 
           .list-info{

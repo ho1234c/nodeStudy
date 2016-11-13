@@ -1,12 +1,17 @@
 export default class List {
-    constructor($resource, $q, Upload) {
-        angular.extend(this, {$q, Upload});
+    constructor($resource, $q, $rootScope, Upload, Session) {
+        angular.extend(this, {$q, $rootScope, Upload, Session});
         this.listRequest = $resource('load/list');
         this.songRequest = $resource('load/song/:id', {
             id: '@id'
         });
 
         this.musicList = [];
+        this.$rootScope.$watchCollection(() => this.musicList, (newVal, oldVal) => {
+            const listKey = this.Session.user.list.map(el => el.id);
+            for(let obj of newVal) {
+                obj.isLike = obj.id in listKey;
+            }});
         this.order = 0; // md-selected directive가 tab의 index를 가져옴. 0: createdAt, 1: like
 
         // created list config
@@ -89,4 +94,4 @@ export default class List {
     }
 }
 
-List.$inject = ['$resource', '$q', 'Upload'];
+List.$inject = ['$resource', '$q', '$rootScope', 'Upload', 'Session'];

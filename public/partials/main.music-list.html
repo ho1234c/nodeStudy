@@ -25,7 +25,10 @@
                             </div>
                         </div>
                         <div class="list-icon" layout="column" layout-align="center center">
-                            <md-button class="md-hue-2"><i class="fa fa-heart" aria-hidden="true"></i> {{ item.like }}</md-button>
+                            <md-button class="md-hue-2">
+                                <i ng-class="item.isLike ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
+                                {{ item.like }}
+                            </md-button>
                         </div>
                     </div>
                     <md-divider></md-divider>

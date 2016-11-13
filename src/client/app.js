@@ -49,15 +49,20 @@ angular
                         url: '',
                         templateUrl: '/partials/main.html',
                         controller: 'mainCtrl',
-                        controllerAs: 'vm'
+                        controllerAs: 'vm',
                     },
                     idBox: {
                         url: '',
                         templateUrl: '/partials/id-box.html',
                         controller: 'idBoxCtrl',
-                        controllerAs: 'vm'
+                        controllerAs: 'vm',
                     }
                 },
+                resolve: {
+                    initSession: ['Session', Session => {
+                        return Session.init;
+                    }]
+                }
             })
             .state('main.music-list', {
                 url: '/',
