@@ -58,14 +58,19 @@ export default class List {
     }
     create(data){
         const q = this.$q.defer();
-        this.Upload.upload({
-            url: 'load/list',
-            data: data
-        }).then(result => {
-            q.resolve(result);
-        }, err => {
-            q.reject(err);
-        });
+        this.Upload.resize(data.thumbnail, {width:320, height: 240})
+            .then(resizedImg => {
+                data.thumbnail = resizedImg;
+                return this.Upload.upload({
+                    url: 'load/list',
+                    data: data
+                })
+            })
+            .then(result => {
+                q.resolve(result);
+            }, err => {
+                q.reject(err);
+            });
         return q.promise;
     }
     validation(list){

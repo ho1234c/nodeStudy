@@ -172,7 +172,7 @@ md-toast.md-fail-toast-theme {
           }
 
           .list-info{
-            flex-basis: 250px;
+            flex-basis: 290px;
             font-size: 15px;
 
             .info-wrapper > * {
@@ -181,14 +181,12 @@ md-toast.md-fail-toast-theme {
           }
 
           .list-icon{
-            flex-basis: 110px;
-
-            button{
-              font-weight: bold;
-            }
+            flex-basis: 70px;
+            z-index: 5;
+            font-size: 18px;
 
             i{
-              color: red;
+              color: rgb(255, 64, 64);
             }
           }
 
@@ -298,8 +296,11 @@ md-toast.md-fail-toast-theme {
             #pic-btn {
               width: 160px;
               height: 120px;
+              cursor: pointer;
               position: absolute;
-              z-index: 10;
+              top: 10px;
+              left: 10px;
+              font-size: 12px;
             }
           }
 

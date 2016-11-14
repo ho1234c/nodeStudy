@@ -29,7 +29,8 @@ export default class searchAddCtrl {
         this.List.createdList.push(obj);
     }
     createList(list){
-        if(this.List.validation(list) == 'valid'){
+        let msg = this.List.validation(list);
+        if(msg == 'valid'){
             this.List.listForm.songInfo = this.List.createdList;
             this.List.listForm.makerId = this.Session.user.id;
             this.List.create(this.List.listForm)
@@ -40,7 +41,7 @@ export default class searchAddCtrl {
                 });
         }
         else{
-            this.Toast.fail(result);
+            this.Toast.fail(msg);
         }
     }
 }

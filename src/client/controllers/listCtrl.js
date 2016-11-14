@@ -68,7 +68,16 @@ export default class listCtrl {
                 }
             });
     }
-
+    likeToggle(element){
+        element.hover = !element.hover; // because when click to target, it fired mouse enter, mouse leave event.
+        if(element.item.isLike){
+            element.item.like -= 1;
+        }
+        else{
+            element.item.like += 1;
+        }
+        element.item.isLike = !element.item.isLike;
+    }
 }
 
 listCtrl.$inject = ['$rootScope', 'initList', 'Player', 'List'];

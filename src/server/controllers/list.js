@@ -52,7 +52,7 @@ export default {
     createComment(req, res){
 
     },
-    //multer setting to image upload
+    //multer config to image upload
     multerConfig: multer({ storage: multer.diskStorage({
         destination: (req, file, cb) => {
             cb(null, path.join(config.path.public, '/thumbnails'))

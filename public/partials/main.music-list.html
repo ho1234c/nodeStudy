@@ -24,11 +24,12 @@
                                 <div class="info-createAt">{{ item.createdAt | date }}</div>
                             </div>
                         </div>
-                        <div class="list-icon" layout="column" layout-align="center center">
-                            <md-button class="md-hue-2">
-                                <i ng-class="item.isLike ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
+                        <div class="list-icon" layout="row" layout-align="start center">
+                            <div ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-click="vm.likeToggle(this)">
+                                <i ng-if="item.isLike" ng-class="hover ? 'fa fa-heart-o' : 'fa fa-heart'" aria-hidden="true"></i>
+                                <i ng-if="!item.isLike" ng-class="hover ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
                                 {{ item.like }}
-                            </md-button>
+                            </div>
                         </div>
                     </div>
                     <md-divider></md-divider>
