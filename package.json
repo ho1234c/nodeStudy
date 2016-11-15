@@ -7,6 +7,7 @@
     "start": "set NODE_ENV=production && node dist/server/index.js",
     "build": "babel src/server -d dist/server && webpack",
     "dev-start": "set NODE_ENV=localhost && babel src/server -d dist/server && node dist/server/index.js",
+    "dev-start-db": "set NODE_ENV=localhost-db && babel src/server -d dist/server && node dist/server/index.js",
     "test": "mocha --compilers js:babel-core/register"
   },
   "author": "",
@@ -16,6 +17,7 @@
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.14.0",
+    "babel-register": "^6.18.0",
     "chai": "^3.5.0",
     "file-loader": "^0.9.0",
     "mocha": "^3.1.0",

@@ -3,6 +3,7 @@ import config from '../config';
 import multer from  'multer';
 import crypto from 'crypto';
 import path from 'path';
+import Promise from 'bluebird';
 
 export default {
     //query.count
@@ -46,7 +47,19 @@ export default {
     },
     //:listId
     like(req, res){
-
+        Promise.all([db.List.findOne({where: {id: req.params.id}}), db.User.findOne({where: {id: req.user.id}})])
+            .then(data => {
+                // data는 promise.all 에서 반환된 array
+                if(req.query.classify == 'increment'){
+                    return Promise.all([data[0].increment('like'), data[1].addListFavor(data[0])])
+                }
+                else if(req.query.classify == 'decrement'){
+                    return Promise.all([data[0].decrement('like'), data[1].removeListFavor(data[0])])
+                }
+            })
+            .then(result => {
+                res.status(200).json({data: result});
+            });
     },
     //:listId
     createComment(req, res){

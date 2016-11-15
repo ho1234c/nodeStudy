@@ -71,7 +71,7 @@ angular
                 controllerAs : 'vm',
                 resolve: {
                     initList: $resource => {
-                        return $resource('/load/list').get().$promise;
+                        return $resource('/list').get().$promise;
                     }
                 }
             })

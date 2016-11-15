@@ -1,7 +1,8 @@
 import list from '../controllers/list';
 
 export default router => {
-    router.get('/load/list', list.load);
-    router.post('/load/list', list.multerConfig, list.createList);
-    router.get('/load/song/:id', list.listDetail);
+    router.get('/list', list.load);
+    router.post('/list', list.multerConfig, list.createList);
+    router.get('/list/song/:id', list.listDetail);
+    router.post('/list/like/:id', list.like);
 };

@@ -5,10 +5,10 @@
     </md-content>
     <md-content id="login-box" ng-if="!vm.Session.isLogin" layout="column" layout-padding>
         <form id="login-form" ng-submit="vm.login()" method="post" layout="column" layout-align="center center">
-            <div id="signUp-btn" ng-click="vm.isShowForm = true">회원가입</div>
+            <div id="signUp-btn" ng-click="vm.isShowSignUpForm = true">회원가입</div>
             <div id="login-input-area" layout="column" layout-align="center center">
-                <input ng-model="vm.user.email" type="email" name="email" placeholder="이메일">
-                <input ng-model="vm.user.password" type="password" name="password" placeholder="비밀번호">
+                <input ng-model="vm.loginForm.email" type="email" name="email" placeholder="이메일">
+                <input ng-model="vm.loginForm.password" type="password" name="password" placeholder="비밀번호">
             </div>
             <md-button id="login-submit-btn" class="md-raised md-primary" type="submit">로그인</md-button>
         </form>
@@ -57,7 +57,7 @@
                                  on-page-change="vm.Player.highlighting(vm.Player.status.listIndex || 0, 'playlist')">
         </dir-pagination-controls>
     </md-content>
-    <md-content id="signUp-form" ng-if="vm.isShowForm" layout="column" layout-padding>
+    <md-content id="signUp-form" ng-if="vm.isShowSignUpForm" layout="column" layout-padding>
         <div id="signUp-description">회원가입</div>
         <form name="signUp" layout="column" ng-submit="vm.signUp()" method="post" layout-align="center center">
             <md-input-container class="md-block">

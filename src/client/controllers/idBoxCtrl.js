@@ -6,7 +6,7 @@ export default class idBoxCtrl {
         this.selectedSong = null;
         this.listStart = 0;
         this.listEnd = 4;
-        this.isShowForm = false;
+        this.isShowSignUpForm = false;
         this.signUpForm = new User.userRequest();
 
         this.$scope.$on('highlighting', (event, msg) => {
@@ -50,13 +50,12 @@ export default class idBoxCtrl {
         }
     }
     login(){
-        this.isShowForm = false;
-
-        this.User.login(this.user)
+        this.User.login(this.loginForm)
             .then(data => {
+                this.isShowSignUpForm = false;
                 this.Toast.success('Welcome!');
                 this.Session.set(data);
-                this.user = {};
+                this.loginForm = {};
             })
             .catch(err => {
                 this.Toast.fail(err);
@@ -67,16 +66,15 @@ export default class idBoxCtrl {
             .then(result => {
                 this.Session.destroy();
 
-                //init object related to create list
+                //init object related to user
                 this.Player.playlist = [];
                 this.List.initForm();
                 this.Search.searchArray = [];
-
                 this.$state.go('main.music-list');
             });
     }
     signUp(){
-        this.isShowForm = false;
+        this.isShowSignUpForm = false;
 
         this.signUpForm.$save(data => {
             this.Toast.success('가입완료');

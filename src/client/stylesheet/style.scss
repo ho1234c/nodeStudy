@@ -267,6 +267,9 @@ md-toast.md-fail-toast-theme {
 
         #music-list-song{
           width: 450px;
+        }
+
+        #rigth-song > #music-list-song{
           height: 420px;
         }
       }
@@ -477,7 +480,7 @@ md-toast.md-fail-toast-theme {
   #id-box-list{
     flex-basis: 170px;
     overflow-y: auto;
-    justify-content: space-between;
+    justify-content: start;
 
     #list-up-btn{
       line-height: 20px;
@@ -492,6 +495,7 @@ md-toast.md-fail-toast-theme {
 
     #list-down-btn{
       @extend #list-up-btn;
+      margin-top: auto;
     }
 
     #id-box-list-message{

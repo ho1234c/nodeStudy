@@ -1,17 +1,25 @@
 export default class List {
     constructor($resource, $q, $rootScope, Upload, Session) {
         angular.extend(this, {$q, $rootScope, Upload, Session});
-        this.listRequest = $resource('load/list');
-        this.songRequest = $resource('load/song/:id', {
-            id: '@id'
-        });
-
+        this.listRequest = $resource('/list');
+        this.songRequest = $resource('/list/song/:id', { id: '@id' });
+        this.likeRequest = $resource('/list/like/:id', { id: '@id', classify: '@classify' },
+            { post:
+                { method: 'POST'}
+            });
         this.musicList = [];
-        this.$rootScope.$watchCollection(() => this.musicList, (newVal, oldVal) => {
-            const listKey = this.Session.user.list.map(el => el.id);
-            for(let obj of newVal) {
-                obj.isLike = obj.id in listKey;
+
+        this.$rootScope.$watchCollection(() => this.Session, (newVal, oldVal) => {
+            let listKey = this.Session.user.list.map(element => element.id);
+            for(let obj of this.musicList) {
+                obj.isLike = listKey.indexOf(obj.id) != -1;
             }});
+        this.$rootScope.$watchCollection(() => this.musicList, (newVal, oldVal) => {
+            let listKey = this.Session.user.list.map(element => element.id);
+            for(let obj of newVal) {
+                obj.isLike = listKey.indexOf(obj.id) != -1;
+            }});
+
         this.order = 0; // md-selected directive가 tab의 index를 가져옴. 0: createdAt, 1: like
 
         // created list config
@@ -34,7 +42,6 @@ export default class List {
             default:
                 order = 'createdAt';
         }
-
         this.listRequest.get({
             count: count,
             order: order
@@ -58,13 +65,14 @@ export default class List {
     }
     create(data){
         const q = this.$q.defer();
+
         this.Upload.resize(data.thumbnail, {width:320, height: 240})
             .then(resizedImg => {
                 data.thumbnail = resizedImg;
                 return this.Upload.upload({
-                    url: 'load/list',
+                    url: '/list',
                     data: data
-                })
+                });
             })
             .then(result => {
                 q.resolve(result);
@@ -96,6 +104,18 @@ export default class List {
     initForm(){
         this.listForm = {};
         this.createdList = [];
+    }
+    like(id, classify){
+        const q = this.$q.defer();
+        this.likeRequest.post({
+            id: id,
+            classify: classify
+        }, result => {
+            q.resolve(result);
+        }, err => {
+            q.reject(err);
+        });
+        return q.promise;
     }
 }
 

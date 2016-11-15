@@ -7,9 +7,9 @@ import db from './models';
 import dummy from './dummy';
 import config from './config'
 
-db.sequelize.sync({ force: config.env == 'localhost' })
+db.sequelize.sync({ force: config.env == 'localhost-db' })
     .then(() => {
-        if (config.env == 'localhost'){
+        if (config.env == 'localhost-db'){
             return dummy(20, 15);
         }
         else{

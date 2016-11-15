@@ -1,6 +1,6 @@
 import db from './models'
 import request from 'request-promise';
-import promise from 'bluebird';
+import Promise from 'bluebird';
 import _ from 'lodash'
 import {findNode} from './lib/index'
 
@@ -43,7 +43,7 @@ export default function(num, infoNum){
                 return db.Comment.bulkCreate(commentDummy);
             })
             .then(() => {
-                return promise.all([db.User.findOne(), db.List.findAll()]);
+                return Promise.all([db.User.findOne(), db.List.findAll()]);
             })
             .then((result) => {
                 let user = result[0];

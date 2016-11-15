@@ -1,6 +1,6 @@
 export default class listCtrl {
-    constructor($rootScope, initList, Player, List) {
-        angular.extend(this, {$rootScope, initList, Player, List});
+    constructor($rootScope, initList, Player, List, Session, Toast) {
+        angular.extend(this, {$rootScope, initList, Player, List, Session, Toast});
 
         // only first time
         if(this.List.musicList.length === 0){
@@ -69,16 +69,29 @@ export default class listCtrl {
             });
     }
     likeToggle(element){
-        element.hover = !element.hover; // because when click to target, it fired mouse enter, mouse leave event.
+        if(!this.Session.isLogin){
+            this.Toast.fail('로그인이 필요합니다');
+            return;
+        }
+
+        element.hover = !element.hover; // because when click to target, it fired mouse enter and mouse leave event.
         if(element.item.isLike){
-            element.item.like -= 1;
+            this.List.like(element.item.id, 'decrement')
+                .then(() => {
+                    this.Session.user.list = this.Session.user.list.filter(obj => obj.id != element.item.id);
+                    element.item.like -= 1;
+                });
         }
         else{
-            element.item.like += 1;
+            this.List.like(element.item.id, 'increment')
+                .then(result => {
+                    this.Session.user.list.push(element.item);
+                    element.item.like += 1;
+                });
         }
         element.item.isLike = !element.item.isLike;
     }
 }
 
-listCtrl.$inject = ['$rootScope', 'initList', 'Player', 'List'];
+listCtrl.$inject = ['$rootScope', 'initList', 'Player', 'List', 'Session', 'Toast'];
 

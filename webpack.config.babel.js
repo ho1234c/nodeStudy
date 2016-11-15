@@ -1,4 +1,4 @@
-import webpack from 'webpack'
+import webpack from 'webpack';
 import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 import path from 'path';
 
@@ -18,7 +18,7 @@ export default {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                loader: "jshint-loader"
+                loader: "jshint-loader",
             }
         ],
         loaders:[
