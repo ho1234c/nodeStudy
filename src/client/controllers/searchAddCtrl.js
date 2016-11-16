@@ -28,6 +28,9 @@ export default class searchAddCtrl {
     insertSong(obj){
         this.List.createdList.push(obj);
     }
+    removeSong(index){
+        this.List.createdList.splice(index, 1);
+    }
     createList(list){
         let msg = this.List.validation(list);
         if(msg == 'valid'){
