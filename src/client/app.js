@@ -17,7 +17,6 @@ import mainCtrl         from './controllers/mainCtrl';
 import listCtrl         from './controllers/listCtrl';
 import idBoxCtrl        from './controllers/idBoxCtrl';
 import searchAddCtrl    from './controllers/searchAddCtrl';
-import signUpCtrl       from './controllers/signUpCtrl';
 import youtube          from './directives/youtube';
 import config           from './config';
 
@@ -39,7 +38,6 @@ angular
     .controller('listCtrl', listCtrl)
     .controller('idBoxCtrl', idBoxCtrl)
     .controller('searchAddCtrl', searchAddCtrl)
-    .controller('signUpCtrl', signUpCtrl)
     .directive('youtube', ['$window', $window => new youtube($window)])
     .config($stateProvider => {
         $stateProvider

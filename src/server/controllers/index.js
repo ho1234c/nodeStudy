@@ -1,5 +1,6 @@
 import config from '../config';
 import request from 'request-promise';
+import db from '../models';
 import {findNode, createUrl} from '../lib'
 import _ from 'lodash';
 
@@ -8,7 +9,25 @@ export default {
         res.render('index.html');
     },
     session(req, res){
-        res.json({ user: req.user });
+        if(req.user){
+            db.User.findOne({
+                where: {id: req.user.id}
+            })
+                .then(user => {
+                    return user.getListFavor();
+                })
+                .then(data => {
+                    _.assign(req.user, {list: data});
+                    res.json({
+                        user: req.user
+                    });
+                });
+        }
+        else{
+            res.json({
+                user: null
+            });
+        }
     },
     search(req, res){
         let searchUrl = config.youtube.url,

@@ -25,7 +25,7 @@ export default {
             });
     },
     //params.id
-    listDetail(req, res){
+    detail(req, res){
         db.List.findOne({
             where: {id: req.params.id},
             attributes: ['songInfo']
@@ -36,7 +36,7 @@ export default {
                 })
             })
     },
-    createList(req, res){
+    create(req, res){
         let data = req.body;
         data.thumbnail = req.file.filename;
         data.songInfo = JSON.stringify(data.songInfo);
