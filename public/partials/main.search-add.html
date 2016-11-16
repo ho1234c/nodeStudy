@@ -3,7 +3,7 @@
         <div id="search-input-wrap">
             <div id="search-input" layout="row">
                 <md-input-container id="input-container" md-no-float>
-                    <input ng-model="vm.Search.searchWord" placeholder="검색어를 입력해주세요">
+                    <input ng-model="vm.Search.searchWord" placeholder="검색어를 입력해주세요" ng-keyup="$event.keyCode == 13 && vm.search()">
                 </md-input-container>
                 <div id="search-button" ng-click="vm.search()" layout="row" layout-align="center center">
                     <img src="/icon/search.png"/>
