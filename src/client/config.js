@@ -9,4 +9,6 @@ export default function ($httpProvider, $locationProvider, $mdThemingProvider) {
     $mdThemingProvider.theme('default')
         .primaryPalette('deep-orange')
         .accentPalette('orange');
+    $mdThemingProvider.theme('success-toast');
+    $mdThemingProvider.theme('fail-toast');
 }

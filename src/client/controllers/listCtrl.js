@@ -28,8 +28,8 @@ export default class listCtrl {
     watchMore(order){
         this.List.loadList(this.List.musicList.length, order)
             .then(result => {
-                for(const obj of result.data){
-                    this.List.musicList.push(obj);
+                for(const index in result.data){
+                    this.List.musicList.push(result.data[index]);
                 }
             });
     }
@@ -50,8 +50,8 @@ export default class listCtrl {
         this.List.loadSong(id)
             .then(result => {
                 const songInfo = JSON.parse(result.data.songInfo);
-                for(const obj of songInfo){
-                    this.Player.listDetail.push(obj);
+                for(const index in songInfo){
+                    this.Player.listDetail.push(songInfo[index]);
                 }
             });
     }
@@ -63,8 +63,8 @@ export default class listCtrl {
 
         this.List.loadList()
             .then(result => {
-                for(const obj of result.data){
-                    this.List.musicList.push(obj);
+                for(const index in result.data){
+                    this.List.musicList.push(result.data[index]);
                 }
             });
     }

@@ -32,8 +32,8 @@ export default class idBoxCtrl {
         this.List.loadSong(id)
             .then(result => {
                 const songInfo = JSON.parse(result.data.songInfo);
-                for(const obj of songInfo){
-                    this.Player.playlist.push(obj);
+                for(const index in songInfo){
+                    this.Player.playlist.push(songInfo[index]);
                 }
             });
     }

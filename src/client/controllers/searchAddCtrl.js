@@ -5,10 +5,14 @@ export default class searchAddCtrl {
     }
     search(){
         this.Search.searchArray = [];
+        if(!this.Search.searchWord){
+            this.Toast.fail('검색어를 입력해주세요');
+            return;
+        }
         this.Search.searchVideo(this.Search.searchWord)
             .then(result => {
-                for(const obj of result.data){
-                    this.Search.searchArray.push(obj);
+                for(const index in result.data){
+                    this.Search.searchArray.push(result.data[index]);
                 }
                 this.Search.nextPageToken = result.nextPageToken;
             });
@@ -16,8 +20,8 @@ export default class searchAddCtrl {
     searchMore(){
         this.Search.searchVideo(this.Search.searchWord, this.Search.nextPageToken)
             .then(result => {
-                for(const obj of result.data){
-                    this.Search.searchArray.push(obj);
+                for(const index in result.data){
+                    this.Search.searchArray.push(result.data[index]);
                 }
                 this.Search.nextPageToken = result.nextPageToken;
             });

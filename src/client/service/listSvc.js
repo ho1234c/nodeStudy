@@ -11,13 +11,13 @@ export default class List {
 
         this.$rootScope.$watchCollection(() => this.Session, (newVal, oldVal) => {
             let listKey = this.Session.user.list.map(element => element.id);
-            for(let obj of this.musicList) {
-                obj.isLike = listKey.indexOf(obj.id) != -1;
+            for(const index in this.musicList) {
+                this.musicList[index].isLike = listKey.indexOf(this.musicList[index].id) != -1;
             }});
         this.$rootScope.$watchCollection(() => this.musicList, (newVal, oldVal) => {
             let listKey = this.Session.user.list.map(element => element.id);
-            for(let obj of newVal) {
-                obj.isLike = listKey.indexOf(obj.id) != -1;
+            for(const index in newVal) {
+                this.musicList[index].isLike = listKey.indexOf(newVal[index].id) != -1;
             }});
 
         this.order = 0; // md-selected directive가 tab의 index를 가져옴. 0: createdAt, 1: like
