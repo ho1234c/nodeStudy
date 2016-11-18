@@ -5,7 +5,7 @@ export default class List {
         this.songRequest = $resource('/list/song/:id', { id: '@id' });
         this.likeRequest = $resource('/list/like/:id', { id: '@id', classify: '@classify' },
             { post:
-                { method: 'POST'}
+            { method: 'POST'}
             });
         this.musicList = [];
 
@@ -65,20 +65,32 @@ export default class List {
     }
     create(data){
         const q = this.$q.defer();
-
-        this.Upload.resize(data.thumbnail, {width:320, height: 240})
-            .then(resizedImg => {
-                data.thumbnail = resizedImg;
-                return this.Upload.upload({
-                    url: '/list',
-                    data: data
+        if(data.thumnail){
+            this.Upload.resize(data.thumbnail, {width:320, height: 240})
+                .then(resizedImg => {
+                    data.thumbnail = resizedImg;
+                    return this.Upload.upload({
+                        url: '/list',
+                        data: data
+                    });
+                })
+                .then(result => {
+                    q.resolve(result);
+                }, err => {
+                    q.reject(err);
                 });
-            })
-            .then(result => {
-                q.resolve(result);
-            }, err => {
-                q.reject(err);
-            });
+        }
+        else{
+            this.Upload.upload({
+                url: '/list',
+                data: data
+            }).then(result => {
+                    q.resolve(result);
+                }, err => {
+                    q.reject(err);
+                });
+        }
+
         return q.promise;
     }
     validation(list){

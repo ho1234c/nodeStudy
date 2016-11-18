@@ -21,6 +21,7 @@
                         </div>
                         <div class="song-info" layout="column" flex="65">
                             <div class="info-title">{{ item.snippet.title }}</div>
+                            <div class="info-publishedAt">{{ item.snippet.publishedAt | date: "yyyy.MM.dd" }}</div>
                         </div>
                         <div class="list-icon" layout="row" layout-align="center center" flex="5" ng-click="vm.insertSong(item)">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -60,7 +61,8 @@
                 <div id="content">
                     <md-input-container class="md-block">
                         <label>리스트에 대한 소개를 입력해 주세요</label>
-                        <textarea name="content" ng-model="vm.List.listForm.detail" md-maxlength="50" required rows="2" md-select-on-focus></textarea>
+                        <textarea name="content" ng-model="vm.List.listForm.detail" md-maxlength="50" required rows="2"
+                                  md-select-on-focus md-no-resize spellcheck="false"></textarea>
                     </md-input-container>
                 </div>
             </div>
@@ -97,7 +99,7 @@
                 </div>
             </div>
             <div id="submit" layout="row" layout-align="center center">
-                <md-button class="md-raised" flex="100" ng-click="vm.createList(this.myList)">등록</md-button>
+                <md-button class="md-raised" flex="100" ng-click="vm.createList(myList)">등록</md-button>
             </div>
     </form>
 </div>

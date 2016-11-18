@@ -6,7 +6,7 @@
         <a href="" ng-click="setCurrent(pagination.current - 1)"><md-button class="md-raised">&lsaquo;</md-button></a>
     </li>
     <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)">
-        <a href="" ng-click="setCurrent(pageNumber)"><md-button ng-class="{'md-raised' : true, 'active' : pagination.current == pageNumber, disabled : pageNumber == '...'}"><span ng-bind="pageNumber"></span></md-button></a>
+        <a href="" ng-click="setCurrent(pageNumber)"><md-button ng-class="{'md-raised' : true, 'active' : pagination.current == pageNumber, disabled : pageNumber == '...'}" aria-label="pagination"><span ng-bind="pageNumber"></span></md-button></a>
     </li>
 
     <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">

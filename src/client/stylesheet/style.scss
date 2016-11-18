@@ -2,6 +2,8 @@ $primary-color: rgb(255,171,64);
 $emphasis-color: rgb(221,44,0);
 
 // Override to angular-material //
+.md-tab{text-transform: none}
+
 .md-button{
   margin: 0;
 }
@@ -17,6 +19,12 @@ body.md-toast-animating{
   overflow-y: scroll !important;
 }
 
+md-tooltip .md-content {
+  font-size: 1.2em;
+  max-width: 200px;
+  white-space: inherit;
+  height: auto;
+}
 ///////// nprogress.css /////////
 
 /* Make clicks pass-through */
@@ -99,6 +107,7 @@ body{
   height: auto;
   overflow-y: scroll;
   font-size: 13px;
+  font-family: "돋움",Dotum,"맑은 고딕","Malgun Gothic","Apple Gothic",sans-serif;
 }
 
 md-toast.md-success-toast-theme {
@@ -166,7 +175,7 @@ md-toast.md-fail-toast-theme {
             img{
               max-width: 120px;
               max-height: 90px;
-              width: 100%;
+              object-fit: scale-down;
             }
           }
 
@@ -259,6 +268,14 @@ md-toast.md-fail-toast-theme {
                 color: $primary-color;
               }
             }
+
+            .song-info{
+              line-height: 2em;
+
+              .info-publishedAt{
+                color: rgb(204, 204, 204);
+              }
+            }
           }
         }
       }
@@ -292,6 +309,10 @@ md-toast.md-fail-toast-theme {
 
         #create-form{
           max-height: 250px;
+
+          label{
+            font-size: 1.2em;
+          }
 
           input, textarea{
             padding-left: 10px;
@@ -396,11 +417,11 @@ md-toast.md-fail-toast-theme {
           height: 51px;
         }
 
-        .info-title{
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
+          .info-title{
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
       }
     }
   }

@@ -42,10 +42,12 @@ export default class searchAddCtrl {
             this.List.listForm.makerId = this.Session.user.id;
             this.List.create(this.List.listForm)
                 .then(res => {
-                    console.log(res.status);
                     this.List.initForm();
+                    list.$setUntouched();
                     this.Toast.success('등록되었습니다');
-                });
+                }).catch(() => {
+                this.Toast.fail('등록에 실패했습니다')
+            });
         }
         else{
             this.Toast.fail(msg);

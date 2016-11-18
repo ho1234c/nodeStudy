@@ -38,11 +38,16 @@ export default {
     },
     create(req, res){
         let data = req.body;
-        data.thumbnail = req.file.filename;
+        if(req.file && req.file.filename){
+            data.thumbnail = req.file.filename;
+        }
         data.songInfo = JSON.stringify(data.songInfo);
         db.List.create(data)
             .then(result => {
                 res.status(200).json(result);
+            })
+            .catch(result => {
+                res.status(500).json({result})
             })
     },
     //:listId

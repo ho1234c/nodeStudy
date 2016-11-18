@@ -10,7 +10,12 @@
             <md-list layout="column">
                 <md-list-item ng-repeat="item in vm.List.musicList track by $index"
                               ng-click="vm.selectList(this.item.id, $index)"
-                              ng-class="{ isSelected: vm.selectedList == $index }">
+                              ng-class="{ isSelected: vm.selectedList == $index }"
+                              ng-mouseover="this.showTooltip = true"
+                              ng-mouseleave="this.showTooltip = false">
+                    <md-tooltip md-visible="this.showTooltip" md-direction="left">
+                        {{ item.detail }}
+                    </md-tooltip>
                     <div class="md-list-item-text list-component" layout="row" flex="100" layout-align="center center">
                         <div class="list-img" layout="row" layout-align="center center">
                             <div class="img-wrap" layout="row" layout-align="center center">
