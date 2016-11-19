@@ -46,7 +46,7 @@ export default class searchAddCtrl {
                     list.$setUntouched();
                     this.Toast.success('등록되었습니다');
                 }).catch(() => {
-                this.Toast.fail('등록에 실패했습니다')
+                this.Toast.fail('등록에 실패했습니다');
             });
         }
         else{

@@ -11,6 +11,9 @@ export default class listCtrl {
         this.selectedList = this.List.selectedIndex;
         this.selectedSong = this.Player.status.listName == 'listDetail' ? this.Player.status.listIndex : null;
 
+        // for comment
+        this.commentContent = '';
+
         this.$rootScope.$on('highlighting', (event, msg) => {
             if(msg.index === -1){
                 this.selectedSong = null;
@@ -90,6 +93,9 @@ export default class listCtrl {
                 });
         }
         element.item.isLike = !element.item.isLike;
+    }
+    commentSubmit(){
+        this.commentContent = "";
     }
 }
 

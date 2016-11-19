@@ -18,6 +18,7 @@ import listCtrl         from './controllers/listCtrl';
 import idBoxCtrl        from './controllers/idBoxCtrl';
 import searchAddCtrl    from './controllers/searchAddCtrl';
 import youtube          from './directives/youtube';
+import krInput          from './directives/krInput';
 import config           from './config';
 
 // It is purpose to add stylesheet to javascript using webpack.
@@ -39,6 +40,7 @@ angular
     .controller('idBoxCtrl', idBoxCtrl)
     .controller('searchAddCtrl', searchAddCtrl)
     .directive('youtube', ['$window', $window => new youtube($window)])
+    .directive('krInput', () => new krInput())
     .config($stateProvider => {
         $stateProvider
             .state('main', {
