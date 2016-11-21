@@ -292,7 +292,6 @@ md-toast.md-fail-toast-theme {
       flex-basis: 450px;
 
       #right-wrap{
-        position: fixed;
 
         #music-list-song{
           width: 450px;
@@ -303,6 +302,7 @@ md-toast.md-fail-toast-theme {
 
       #right-song{
         height: 490px;
+        position: fixed;
 
         #music-list-song{
           height: 420px;
@@ -310,17 +310,39 @@ md-toast.md-fail-toast-theme {
       }
 
       #right-comment{
-        max-height: 700px;
+        height: 540px;
+        position: fixed;
+        bottom: 0;
+        background-color: white;
+        -webkit-transition: all 0.7s ease-out;
+        -moz-transition: all 0.7s ease-out;
+        -ms-transition: all 0.7s ease-out;
+        -o-transition: all 0.7s ease-out;
+        transition: all 0.7s ease-out;
+
+        #comment-toggle-btn{
+          width: 450px;
+          min-height: 30px;
+          line-height: 30px;
+          background-color: rgba(225,225,225, 0.3);
+          font-size: 1.3em;
+
+          &:hover{
+            background-color: rgba(225,225,225, 0.9);
+          }
+        }
 
         #comment-create{
           width: 450px;
           height: 100px;
           padding: 15px;
+          margin-bottom: 10px;
 
           textarea{
             padding-left: 10px;
             overflow: hidden;
             background-color: rgb(252, 252, 252);
+            line-height: 1.5em;
           }
 
           #comment-textarea{
@@ -348,10 +370,51 @@ md-toast.md-fail-toast-theme {
             height: 80px;
           }
         }
+
+        #comment-list-wrap{
+          width: 450px;
+
+          #comment-order{
+            md-tabs-canvas{
+              height: 40px;
+            }
+
+            md-pagination-wrapper{
+              height: 40px;
+              right: 0;
+              left: auto;
+            }
+          }
+
+          .comment-content{
+            height: 60px;
+
+            .comment-nickname{
+              flex-basis: 100px;
+            }
+
+            .comment-content{
+              flex-basis: 300px;
+            }
+
+            .comment-like{
+              flex-basis: 50px;
+            }
+          }
+
+          ul{
+            margin: 5px 0;
+          }
+        }
+      }
+
+      .hidden{
+        bottom: -510px !important;
       }
 
       #right-create{
-        @extend #right-wrap;
+        position: fixed;
+        width: 450px;
         justify-content: space-between;
         height: 100%;
 
@@ -636,7 +699,7 @@ md-toast.md-fail-toast-theme {
   }
 
   #id-box-song-wrap{
-    flex-basis: 450px;
+    flex-basis: 440px;
 
     #id-box-song{
       overflow: hidden;

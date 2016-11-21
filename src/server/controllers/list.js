@@ -16,7 +16,7 @@ export default {
             order: [[order, 'DESC']],
             offset: count,
             limit: 10,
-            include: {model: db.User, attributes: ['email', 'nickname']},
+            include: {model: db.User, attributes: ['nickname']},
         })
             .then(data => {
                 res.json({
@@ -28,7 +28,8 @@ export default {
     detail(req, res){
         db.List.findOne({
             where: {id: req.params.id},
-            attributes: ['songInfo']
+            attributes: ['songInfo'],
+            include: {model: db.Comment, attributes: ['content', 'like', 'createdAt'], include: {model: db.User, attributes: ['nickname']}},
         })
             .then(data => {
                 res.json({

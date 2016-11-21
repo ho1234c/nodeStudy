@@ -10,12 +10,12 @@ export default function(num, infoNum){
         const userDummy = [], listDummy = [], commentDummy = [];
 
         process.stdout.write('Inserting dummy data');
-        const interval = setInterval(() => {process.stdout.write('.')}, 500);
+        const interval = setInterval(() => {process.stdout.write('.')}, 200);
 
         for(let i=0; i<num; i++){
             userDummy.push({email: 'user' + i + '@dummy.com', nickname: 'userNick' + i, password: 'user' + i});
             listDummy.push({name: 'list' + i, detail: 'detail' + i, like: Math.random() * 100, songInfo:'', makerId: i+1, createdAt: _randomDate(new Date(2012, 0, 1), new Date())});
-            commentDummy.push({content: 'content' + i, like: 10*i, ListId: i+1, writerId: i+1});
+            commentDummy.push({content: 'content' + i, like: Math.random() * 100, ListId: 1, writerId: i+1});
         }
 
         // insert user dummy
@@ -45,7 +45,7 @@ export default function(num, infoNum){
             .then(() => {
                 return Promise.all([db.User.findOne(), db.List.findAll()]);
             })
-            .then((result) => {
+            .then(result => {
                 let user = result[0];
                 let list = result[1];
 
@@ -56,7 +56,7 @@ export default function(num, infoNum){
                 console.log('.');
                 resolve('Complete insert ' + num +' dummy data');
             })
-            .catch((err) => {
+            .catch(err => {
                 clearInterval(interval);
                 console.log('.');
                 reject(err);

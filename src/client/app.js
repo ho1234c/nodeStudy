@@ -8,17 +8,18 @@ import 'angular-utils-pagination';
 import 'angular-messages';
 import 'ng-file-upload';
 
+import commentSvc       from './service/commentSvc';
 import listSvc          from './service/listSvc';
-import userSvc          from './service/userSvc';
+import * as misc        from './service/miscSvc';
 import playerSvc        from './service/playerSvc';
+import userSvc          from './service/userSvc';
 import searchSvc        from './service/searchSvc';
-import * as common      from './service/commonSvc';
-import mainCtrl         from './controllers/mainCtrl';
-import listCtrl         from './controllers/listCtrl';
 import idBoxCtrl        from './controllers/idBoxCtrl';
+import listCtrl         from './controllers/listCtrl';
+import mainCtrl         from './controllers/mainCtrl';
 import searchAddCtrl    from './controllers/searchAddCtrl';
-import youtube          from './directives/youtube';
 import krInput          from './directives/krInput';
+import youtube          from './directives/youtube';
 import config           from './config';
 
 // It is purpose to add stylesheet to javascript using webpack.
@@ -31,10 +32,11 @@ angular
     .service('List', listSvc)
     .service('User', userSvc)
     .service('Player', playerSvc)
-    .service('Session', common.Session)
-    .service('Toast', common.Toast)
+    .service('Session', misc.Session)
+    .service('Toast', misc.Toast)
     .service('Search', searchSvc)
-    .factory('httpInterceptors', common.httpInterceptors)
+    .service('Comment', commentSvc)
+    .factory('httpInterceptors', misc.httpInterceptors)
     .controller('mainCtrl', mainCtrl)
     .controller('listCtrl', listCtrl)
     .controller('idBoxCtrl', idBoxCtrl)

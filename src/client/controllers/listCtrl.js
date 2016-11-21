@@ -1,6 +1,6 @@
 export default class listCtrl {
-    constructor($rootScope, initList, Player, List, Session, Toast) {
-        angular.extend(this, {$rootScope, initList, Player, List, Session, Toast});
+    constructor($rootScope, $window, initList, Player, List, Session, Toast, Comment) {
+        angular.extend(this, {$window, initList, Player, List, Session, Toast, Comment});
 
         // only first time
         if(this.List.musicList.length === 0){
@@ -11,10 +11,10 @@ export default class listCtrl {
         this.selectedList = this.List.selectedIndex;
         this.selectedSong = this.Player.status.listName == 'listDetail' ? this.Player.status.listIndex : null;
 
-        // for comment
-        this.commentContent = '';
+        this.commentContent = "";
+        this.isShowComment = true;
 
-        this.$rootScope.$on('highlighting', (event, msg) => {
+        $rootScope.$on('highlighting', (event, msg) => {
             if(msg.index === -1){
                 this.selectedSong = null;
             }
@@ -41,6 +41,8 @@ export default class listCtrl {
 
         // init status
         this.Player.listDetail = [];
+        this.Comment.commentList = [];
+        this.Comment.listId = id;
         this.Player.listDetailCurrentPage = 1;
         this.Player.status.musicListId = id;
 
@@ -53,8 +55,13 @@ export default class listCtrl {
         this.List.loadSong(id)
             .then(result => {
                 const songInfo = JSON.parse(result.data.songInfo);
+                const comments = result.data.Comments;
+
                 for(const index in songInfo){
                     this.Player.listDetail.push(songInfo[index]);
+                }
+                for(const index in comments){
+                    this.Comment.commentList.push(comments[index]);
                 }
             });
     }
@@ -94,10 +101,19 @@ export default class listCtrl {
         }
         element.item.isLike = !element.item.isLike;
     }
+    toggleBottomSheet(){
+        if(!this.isShowBottomSheet){
+
+        }
+        else{
+
+        }
+        this.isShowBottomSheet = !this.isShowBottomSheet;
+    }
     commentSubmit(){
-        this.commentContent = "";
+
     }
 }
 
-listCtrl.$inject = ['$rootScope', 'initList', 'Player', 'List', 'Session', 'Toast'];
+listCtrl.$inject = ['$rootScope', '$window', 'initList', 'Player', 'List', 'Session', 'Toast', 'Comment'];
 

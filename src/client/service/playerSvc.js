@@ -8,12 +8,12 @@ export default class PlayerSvc {
 
         // in main-music-list
         this.listDetail = [];
-        this.listDetailPageNum = 7;
+        this.listDetailNumPerPage = 7;
         this.listDetailCurrentPage = 1;
 
         // in id-box
         this.playlist = [];
-        this.playlistPageNum = 7;
+        this.playlistNumPerPage = 7;
         this.playlistCurrentPage = 1;
 
         // current status
@@ -62,14 +62,14 @@ export default class PlayerSvc {
     }
     // determine whether page increase or not.
     _pageControl(index, listName){
-        if(listName == 'listDetail' && ((index + 1) % this.listDetailPageNum === 0)){
+        if(listName == 'listDetail' && ((index + 1) % this.listDetailNumPerPage === 0)){
             if(this._checkViewPage()){
                 this.listDetailCurrentPage += 1;
                 this.status.videoIndex += 1;
             }
             this.status.listIndex = 0;
         }
-        else if(listName == 'playlist' && ((index + 1)% this.playlistPageNum === 0)){
+        else if(listName == 'playlist' && ((index + 1)% this.playlistNumPerPage === 0)){
             if(this._checkViewPage()){
                 this.playlistCurrentPage += 1;
                 this.status.videoIndex += 1;
@@ -87,10 +87,10 @@ export default class PlayerSvc {
         let videoIndex;
 
         if(listName == 'listDetail'){
-            videoIndex = this.listDetailPageNum * (this.listDetailCurrentPage - 1) + this.status.listIndex;
+            videoIndex = this.listDetailNumPerPage * (this.listDetailCurrentPage - 1) + this.status.listIndex;
         }
         else if(listName == 'playlist'){
-            videoIndex = this.playlistPageNum * (this.playlistCurrentPage - 1) + this.status.listIndex;
+            videoIndex = this.playlistNumPerPage * (this.playlistCurrentPage - 1) + this.status.listIndex;
         }
         return videoIndex;
     }
@@ -98,13 +98,13 @@ export default class PlayerSvc {
     _checkViewPage(){
         let temp;
         if(this.status.listName == 'listDetail'){
-            temp = this.listDetailPageNum * (this.listDetailCurrentPage - 1) + this.status.listIndex;
+            temp = this.listDetailNumPerPage * (this.listDetailCurrentPage - 1) + this.status.listIndex;
             if(temp == this.status.videoIndex){
                 return true;
             }
         }
         else if(this.status.listName == 'playlist'){
-            temp = this.playlistPageNum * (this.playlistCurrentPage - 1) + this.status.listIndex;
+            temp = this.playlistNumPerPage * (this.playlistCurrentPage - 1) + this.status.listIndex;
             if(temp == this.status.videoIndex){
                 return true;
             }

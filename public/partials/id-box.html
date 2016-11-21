@@ -34,7 +34,7 @@
     <md-content id="id-box-song-wrap" ng-if="vm.Player.playlist.length">
         <md-content id="id-box-song">
             <md-list layout="column">
-                <md-list-item dir-paginate="item in vm.Player.playlist | itemsPerPage: vm.Player.playlistPageNum"
+                <md-list-item dir-paginate="item in vm.Player.playlist | itemsPerPage: vm.Player.playlistNumPerPage"
                               current-page="vm.Player.playlistCurrentPage"
                               ng-click="vm.Player.playVideo($index, 'playlist'); vm.Player.highlighting($index, 'playlist')"
                               ng-class="{ isSelected: vm.selectedSong == $index }"
