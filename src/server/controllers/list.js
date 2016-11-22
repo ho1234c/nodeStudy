@@ -69,7 +69,14 @@ export default {
     },
     //:listId
     createComment(req, res){
+        const data = req.body.data;
 
+        db.Comment.create(data)
+            .then(data => {
+                res.json({
+                    data: data
+                })
+            })
     },
     //multer config to image upload
     multerConfig: multer({ storage: multer.diskStorage({

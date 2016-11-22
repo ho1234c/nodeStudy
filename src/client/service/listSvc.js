@@ -5,7 +5,7 @@ export default class List {
         this.songRequest = $resource('/list/song/:id', { id: '@id' });
         this.likeRequest = $resource('/list/like/:id', { id: '@id', classify: '@classify' },
             { post:
-            { method: 'POST'}
+                { method: 'POST'}
             });
         this.musicList = [];
 

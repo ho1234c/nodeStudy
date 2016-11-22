@@ -38,14 +38,10 @@ export default (sequelize, DataTypes) => {
                         through: 'UserCommentFavor'
                     });
                     User.hasMany(models.List, {
-                        foreignKey: {
-                            name: 'makerId'
-                        }
+                        foreignKey: 'makerId'
                     });
                     User.hasMany(models.Comment, {
-                        foreignKey: {
-                            name: 'writerId'
-                        }
+                        foreignKey: 'writerId'
                     });
                 }
             }

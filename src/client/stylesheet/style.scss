@@ -246,6 +246,7 @@ md-toast.md-fail-toast-theme {
         }
 
         #search-result-wrap{
+          min-height: 200px;
           margin-top: 45px;
 
           .search-component{
@@ -326,6 +327,10 @@ md-toast.md-fail-toast-theme {
           line-height: 30px;
           background-color: rgba(225,225,225, 0.3);
           font-size: 1.3em;
+
+          @media screen and (min-height:1010px){
+            display: none;
+          }
 
           &:hover{
             background-color: rgba(225,225,225, 0.9);

@@ -14,8 +14,8 @@ export default function(num, infoNum){
 
         for(let i=0; i<num; i++){
             userDummy.push({email: 'user' + i + '@dummy.com', nickname: 'userNick' + i, password: 'user' + i});
-            listDummy.push({name: 'list' + i, detail: 'detail' + i, like: Math.random() * 100, songInfo:'', makerId: i+1, createdAt: _randomDate(new Date(2012, 0, 1), new Date())});
-            commentDummy.push({content: 'content' + i, like: Math.random() * 100, ListId: 1, writerId: i+1});
+            listDummy.push({name: 'list' + i, detail: 'detail' + i, like: _randomRange(0, 100), songInfo:'', makerId: _randomRange(1, num), createdAt: _randomDate(new Date(2012, 0, 1), new Date())});
+            commentDummy.push({content: 'content' + i, like: _randomRange(0, 100), listId: _randomRange(1, num), writerId: _randomRange(1, num), createdAt: _randomDate(new Date(2012, 0, 1), new Date())});
         }
 
         // insert user dummy
@@ -67,4 +67,8 @@ export default function(num, infoNum){
 
 function _randomDate(start, end) {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
+function _randomRange(start, end) {
+    return Math.floor( (Math.random() * (end - start + 1)) + start );
 }

@@ -18,7 +18,9 @@ export default (sequelize, DataTypes) => {
                         as: 'favor',
                         through: 'UserListFavor'
                     });
-                    List.hasMany(models.Comment)
+                    List.hasMany(models.Comment, {
+                        foreignKey: 'listId'
+                    })
                 }
             }
         }

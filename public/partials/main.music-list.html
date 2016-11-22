@@ -80,33 +80,34 @@
             <form id="comment-create" name="commentForm" layout="row">
                 <div id="comment-textarea">
                     <md-input-container class="md-block" md-no-float md-is-error="vm.commentContent.length > 100">
-    <textarea name="content" ng-model="vm.commentContent" rows="3" max-rows="3"
+    <textarea name="content" ng-model="vm.Comment.content" rows="3" max-rows="3"
               md-select-on-focus md-no-resize spellcheck="false" kr-input placeholder="댓글을 입력해 주세요"></textarea>
-                        <div id="comment-error" ng-class="{ isLimit: vm.commentContent.length > 100 }">
-                            {{ vm.commentContent.length }} / 100
+                        <div id="comment-error" ng-class="{ isLimit: vm.Comment.content.length > 100 }">
+                            {{ vm.Comment.content.length }} / 100
                         </div>
                     </md-input-container>
                 </div>
                 <div id="comment-submit-btn" layout="row">
-                    <md-button class="md-raised" ng-click="vm.commentSubmit()">등록</md-button>
+                    <md-button class="md-raised" ng-click="vm.submitComment()">등록</md-button>
                 </div>
             </form>
             <div id="comment-list-wrap" layout="column">
                 <div id="comment-order">
-                    <md-tabs md-selected="" ng-click="" md-border-bottom md-autoselect md-dynamic-height>
-                        <md-tab label="Date"></md-tab>
-                        <md-tab label="Like"></md-tab>
+                    <md-tabs md-border-bottom md-autoselect md-dynamic-height ng-init="order = 'createdAt'">
+                        <md-tab label="Date" ng-click="order = 'createAt'"></md-tab>
+                        <md-tab label="Like" ng-click="order = 'like'"></md-tab>
                     </md-tabs>
                 </div>
                 <div id="comment-list">
-                    <div dir-paginate="item in vm.Comment.commentList | itemsPerPage: vm.Comment.commentNumPerPage"
+                    <div dir-paginate="item in vm.Comment.commentList | itemsPerPage: vm.Comment.commentNumPerPage | orderBy: order:true"
                          pagination-id="comment">
                         <div class="comment-content" layout="row">
                             <div class="comment-nickname">
                                 {{ item.User.nickname }}
                             </div>
                             <div class="comment-content">
-                                {{ item.content }}
+                                {{ item.content }} <br>
+                                {{ item.createdAt | date:"yyyy. MM. dd.  H:mm" }}
                             </div>
                             <div class="comment-like">
                                 {{ item.like }}

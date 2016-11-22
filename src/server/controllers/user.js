@@ -8,7 +8,7 @@ export default {
                 passport.authenticate('local', (err, user) => {
                     const userData = {
                         id: user.id,
-                        name: user.nickname,
+                        nickname: user.nickname,
                         email: user.email,
                     };
 
@@ -31,7 +31,7 @@ export default {
             }
             const userData = {
                 id: user.id,
-                name: user.nickname,
+                nickname: user.nickname,
                 email: user.email,
                 list: user.listFavor
             };

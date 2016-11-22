@@ -1,6 +1,6 @@
 export default class listCtrl {
-    constructor($rootScope, $window, initList, Player, List, Session, Toast, Comment) {
-        angular.extend(this, {$window, initList, Player, List, Session, Toast, Comment});
+    constructor($rootScope, initList, Player, List, Session, Toast, Comment) {
+        angular.extend(this, {initList, Player, List, Session, Toast, Comment});
 
         // only first time
         if(this.List.musicList.length === 0){
@@ -11,7 +11,6 @@ export default class listCtrl {
         this.selectedList = this.List.selectedIndex;
         this.selectedSong = this.Player.status.listName == 'listDetail' ? this.Player.status.listIndex : null;
 
-        this.commentContent = "";
         this.isShowComment = true;
 
         $rootScope.$on('highlighting', (event, msg) => {
@@ -68,6 +67,7 @@ export default class listCtrl {
     changeListOrder(){
         this.List.musicList = [];
         this.Player.listDetail = [];
+        this.Comment.commentList = [];
         this.selectedList = null;
         this.selectedSong = null;
 
@@ -101,19 +101,17 @@ export default class listCtrl {
         }
         element.item.isLike = !element.item.isLike;
     }
-    toggleBottomSheet(){
-        if(!this.isShowBottomSheet){
-
-        }
-        else{
-
-        }
-        this.isShowBottomSheet = !this.isShowBottomSheet;
-    }
-    commentSubmit(){
-
+    submitComment(){
+        this.Comment.create({
+            content: this.Comment.content,
+            writerId: this.Session.user.id,
+            listId: this.Comment.listId
+        }).then(result => {
+            result.data.User = this.Session.user;
+            this.Comment.commentList.push(result.data);
+        })
     }
 }
 
-listCtrl.$inject = ['$rootScope', '$window', 'initList', 'Player', 'List', 'Session', 'Toast', 'Comment'];
+listCtrl.$inject = ['$rootScope', 'initList', 'Player', 'List', 'Session', 'Toast', 'Comment'];
 

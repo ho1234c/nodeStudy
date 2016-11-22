@@ -11,11 +11,13 @@ export default (sequelize, DataTypes) => {
                     Comment.belongsTo(models.User, {
                         foreignKey: 'writerId'
                     });
+                    Comment.belongsTo(models.List, {
+                        foreignKey: 'listId'
+                    });
                     Comment.belongsToMany(models.User,{
                         as: 'userFavor',
                         through: 'UserCommentFavor'
                     });
-                    Comment.belongsTo(models.List)
                 }
             }
         }

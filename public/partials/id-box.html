@@ -1,6 +1,6 @@
 <div id="id-box" layout="column">
     <md-content id="id-box-top" ng-if="vm.Session.isLogin" layout="row" layout-align="center center" flex="noshrink">
-        <div>{{ vm.Session.user.name }}</div>
+        <div>{{ vm.Session.user.nickname }}</div>
         <div id="logout-btn" ng-click="vm.logout()">로그아웃</div>
     </md-content>
     <md-content id="login-box" ng-if="!vm.Session.isLogin" layout="column" layout-padding>

@@ -3,14 +3,14 @@
         <a href="" ng-click="setCurrent(1)"><md-button class="md-raised">&laquo;</md-button></a>
     </li>
     <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
-        <a href="" ng-click="setCurrent(pagination.current - 1)"><md-button class="md-raised">&lsaquo;</md-button></a>
+        <a href="" ng-click="setCurrent(pagination.current - 1)"><md-button class="md-raised" aria-label="left"><i class="fa fa-angle-left" aria-hidden="true"></i></md-button></a>
     </li>
     <li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)">
         <a href="" ng-click="setCurrent(pageNumber)"><md-button ng-class="{'md-raised' : true, 'active' : pagination.current == pageNumber, disabled : pageNumber == '...'}" aria-label="pagination"><span ng-bind="pageNumber"></span></md-button></a>
     </li>
 
     <li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
-        <a href="" ng-click="setCurrent(pagination.current + 1)"><md-button class="md-raised">&rsaquo;</md-button></a>
+        <a href="" ng-click="setCurrent(pagination.current + 1)"><md-button class="md-raised" aria-label="right"><i class="fa fa-angle-right" aria-hidden="true"></i></md-button></a>
     </li>
     <li ng-if="boundaryLinks"  ng-class="{ disabled : pagination.current == pagination.last }">
         <a href="" ng-click="setCurrent(pagination.last)"><md-button class="md-raised">&raquo;</a>

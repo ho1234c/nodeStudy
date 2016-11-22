@@ -5,4 +5,5 @@ export default router => {
     router.post('/list', list.multerConfig, list.create);
     router.get('/list/song/:id', list.detail);
     router.post('/list/like/:id', list.like);
+    router.post('/comment', list.createComment);
 };

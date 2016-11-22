@@ -24,7 +24,7 @@ httpInterceptors.$inject = ['$q'];
 
 export class Session {
     constructor($http) {
-        this.guest = { id: null, name: 'Guest', email: '@', list: [] };
+        this.guest = { id: null, nickname: 'Guest', email: '@', list: [] };
         this.isLogin = false;
         this.user = {};
         this.init = $http.get('/session')
@@ -94,5 +94,4 @@ export class Toast {
         return q.promise;
     }
 }
-
 Toast.$inject = ['$mdToast', '$q'];
