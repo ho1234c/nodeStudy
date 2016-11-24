@@ -391,7 +391,7 @@ md-toast.md-fail-toast-theme {
             }
           }
 
-          .comment-content{
+          .comment{
             height: 60px;
 
             .comment-nickname{
@@ -400,6 +400,7 @@ md-toast.md-fail-toast-theme {
 
             .comment-content{
               flex-basis: 300px;
+              word-break: break-all;
             }
 
             .comment-like{

@@ -12,6 +12,7 @@ export default class listCtrl {
         this.selectedSong = this.Player.status.listName == 'listDetail' ? this.Player.status.listIndex : null;
 
         this.isShowComment = true;
+        this.commetOrderBy = 'createdAt';
 
         $rootScope.$on('highlighting', (event, msg) => {
             if(msg.index === -1){
@@ -38,9 +39,6 @@ export default class listCtrl {
     selectList(id, index){
         this.selectedSong = null;
 
-        // init status
-        this.Player.listDetail = [];
-        this.Comment.commentList = [];
         this.Comment.listId = id;
         this.Player.listDetailCurrentPage = 1;
         this.Player.status.musicListId = id;
@@ -56,12 +54,15 @@ export default class listCtrl {
                 const songInfo = JSON.parse(result.data.songInfo);
                 const comments = result.data.Comments;
 
+                this.Player.listDetail = [];
                 for(const index in songInfo){
                     this.Player.listDetail.push(songInfo[index]);
                 }
+                this.Comment.commentList = [];
                 for(const index in comments){
                     this.Comment.commentList.push(comments[index]);
                 }
+                this.changeCommentOrder();
             });
     }
     changeListOrder(){
@@ -102,6 +103,14 @@ export default class listCtrl {
         element.item.isLike = !element.item.isLike;
     }
     submitComment(){
+        if(this.Comment.content.length == 0){
+            this.Toast.fail('댓글을 입력해 주세요');
+            return;
+        }
+        else if(this.Comment.content.length > 90){
+            this.Toast.fail('90자 미만으로 입력해주세요');
+            return;
+        }
         this.Comment.create({
             content: this.Comment.content,
             writerId: this.Session.user.id,
@@ -109,7 +118,13 @@ export default class listCtrl {
         }).then(result => {
             result.data.User = this.Session.user;
             this.Comment.commentList.push(result.data);
+            this.changeCommentOrder();
         })
+    }
+    changeCommentOrder(){
+        this.Comment.commentList.sort((a, b) => {
+            return new Date(b[this.commetOrderBy]) - new Date(a[this.commetOrderBy]);
+        });
     }
 }
 
