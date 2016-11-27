@@ -15,14 +15,14 @@ export default function(app){
             db.User.findOne({where: {email: email}, include: {model: db.List, as: 'listFavor', attributes: ['id', 'name']}})
                 .then(user => {
                     if(!user){
-                        return done(null, false, {message: 'Can not found Email'})
+                        return done(null, false, {message: '이메일을 찾을 수 없습니다'})
                     }
                     user.authenticate(password, (err, isMatch) => {
                         if(err){
                             return done(err);
                         }
                         if(!isMatch){
-                            return done(null, false, {message: 'Password incorrect'});
+                            return done(null, false, {message: '비밀번호가 틀립니다'});
                         }
                         return done(null, user);
 

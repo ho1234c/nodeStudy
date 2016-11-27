@@ -297,17 +297,10 @@ md-toast.md-fail-toast-theme {
         #music-list-song{
           width: 450px;
         }
-
-
       }
 
       #right-song{
-        height: 490px;
         position: fixed;
-
-        #music-list-song{
-          height: 420px;
-        }
       }
 
       #right-comment{
@@ -395,11 +388,16 @@ md-toast.md-fail-toast-theme {
             height: 60px;
 
             .comment-nickname{
-              flex-basis: 100px;
+              flex-basis: 120px;
+
+              .comment-date{
+                margin-top: 10px;
+                color: rgb(204, 204, 204);
+              }
             }
 
             .comment-content{
-              flex-basis: 300px;
+              flex-basis: 280px;
               word-break: break-all;
             }
 

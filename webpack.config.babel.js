@@ -2,7 +2,10 @@ import webpack from 'webpack';
 import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 import path from 'path';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 export default {
+    devtool: 'eval',
     entry: './src/client/app.js',
     output: {
         path: path.join(__dirname, 'public'),
@@ -38,12 +41,19 @@ export default {
             }
         ]
     },
-    plugins: [
-        new ProgressBarPlugin(),
-        new webpack.OldWatchingPlugin(),
-        // new webpack.optimize.UglifyJsPlugin({
-        //     sourceMap: false,
-        //     mangle: false
-        // })
-    ]
+    plugins:(() => {
+        const plugins = [];
+
+        if (isProduction) {
+            plugins.push(
+                new webpack.optimize.UglifyJsPlugin({
+                    sourceMap: false,
+                    mangle: false
+                })
+            )
+        }
+        plugins.push(new ProgressBarPlugin(), new webpack.OldWatchingPlugin());
+
+        return plugins;
+    })()
 };

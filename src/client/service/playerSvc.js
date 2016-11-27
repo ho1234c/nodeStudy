@@ -1,5 +1,5 @@
 export default class PlayerSvc {
-    constructor($rootScope) {
+    constructor($rootScope, $window) {
         this.$rootScope = $rootScope;
         this.width = 240;
         this.height = 180;
@@ -35,6 +35,15 @@ export default class PlayerSvc {
             context = this[this.status.listName];
             this.videoid = context[this.status.videoIndex].videoId;
 
+        });
+
+        this.$rootScope.$watch(() => angular.element($window)[0].innerHeight, (newVal, oldVal) => {
+            if(newVal < 1000) {
+                this.listDetailNumPerPage = 10;
+            }
+            else {
+                this.listDetailNumPerPage = 7;
+            }
         });
     }
     playVideo(index, listname){
@@ -117,4 +126,4 @@ export default class PlayerSvc {
     }
 }
 
-PlayerSvc.$inject = ['$rootScope'];
+PlayerSvc.$inject = ['$rootScope', '$window'];

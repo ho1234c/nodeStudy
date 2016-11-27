@@ -69,8 +69,8 @@
             <div id="create-list">
                 <div id="music-list-song">
                     <md-list layout="column">
-                        <md-list-item dir-paginate="item in vm.List.createdList | itemsPerPage: vm.List.pageNum: 'createdList' track by $index"
-                                      current-page="vm.List.currentPage"
+                        <md-list-item dir-paginate="item in vm.List.createdList | itemsPerPage: vm.List.createdListNumPerPage: 'createdList' track by $index"
+                                      current-page="vm.List.createdListcurrentPage"
                                       ng-click="vm.playVideo(item.videoId)"
                                       ng-class="{ isSelected: vm.isSelectedSong == $index }"
                                       pagination-id="createdList">

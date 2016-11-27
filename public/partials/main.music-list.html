@@ -76,7 +76,7 @@
             </div>
         </div>
         <div id="right-comment" ng-class="{hidden : !vm.isShowComment}" ng-if="vm.Comment.listId">
-            <md-button id="comment-toggle-btn" ng-click="vm.isShowComment = !vm.isShowComment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></md-button>
+            <md-button id="comment-toggle-btn" ng-click="vm.isShowComment = !vm.isShowComment" aria-label="comment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></md-button>
             <form id="comment-create" name="commentForm" layout="row">
                 <div id="comment-textarea">
                     <md-input-container class="md-block" md-no-float md-is-error="vm.commentContent.length > 90">
@@ -91,7 +91,7 @@
                     <md-button class="md-raised" ng-click="vm.submitComment()">등록</md-button>
                 </div>
             </form>
-            <div id="comment-list-wrap" layout="column">
+            <div id="comment-list-wrap" layout="column" ng-if="vm.Comment.commentList.length">
                 <div id="comment-order">
                     <md-tabs md-border-bottom md-autoselect md-dynamic-height>
                         <md-tab label="Date" ng-click="vm.commetOrderBy = 'createdAt'; vm.changeCommentOrder()"></md-tab>
@@ -102,12 +102,12 @@
                     <div dir-paginate="item in vm.Comment.commentList | itemsPerPage: vm.Comment.commentNumPerPage"
                          pagination-id="comment">
                         <div class="comment" layout="row">
-                            <div class="comment-nickname">
+                            <div class="comment-nickname" layout="column" layout-align="center start">
                                 {{ item.User.nickname }}
+                                <div class="comment-date">{{ item.createdAt | date:"yyyy. MM. dd.  H:mm" }}</div>
                             </div>
                             <div class="comment-content">
-                                {{ item.content }} <br>
-                                {{ item.createdAt | date:"yyyy. MM. dd.  H:mm" }}
+                                {{ item.content }}
                             </div>
                             <div class="comment-like">
                                 {{ item.like }}

@@ -1,5 +1,5 @@
 export default class listCtrl {
-    constructor($rootScope, initList, Player, List, Session, Toast, Comment) {
+    constructor($rootScope, $window, initList, Player, List, Session, Toast, Comment) {
         angular.extend(this, {initList, Player, List, Session, Toast, Comment});
 
         // only first time
@@ -25,6 +25,12 @@ export default class listCtrl {
                 else {
                     this.selectedSong = null;
                 }
+            }
+        });
+
+        $rootScope.$watch(() => angular.element($window)[0].innerHeight, (newVal, oldVal) => {
+            if(newVal > 1000) {
+                this.isShowComment = true;
             }
         });
     }
@@ -103,7 +109,12 @@ export default class listCtrl {
         element.item.isLike = !element.item.isLike;
     }
     submitComment(){
-        if(this.Comment.content.length == 0){
+        if(!this.Session.isLogin){
+            this.Toast.fail('로그인해주세요');
+            return;
+        }
+
+        if(this.Comment.content.length === 0){
             this.Toast.fail('댓글을 입력해 주세요');
             return;
         }
@@ -119,7 +130,7 @@ export default class listCtrl {
             result.data.User = this.Session.user;
             this.Comment.commentList.push(result.data);
             this.changeCommentOrder();
-        })
+        });
     }
     changeCommentOrder(){
         this.Comment.commentList.sort((a, b) => {
@@ -128,5 +139,5 @@ export default class listCtrl {
     }
 }
 
-listCtrl.$inject = ['$rootScope', 'initList', 'Player', 'List', 'Session', 'Toast', 'Comment'];
+listCtrl.$inject = ['$rootScope', '$window', 'initList', 'Player', 'List', 'Session', 'Toast', 'Comment'];
 

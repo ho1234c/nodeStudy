@@ -6,11 +6,19 @@ chai.should();
 
 describe('Database test', () => {
     before(done => {
+        db.sequelize.sync()
+            .then(() => {
+                done()
+            })
+    });
+    // remove data used in test
+    after(() => {
         db.sequelize.sync({force: true})
             .then(() => {
                 done()
             })
     });
+
     it('create user', done => {
         db.User.create({email: 'mocha@mocha.com', nickname: 'mocha', password: 'mocha'})
             .then(() => {
@@ -37,7 +45,7 @@ describe('Database test', () => {
         let list = db.List.findOne();
         let comment = db.Comment.findOne();
 
-        promise.all([user, list, comment]).then((result) => {
+        promise.all([user, list, comment]).then(result => {
             user = result[0];
             list = result[1];
             comment = result[2];

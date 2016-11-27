@@ -25,8 +25,8 @@ export default class List {
         // created list config
         this.listForm = {};
         this.createdList = [];
-        this.pageNum = 7;
-        this.currentPage = 1;
+        this.createdListNumPerPage = 7;
+        this.createdListcurrentPage = 1;
     }
     loadList(count){
         const q = this.$q.defer();

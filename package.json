@@ -8,7 +8,7 @@
     "build": "babel src/server -d dist/server && webpack",
     "dev-start": "set NODE_ENV=localhost && babel src/server -d dist/server && node dist/server/index.js",
     "dev-start-db": "set NODE_ENV=localhost-db && babel src/server -d dist/server && node dist/server/index.js",
-    "test": "mocha --compilers js:babel-core/register"
+    "test": "set NODE_ENV=test && mocha --compilers js:babel-core/register"
   },
   "author": "",
   "license": "MIT",
