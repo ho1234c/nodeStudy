@@ -109,7 +109,11 @@
                             <div class="comment-content">
                                 {{ item.content }}
                             </div>
-                            <div class="comment-like">
+                            <div class="comment-like" layout="column" layout-align="center center">
+                                <div ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-click="vm.likeCommentToggle(this)">
+                                    <i ng-if="item.isLike" ng-class="hover ? 'fa fa-heart-o' : 'fa fa-heart'" aria-hidden="true"></i>
+                                    <i ng-if="!item.isLike" ng-class="hover ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
+                                </div>
                                 {{ item.like }}
                             </div>
                         </div>

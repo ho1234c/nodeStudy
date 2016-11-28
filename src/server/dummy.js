@@ -43,13 +43,14 @@ export default function(num, infoNum){
                 return db.Comment.bulkCreate(commentDummy);
             })
             .then(() => {
-                return Promise.all([db.User.findOne(), db.List.findAll()]);
+                return Promise.all([db.User.findOne(), db.List.findAll(), db.Comment.findAll()]);
             })
             .then(result => {
                 let user = result[0];
                 let list = result[1];
+                let comment = result[2];
 
-                return user.setListFavor(list);
+                return Promise.all(user.setListFavor(list), user.setCommentFavor(comment));
             })
             .then(() => {
                 clearInterval(interval);

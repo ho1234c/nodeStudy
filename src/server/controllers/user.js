@@ -33,7 +33,8 @@ export default {
                 id: user.id,
                 nickname: user.nickname,
                 email: user.email,
-                list: user.listFavor
+                list: user.listFavor,
+                comment: user.commentFavor
             };
 
             return req.logIn(userData, err => {
@@ -44,7 +45,6 @@ export default {
             });
         })(req, res, next)
     },
-
     logout(req, res){
         req.logout();
         res.sendStatus(200);

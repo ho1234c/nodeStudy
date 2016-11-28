@@ -90,8 +90,7 @@ export default class listCtrl {
             this.Toast.fail('로그인이 필요합니다');
             return;
         }
-
-        element.hover = !element.hover; // because when click to target, it fired mouse enter and mouse leave event.
+        element.hover = !element.hover; // because when click to target, it was fired mouse enter and mouse leave event.
         if(element.item.isLike){
             this.List.like(element.item.id, 'decrement')
                 .then(() => {
@@ -136,6 +135,28 @@ export default class listCtrl {
         this.Comment.commentList.sort((a, b) => {
             return new Date(b[this.commetOrderBy]) - new Date(a[this.commetOrderBy]);
         });
+    }
+    likeCommentToggle(element){
+        if(!this.Session.isLogin){
+            this.Toast.fail('로그인이 필요합니다');
+            return;
+        }
+        element.hover = !element.hover; // because when click to target, it was fired mouse enter and mouse leave event.
+        if(element.item.isLike){
+            this.Comment.like(element.item.id, 'decrement')
+                .then(() => {
+                    this.Session.user.comment = this.Session.user.comment.filter(obj => obj.id != element.item.id);
+                    element.item.like -= 1;
+                });
+        }
+        else{
+            this.Comment.like(element.item.id, 'increment')
+                .then(result => {
+                    this.Session.user.comment.push(element.item);
+                    element.item.like += 1;
+                });
+        }
+        element.item.isLike = !element.item.isLike;
     }
 }
 

@@ -403,6 +403,11 @@ md-toast.md-fail-toast-theme {
 
             .comment-like{
               flex-basis: 50px;
+
+              i{
+                color: $primary-color;
+                font-size: 1.3em;
+              }
             }
           }
 

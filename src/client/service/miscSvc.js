@@ -24,7 +24,7 @@ httpInterceptors.$inject = ['$q'];
 
 export class Session {
     constructor($http) {
-        this.guest = { id: null, nickname: 'Guest', email: '@', list: [] };
+        this.guest = { id: null, nickname: 'Guest', email: '@', list: [], comment: [] };
         this.isLogin = false;
         this.user = {};
         this.init = $http.get('/session')

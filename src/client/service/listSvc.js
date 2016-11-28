@@ -1,32 +1,32 @@
 export default class List {
     constructor($resource, $q, $rootScope, Upload, Session) {
-        angular.extend(this, {$q, $rootScope, Upload, Session});
+        angular.extend(this, { $q, Upload });
         this.listRequest = $resource('/list');
         this.songRequest = $resource('/list/song/:id', { id: '@id' });
-        this.likeRequest = $resource('/list/like/:id', { id: '@id', classify: '@classify' },
-            { post:
-                { method: 'POST'}
-            });
+        this.likeRequest = $resource('/list/like/:id', { id: '@id', classify: '@classify' }, { post: { method: 'POST'} });
         this.musicList = [];
+        this.order = 0; // 'md-selected directive' get index of 'tab'. (0: createdAt, 1: like)
 
-        this.$rootScope.$watchCollection(() => this.Session, (newVal, oldVal) => {
-            let listKey = this.Session.user.list.map(element => element.id);
-            for(const index in this.musicList) {
-                this.musicList[index].isLike = listKey.indexOf(this.musicList[index].id) != -1;
-            }});
-        this.$rootScope.$watchCollection(() => this.musicList, (newVal, oldVal) => {
-            let listKey = this.Session.user.list.map(element => element.id);
-            for(const index in newVal) {
-                this.musicList[index].isLike = listKey.indexOf(newVal[index].id) != -1;
-            }});
-
-        this.order = 0; // md-selected directive가 tab의 index를 가져옴. 0: createdAt, 1: like
-
-        // created list config
+        // config for created list
         this.listForm = {};
         this.createdList = [];
         this.createdListNumPerPage = 7;
         this.createdListcurrentPage = 1;
+
+        $rootScope.$watchCollection(() => Session, (newVal, oldVal) => {
+            let listKey = Session.user.list.map(element => element.id);
+
+            for(const index in this.musicList) {
+                this.musicList[index].isLike = listKey.indexOf(this.musicList[index].id) != -1;
+            }}
+        );
+        $rootScope.$watchCollection(() => this.musicList, (newVal, oldVal) => {
+            let listKey = Session.user.list.map(element => element.id);
+
+            for(const index in newVal) {
+                this.musicList[index].isLike = listKey.indexOf(newVal[index].id) != -1;
+            }}
+        );
     }
     loadList(count){
         const q = this.$q.defer();
@@ -85,10 +85,10 @@ export default class List {
                 url: '/list',
                 data: data
             }).then(result => {
-                    q.resolve(result);
-                }, err => {
-                    q.reject(err);
-                });
+                q.resolve(result);
+            }, err => {
+                q.reject(err);
+            });
         }
 
         return q.promise;

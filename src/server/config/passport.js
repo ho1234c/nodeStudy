@@ -12,7 +12,13 @@ export default function(app){
             passwordField: 'password'
         },
         (email, password, done) => {
-            db.User.findOne({where: {email: email}, include: {model: db.List, as: 'listFavor', attributes: ['id', 'name']}})
+            db.User.findOne({
+                where: { email: email },
+                include: [
+                    { model: db.List, as: 'listFavor', attributes: ['id', 'name'] },
+                    { model: db.Comment, as: 'commentFavor', attributes: ['id'] }
+                ]
+            })
                 .then(user => {
                     if(!user){
                         return done(null, false, {message: '이메일을 찾을 수 없습니다'})

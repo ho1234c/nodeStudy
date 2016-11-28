@@ -29,6 +29,7 @@ export default {
             });
         }
     },
+    //params.word, query.pageToken
     search(req, res){
         let searchUrl = config.youtube.url,
             params = {
@@ -36,7 +37,7 @@ export default {
             type: 'video',
             part: 'snippet',
             maxResults: 12,
-            q: encodeURIComponent(req.params.word), // there are issue that it can include korean in url.
+            q: encodeURIComponent(req.params.word), // Because URL can contain Korean
         };
 
         if(req.query.pageToken){
