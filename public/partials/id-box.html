@@ -28,7 +28,7 @@
             </div>
             <md-divider></md-divider>
         </div>
-        <div id="id-box-list-message" ng-if="!vm.Session.user.list.length">하트를 누르면 등록됩니다.</div>
+        <div id="id-box-list-message" ng-if="!vm.Session.user.list.length" layout="row" layout-align="center center">하트를 누르면 등록됩니다.</div>
         <md-button id="list-down-btn" aria-label="Down" ng-click="vm.listControl('down')"><i class="fa fa-caret-down" aria-hidden="true"></i></md-button>
     </md-content>
     <md-content id="id-box-song-wrap" ng-if="vm.Player.playlist.length">

@@ -128,6 +128,7 @@ export default class listCtrl {
         }).then(result => {
             result.data.User = this.Session.user;
             this.Comment.commentList.push(result.data);
+            this.Comment.content = "";
             this.changeCommentOrder();
         });
     }

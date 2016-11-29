@@ -6,6 +6,17 @@
                 <md-tab label="Like"></md-tab>
             </md-tabs>
         </div>
+        <div id="search-input-wrap">
+            <div id="search-input" layout="row">
+                <md-input-container id="input-container" md-no-float>
+                    <input ng-model="vm.Search.searchWord" placeholder="검색어를 입력해주세요" ng-keyup="$event.keyCode == 13 && vm.search()">
+                </md-input-container>
+                <div id="search-button" ng-click="" layout="row" layout-align="center center">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </div>
+            </div>
+            </span>
+        </div>
         <div id="music-list-wrap">
             <md-list layout="column">
                 <md-list-item ng-repeat="item in vm.List.musicList track by $index"
@@ -43,7 +54,6 @@
             <div layout="row" layout-align="center center"><md-button class="watch-more" ng-click="vm.watchMore()">더보기</md-button></div>
         </div>
     </div>
-    <!--<div id="search-bar"></div>-->
 </div>
 <div id="content-right" layout="column">
     <div id="right-wrap">
@@ -102,11 +112,11 @@
                     <div dir-paginate="item in vm.Comment.commentList | itemsPerPage: vm.Comment.commentNumPerPage"
                          pagination-id="comment">
                         <div class="comment" layout="row">
-                            <div class="comment-nickname" layout="column" layout-align="center start">
+                            <div class="comment-nickname" layout="column" layout-align="center center">
                                 {{ item.User.nickname }}
                                 <div class="comment-date">{{ item.createdAt | date:"yyyy. MM. dd.  H:mm" }}</div>
                             </div>
-                            <div class="comment-content">
+                            <div class="comment-content" layout="column" layout-align="center start">
                                 {{ item.content }}
                             </div>
                             <div class="comment-like" layout="column" layout-align="center center">
