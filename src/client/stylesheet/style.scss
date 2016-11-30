@@ -155,12 +155,12 @@ md-toast.md-fail-toast-theme {
 
         #search-input-wrap{
           position: fixed;
-          width: 300px;
+          width: 340px;
           z-index: 10;
-          margin-left: 190px;
+          margin-left: 150px;
 
           #search-input{
-            width: 300px;
+            width: 340px;
             float: right;
 
             md-input-container{
@@ -169,7 +169,7 @@ md-toast.md-fail-toast-theme {
           }
 
           input{
-            padding: 0 40px 10px 10px;
+            padding: 0 40px 20px 10px;
           }
 
           #search-button{
@@ -182,7 +182,7 @@ md-toast.md-fail-toast-theme {
 
           #input-container{
             position: absolute;
-            width: 300px;
+            width: 340px;
           }
         }
 
@@ -703,6 +703,7 @@ md-toast.md-fail-toast-theme {
     }
 
     #id-box-list-message{
+      margin-top: auto;
       color: rgba(158,158,158,0.4);
     }
 

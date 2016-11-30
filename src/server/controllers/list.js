@@ -6,12 +6,14 @@ import path from 'path';
 import Promise from 'bluebird';
 
 export default {
-    //query.count, query.order
+    //query.count, query.order, query.word
     load(req, res){
-        const count = req.query.count || 0;
-        const order = req.query.order || 'createdAt';
+        const count = req.query.count || 0,
+              order = req.query.order || 'createdAt',
+              word = req.query.word || "";
 
         db.List.findAll({
+            where: { name: { $like: '%' + word + '%' } },
             attributes: ['id', 'name', 'detail', 'like', 'createdAt', 'thumbnail'],
             order: [[order, 'DESC']],
             offset: count,
@@ -39,6 +41,7 @@ export default {
     },
     create(req, res){
         let data = req.body;
+
         if(req.file && req.file.filename){
             data.thumbnail = req.file.filename;
         }
@@ -79,12 +82,14 @@ export default {
     },
     //params.id, query.classify
     likeComment(req, res){
+        const classify = req.query.classify;
+
         Promise.all([db.Comment.findOne({where: {id: req.params.id}}), db.User.findOne({where: {id: req.user.id}})])
             .then(data => {
-                if(req.query.classify == 'increment'){
+                if(classify == 'increment'){
                     return Promise.all([data[0].increment('like'), data[1].addCommentFavor(data[0])])
                 }
-                else if(req.query.classify == 'decrement'){
+                else if(classify == 'decrement'){
                     return Promise.all([data[0].decrement('like'), data[1].removeCommentFavor(data[0])])
                 }
             })

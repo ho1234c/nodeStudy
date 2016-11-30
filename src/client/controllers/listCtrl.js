@@ -34,8 +34,11 @@ export default class listCtrl {
             }
         });
     }
-    watchMore(order){
-        this.List.loadList(this.List.musicList.length, order)
+    loadList(watchMore){
+        if(!watchMore){
+            this.List.musicList = [];
+        }
+        this.List.load(this.List.musicList.length)
             .then(result => {
                 for(const index in result.data){
                     this.List.musicList.push(result.data[index]);
@@ -78,7 +81,7 @@ export default class listCtrl {
         this.selectedList = null;
         this.selectedSong = null;
 
-        this.List.loadList()
+        this.List.load()
             .then(result => {
                 for(const index in result.data){
                     this.List.musicList.push(result.data[index]);
@@ -158,6 +161,17 @@ export default class listCtrl {
                 });
         }
         element.item.isLike = !element.item.isLike;
+    }
+    searchList(){
+        if(!this.List.searchWord){
+            this.List.musicList = [];
+        }
+        this.List.load(this.List.musicList.length)
+            .then(result => {
+                for(const index in result.data){
+                    this.List.musicList.push(result.data[index]);
+                }
+            });
     }
 }
 

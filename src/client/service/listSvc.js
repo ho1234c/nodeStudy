@@ -6,6 +6,7 @@ export default class List {
         this.likeRequest = $resource('/list/like/:id', { id: '@id', classify: '@classify' }, { post: { method: 'POST'} });
         this.musicList = [];
         this.order = 0; // 'md-selected directive' get index of 'tab'. (0: createdAt, 1: like)
+        this.searchWord = "";
 
         // config for created list
         this.listForm = {};
@@ -28,7 +29,7 @@ export default class List {
             }}
         );
     }
-    loadList(count){
+    load(count){
         const q = this.$q.defer();
         let order;
 
@@ -44,7 +45,8 @@ export default class List {
         }
         this.listRequest.get({
             count: count,
-            order: order
+            order: order,
+            word: this.searchWord
         }, result => {
             q.resolve(result);
         }, err => {
