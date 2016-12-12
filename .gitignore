@@ -6,3 +6,4 @@ public/*.map
 *.svg
 *.ttf
 public/thumbnails
+!public/thumbnails/default.png
