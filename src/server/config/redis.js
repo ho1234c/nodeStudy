@@ -3,7 +3,7 @@ import redis from 'redis';
 import connectRedis from 'connect-redis'
 import config from '.';
 
-export default function (app){
+export default function(app) {
     const redisStore = connectRedis(session);
     const redisClient = redis.createClient();
 

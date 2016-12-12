@@ -6,7 +6,7 @@ import config from '.';
 import redisConfig from './redis';
 import passportConfig from './passport';
 
-export default function (app) {
+export default function(app) {
 
     // set view, static
     app.set('views', `${config.cwd}/views`);

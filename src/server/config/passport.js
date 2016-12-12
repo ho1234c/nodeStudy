@@ -3,7 +3,7 @@ import LocalStrategy from 'passport-local';
 import db from '../models'
 
 
-export default function(app){
+export default function(app) {
     app.use(passport.initialize());
     app.use(passport.session());
 
@@ -36,7 +36,7 @@ export default function(app){
                 })
         }
     ));
-
+    // serialize시 한커번에 user data를 세션에 저장.
     passport.serializeUser((user, done) => {
         done(null, user);
     });
