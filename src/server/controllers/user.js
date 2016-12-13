@@ -10,6 +10,8 @@ export default {
                         id: user.id,
                         nickname: user.nickname,
                         email: user.email,
+                        list: user.listFavor,
+                        comment: user.commentFavor
                     };
 
                     req.logIn(userData, err => {
