@@ -1,6 +1,6 @@
 export default class idBoxCtrl {
-    constructor(Player, User, Session, List, Search, Toast, $scope, $state) {
-        angular.extend(this, {Player, User, Session, List, Search, Toast, $scope, $state});
+    constructor(Player, User, Session, List, Search, Toast, $scope, $state, $mdSidenav) {
+        angular.extend(this, {Player, User, Session, List, Search, Toast, $scope, $state, $mdSidenav});
 
         this.selectedList = null;
         this.selectedSong = null;
@@ -81,6 +81,22 @@ export default class idBoxCtrl {
             this.Session.set(data);
         });
     }
+    toggleIdBox(){
+        if(this.$mdSidenav('id-box').isOpen()){
+            angular.element(angular.element(document.querySelectorAll('#id-box-wrap'))).css('position', 'fixed');
+            this.$mdSidenav('id-box').close()
+                .then(() => {
+                    angular.element(angular.element(document.querySelectorAll('#id-box-open-btn'))).css('right', '20px');
+                });
+        }
+        else{
+            angular.element(angular.element(document.querySelectorAll('#id-box-wrap'))).css('position', 'inherit');
+            this.$mdSidenav('id-box').open()
+                .then(() => {
+                    angular.element(angular.element(document.querySelectorAll('#id-box-open-btn'))).css('right', '240px');
+                });
+        }
+    }
 }
 
-idBoxCtrl.$inject = ['Player', 'User', 'Session', 'List', 'Search', 'Toast', '$scope', '$state'];
+idBoxCtrl.$inject = ['Player', 'User', 'Session', 'List', 'Search', 'Toast', '$scope', '$state', '$mdSidenav'];

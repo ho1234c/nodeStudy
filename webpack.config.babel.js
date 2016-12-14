@@ -5,7 +5,7 @@ import path from 'path';
 const isProduction = process.env.NODE_ENV === 'production';
 
 export default {
-    devtool: 'eval',
+    devtool: (() => { return isProduction ? 'source-map' : 'eval' })(),
     entry: './src/client/app.js',
     output: {
         path: path.join(__dirname, 'public'),
@@ -47,8 +47,9 @@ export default {
         if (isProduction) {
             plugins.push(
                 new webpack.optimize.UglifyJsPlugin({
-                    sourceMap: false,
-                    mangle: false
+                    compressor: {
+                        warnings: false
+                    }
                 })
             )
         }
