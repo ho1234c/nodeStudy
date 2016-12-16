@@ -2,13 +2,13 @@ import express from 'express';
 import nunjucks from 'nunjucks';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import logger from 'morgan';
 import config from '.';
 import redisConfig from './redis';
 import passportConfig from './passport';
 
 export default function(app) {
-
-    // set view, static
+    // set view, static, logger
     app.set('views', `${config.cwd}/views`);
     app.set('view engine', 'html');
     nunjucks.configure('views', {
@@ -20,6 +20,7 @@ export default function(app) {
         }
     });
     app.use(express.static(config.path.public));
+    app.use(logger('dev'));
 
     // set Parsers
     app.use(bodyParser.json());

@@ -12,9 +12,7 @@ db.sequelize.sync({ force: config.env == 'localhost-db' })
         if (config.env == 'localhost-db'){
             return dummy(20, 15);
         }
-        else{
-            return;
-        }
+        return;
     })
     .then(message => {
         if(message) console.log(message);
