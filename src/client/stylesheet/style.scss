@@ -113,12 +113,16 @@ body{
 }
 
 md-toast.md-success-toast-theme {
+  position: fixed;
+  right: 10px;
   .md-toast-content {
     background-color: rgb(74, 87, 238);
   }
 }
 
 md-toast.md-fail-toast-theme {
+  position: fixed;
+  right: 10px;
   .md-toast-content {
     background-color: $primary-color;
   }

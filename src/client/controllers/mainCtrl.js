@@ -1,5 +1,5 @@
 export default class mainCtrl {
-    constructor(Session, $timeout, $scope, $rootScope, Toast) {
+    constructor(Session, $scope, $rootScope, $mdSidenav, Toast) {
         $scope.selectedIndex = 0;
 
         // for binding ui-router state to md-tabs
@@ -9,6 +9,10 @@ export default class mainCtrl {
                     Toast.fail('로그인이 필요합니다.')
                         .then(() => {
                             $scope.selectedIndex = 0;
+                            $mdSidenav('id-box').open();
+                        })
+                        .then(() => {
+                            angular.element(angular.element(document.querySelectorAll('#id-box-open-btn'))).css('right', '240px');
                         });
                 }
                 else{
@@ -19,4 +23,4 @@ export default class mainCtrl {
     }
 }
 
-mainCtrl.$inject = ['Session', '$timeout', '$scope', '$rootScope', 'Toast'];
+mainCtrl.$inject = ['Session', '$scope', '$rootScope', '$mdSidenav', 'Toast'];

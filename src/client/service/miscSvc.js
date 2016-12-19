@@ -67,7 +67,7 @@ export class Toast {
             this.simple
                 .textContent(message)
                 .theme("success-toast")
-                .parent(angular.element(document.querySelector('#id-box'))))
+                .parent(angular.element(document.querySelector('#wrap'))))
             .then(() => {
                 q.resolve();
             })
@@ -84,7 +84,7 @@ export class Toast {
             this.simple
                 .textContent(message)
                 .theme("fail-toast")
-                .parent(angular.element(document.querySelector('#id-box'))))
+                .parent(angular.element(document.querySelector('#wrap'))))
             .then(() => {
                 q.resolve();
             })
