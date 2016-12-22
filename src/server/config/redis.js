@@ -14,10 +14,10 @@ export default function(app) {
     });
 
     app.use(session({
-        secret: config.redis.secretKey,
+        secret: config.db.redis.secretKey,
         store: new redisStore({
-            host: config.redis.host,
-            port: config.redis.port,
+            host: config.db.redis.host,
+            port: config.db.redis.port,
             client: redisClient,
         }),
         saveUninitialized: false,

@@ -1,7 +1,8 @@
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
+import FacebookStrategy from 'passport-facebook';
 import db from '../models'
-
+import config from '.';
 
 export default function(app) {
     app.use(passport.initialize());
@@ -36,11 +37,38 @@ export default function(app) {
                 })
         }
     ));
+    passport.use(new FacebookStrategy({
+            clientID: config.api.facebook.clientID,
+            clientSecret: config.api.facebook.clientSecret,
+            callbackURL: '/user/login/facebook/callback',
+            profileFields: ['email']
+        }, (accessToken, refreshToken, profile, done) => {
+            const email = profile.emails[0].value;
+
+            db.User.findOne({
+                where: { email: email },
+                include: [
+                    { model: db.List, as: 'listFavor', attributes: ['id', 'name'] },
+                    { model: db.Comment, as: 'commentFavor', attributes: ['id'] }
+                ]
+            })
+                .then(user => {
+                    if(!user){
+                        db.User.create({ email: email, nickname: email.split('@')[0] })
+                            .then(user => {
+                                done(null, user);
+                            })
+                    }
+                    else{
+                        done(null, user);
+                    }
+                });
+        })
+    );
     // serialize시 한커번에 user data를 세션에 저장.
     passport.serializeUser((user, done) => {
         done(null, user);
     });
-
     passport.deserializeUser((user, done) => {
         done(null, user);
     });

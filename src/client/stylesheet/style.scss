@@ -684,6 +684,19 @@ md-toast.md-fail-toast-theme {
     }
   }
 
+  #facebook-login-btn{
+    background-color: #4969F0;
+    width: 190px;
+    margin-top: 10px;
+    i{
+      font-size: 18px;
+    }
+
+    &:hover{
+      background-color: #2d4ac0;
+    }
+  }
+
   #logout-btn{
     cursor: pointer;
     margin-left: auto;

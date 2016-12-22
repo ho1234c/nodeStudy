@@ -9,6 +9,7 @@ export default class Comment {
         this.content = ""; // to keep data when user moves the tab.
 
         $rootScope.$watchCollection(() => Session, (newVal, oldVal) => {
+            if(!Session.user.comment) return;
             let commentKey = Session.user.comment.map(element => element.id);
 
             for(const index in this.commentList) {
@@ -16,6 +17,7 @@ export default class Comment {
             }}
         );
         $rootScope.$watchCollection(() => this.commentList, (newVal, oldVal) => {
+            if(!Session.user.comment) return;
             let commentKey = Session.user.comment.map(element => element.id);
 
             for(const index in newVal) {

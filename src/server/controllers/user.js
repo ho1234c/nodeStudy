@@ -47,6 +47,12 @@ export default {
             });
         })(req, res, next)
     },
+    loginFromFacebook(req, res, next){
+        passport.authenticate('facebook', { scope: 'email' })(req, res, next);
+    },
+    facebookCallback(req, res, next){
+        passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/' })(req, res, next);
+    },
     logout(req, res){
         req.logout();
         res.sendStatus(200);

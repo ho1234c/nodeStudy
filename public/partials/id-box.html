@@ -15,6 +15,7 @@
                     <input ng-model="vm.loginForm.password" type="password" name="password" placeholder="비밀번호">
                 </div>
                 <md-button id="login-submit-btn" class="md-raised md-primary" type="submit">로그인</md-button>
+                <md-button ng-click="vm.facebookLogin()" id="facebook-login-btn" class="md-raised md-primary"><i class="fa fa-facebook-official" aria-hidden="true"></i> 페이스북으로 로그인</md-button>
             </form>
         </md-content>
         <div id="player-wrap" ng-if="vm.Player.videoid">

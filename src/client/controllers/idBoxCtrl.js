@@ -1,6 +1,6 @@
 export default class idBoxCtrl {
-    constructor(Player, User, Session, List, Search, Toast, $scope, $state, $mdSidenav) {
-        angular.extend(this, {Player, User, Session, List, Search, Toast, $scope, $state, $mdSidenav});
+    constructor(Player, User, Session, List, Search, Toast, $scope, $state, $mdSidenav, $window) {
+        angular.extend(this, {Player, User, Session, List, Search, Toast, $scope, $state, $mdSidenav, $window});
 
         this.selectedList = null;
         this.selectedSong = null;
@@ -97,6 +97,9 @@ export default class idBoxCtrl {
                 });
         }
     }
+    facebookLogin(){
+        this.$window.location.assign('/user/login/facebook');
+    }
 }
 
-idBoxCtrl.$inject = ['Player', 'User', 'Session', 'List', 'Search', 'Toast', '$scope', '$state', '$mdSidenav'];
+idBoxCtrl.$inject = ['Player', 'User', 'Session', 'List', 'Search', 'Toast', '$scope', '$state', '$mdSidenav', '$window'];

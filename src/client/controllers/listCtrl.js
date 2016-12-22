@@ -1,6 +1,6 @@
 export default class listCtrl {
     constructor($rootScope, $window, initList, Player, List, Session, Toast, Comment) {
-        angular.extend(this, {initList, Player, List, Session, Toast, Comment});
+        angular.extend(this, { initList, Player, List, Session, Toast, Comment});
 
         // only first time
         if(this.List.musicList.length === 0){

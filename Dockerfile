@@ -18,3 +18,5 @@ MAINTAINER ho1234c <ho1234c@gmail.com>
 # cd /home/withSong_2.0
 # export NODE_ENV=localhost-db
 # export PORT=80
+
+# npm run build

@@ -7,7 +7,7 @@ export default (sequelize, DataTypes) => {
             id : {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
             email: {type: DataTypes.STRING, allowNull: false},
             nickname: {type: DataTypes.STRING, allowNull: false},
-            password: {type: DataTypes.VIRTUAL, allowNull: false},
+            password: {type: DataTypes.VIRTUAL, allowNull: true},
             password_hash:{type: DataTypes.STRING}
         },
         {
@@ -53,7 +53,9 @@ export default (sequelize, DataTypes) => {
 const hashPasswordHook = (user, options, callback) => {
     let userList = user.length ? user : [user];
     Promise.all(userList.map(userObj => {
-        return hashPromise(userObj.get('password'), 10);
+        const pwd = userObj.get('password');
+        if(!pwd) return null;
+        return hashPromise(pwd, 10);
     }))
         .then(hash => {
             for(let i=0; i<userList.length; i++){
@@ -71,4 +73,4 @@ const hashPromise = (password, salt) => {
             resolve(hash)
         })
     })
-}
+};

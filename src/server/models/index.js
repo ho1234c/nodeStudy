@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import config from '../config/index'
 
-const sequelize = new Sequelize(config.localhost.uri, {logging: false});
+const sequelize = new Sequelize(config.db[config.env], {logging: false});
 
 let db = [];
 
