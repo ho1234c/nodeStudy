@@ -31,9 +31,9 @@ export default {
     },
     //params.word, query.pageToken
     search(req, res){
-        let searchUrl = config.youtube.url,
+        let searchUrl = config.api.youtube.url,
             params = {
-            key: config.youtube.key,
+            key: config.api.youtube.key,
             type: 'video',
             part: 'snippet',
             maxResults: 12,

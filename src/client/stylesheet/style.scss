@@ -128,27 +128,22 @@ md-toast.md-fail-toast-theme {
   }
 }
 
-#wrap{
-  display: flex;
-  justify-content: center;
-}
-
 #main-wrap{
-  flex-basis: 940px;
+  width: 940px;
 }
 
 #id-box-wrap{
-  flex-basis: 240px;
+  width: 240px;
   position: fixed;
 }
 
 #content-wrapper{
-  flex-basis: 940px;
+  width: 940px;
   background-color: white;
 
   #content{
     #content-left{
-      flex-basis: 490px;
+      width: 490px;
       padding-top: 50px;
 
       #left-list{
@@ -195,6 +190,7 @@ md-toast.md-fail-toast-theme {
 
         #music-list-wrap{
           padding-top: 48px;
+          width: 490px;
 
           md-list-item > .md-button{
             padding: 0;
@@ -205,7 +201,7 @@ md-toast.md-fail-toast-theme {
           height: 115px;
 
           .list-img{
-            flex-basis: 130px;
+            width: 130px;
 
             .img-wrap{
               width: 120px;
@@ -222,7 +218,7 @@ md-toast.md-fail-toast-theme {
           }
 
           .list-info{
-            flex-basis: 305px;
+            width: 305px;
 
             .info-wrapper > * {
               line-height: 2em
@@ -234,7 +230,7 @@ md-toast.md-fail-toast-theme {
           }
 
           .list-icon{
-            flex-basis: 55px;
+            width: 55px;
             z-index: 5;
             font-size: 1.5em;
 
@@ -324,7 +320,7 @@ md-toast.md-fail-toast-theme {
     }
 
     #content-right{
-      flex-basis: 450px;
+      width: 450px;
 
       #right-wrap{
 
@@ -355,7 +351,7 @@ md-toast.md-fail-toast-theme {
           background-color: rgba(225,225,225, 0.3);
           font-size: 1.3em;
 
-          @media screen and (min-height:1010px){
+          @media screen and (min-height:1000px){
             display: none;
           }
 
@@ -378,7 +374,7 @@ md-toast.md-fail-toast-theme {
           }
 
           #comment-textarea{
-            flex-basis: 360px;
+            width: 360px;
 
             #comment-error{
               float: right;
@@ -397,7 +393,7 @@ md-toast.md-fail-toast-theme {
           }
 
           #comment-submit-btn{
-            flex-basis: 60px;
+            width: 60px;
             margin-left: 15px;
             height: 80px;
           }
@@ -422,7 +418,7 @@ md-toast.md-fail-toast-theme {
             height: 60px;
 
             .comment-nickname{
-              flex-basis: 120px;
+              width: 120px;
 
               .comment-date{
                 margin-top: 10px;
@@ -431,12 +427,12 @@ md-toast.md-fail-toast-theme {
             }
 
             .comment-content{
-              flex-basis: 280px;
+              width: 280px;
               word-break: break-all;
             }
 
             .comment-like{
-              flex-basis: 50px;
+              width: 50px;
 
               i{
                 color: $primary-color;
@@ -506,7 +502,9 @@ md-toast.md-fail-toast-theme {
           }
 
           #info, #info *{
-            flex-grow: 1;
+            -webkit-flex: 1 auto;
+            -ms-flex: 1 auto;
+            flex: 1 auto;
           }
 
           .md-errors-spacer{
@@ -528,8 +526,10 @@ md-toast.md-fail-toast-theme {
           }
         }
         #create-list{
-          flex-basis: 480px;
-          flex-grow: 3;
+          width: 480px;
+          -webkit-flex: 3 auto;
+          -ms-flex: 3 auto;
+          flex: 3 auto;
 
           .song-component{
             @media screen and (max-height:768px){
@@ -559,8 +559,7 @@ md-toast.md-fail-toast-theme {
         }
 
         #submit{
-          flex-basis: 50px;
-          flex-grow: 1;
+          height: 50px;
           padding: 0 20px;
         }
       }
@@ -685,7 +684,7 @@ md-toast.md-fail-toast-theme {
   }
 
   #facebook-login-btn{
-    background-color: #4969F0;
+    background-color: #49639F;
     width: 190px;
     margin-top: 10px;
     i{
@@ -707,7 +706,7 @@ md-toast.md-fail-toast-theme {
   }
 
   #id-box-top{
-    flex-basis: 30px;
+    min-height: 30px;
     max-height: 50px;
     overflow-y: hidden;
     padding: 0 10px;
@@ -715,7 +714,7 @@ md-toast.md-fail-toast-theme {
   }
 
   #id-box-list{
-    flex-basis: 170px;
+    height: 170px;
     overflow-y: auto;
     justify-content: start;
 
@@ -742,11 +741,28 @@ md-toast.md-fail-toast-theme {
 
     .id-box-list-component{
       height: 25px;
+      padding: 0 10px;
 
       &:hover{
         background-color: rgba(158,158,158,0.2);
         cursor: pointer;
         outline: none;
+      }
+
+      .list-info{
+        margin-left: auto;
+        margin-right: -15px;
+      }
+
+      .list-icon {
+        z-index: 5;
+        margin-left: auto;
+        font-size: 1.2em;
+        transition: color 0.15s;
+
+        &:hover {
+          color: $primary-color;
+        }
       }
     }
   }
@@ -764,11 +780,18 @@ md-toast.md-fail-toast-theme {
   #player-wrap{
     width: 240px;
     height: 180px;
-    flex-basis: 180px;
   }
 
   #id-box-song-wrap{
-    flex-basis: 440px;
+    height: 470px;
+
+    #id-box-title{
+      font-size: 13px;
+      color: black;
+      padding: 0 10px;
+      background-color: rgba(225, 225, 225, 0.4);
+      min-height: 30px;
+    }
 
     #id-box-song{
       overflow: hidden;
@@ -798,6 +821,7 @@ md-toast.md-fail-toast-theme {
 
       }
     }
+  
     dir-pagination-controls > ul{
       margin-top: 10px;
     }

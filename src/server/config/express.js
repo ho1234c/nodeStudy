@@ -6,6 +6,8 @@ import logger from 'morgan';
 import config from '.';
 import redisConfig from './redis';
 import passportConfig from './passport';
+import favicon from 'serve-favicon';
+import path from 'path';
 
 export default function(app) {
     // set view, static, logger
@@ -26,6 +28,7 @@ export default function(app) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cookieParser());
+    app.use(favicon(path.join('public', 'favicon.ico')));
 
     // set session
     redisConfig(app);

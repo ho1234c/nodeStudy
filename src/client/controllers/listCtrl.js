@@ -103,7 +103,7 @@ export default class listCtrl {
         }
         else{
             this.List.like(element.item.id, 'increment')
-                .then(result => {
+                .then(() => {
                     this.Session.user.list.push(element.item);
                     element.item.like += 1;
                 });

@@ -2,7 +2,7 @@ export default class idBoxCtrl {
     constructor(Player, User, Session, List, Search, Toast, $scope, $state, $mdSidenav, $window) {
         angular.extend(this, {Player, User, Session, List, Search, Toast, $scope, $state, $mdSidenav, $window});
 
-        this.selectedList = null;
+        this.selectedListName = null;
         this.selectedSong = null;
         this.listStart = 0;
         this.listEnd = 4;
@@ -23,22 +23,20 @@ export default class idBoxCtrl {
             }
         });
     }
-    selectList(id){
+    selectList(item){
         this.selectedSong = null;
         this.Player.playlist = [];
-        this.Player.status.userListId = id;
+        this.Player.status.userListId = item.id;
         this.Player.highlighting(this.Player.status.listIndex, this.Player.status.listName);
+        this.selectedListName = item.name;
 
-        this.List.loadSong(id)
+        this.List.loadSong(item.id)
             .then(result => {
                 const songInfo = JSON.parse(result.data.songInfo);
                 for(const index in songInfo){
                     this.Player.playlist.push(songInfo[index]);
                 }
             });
-    }
-    highlighting(index){
-        this.selectedList = index;
     }
     listControl(dir){
         if(dir == 'up' && this.listStart > 0){
@@ -99,6 +97,16 @@ export default class idBoxCtrl {
     }
     facebookLogin(){
         this.$window.location.assign('/user/login/facebook');
+    }
+    removeList(id, index){
+        this.List.like(id, 'decrement')
+            .then(() => {
+                this.Session.user.list.splice(index, 1);
+                this.Toast.success('제거되었습니다.');
+            })
+            .catch(() => {
+                this.Toast.fail('목록을 제거하는데 실패했습니다.');
+            })
     }
 }
 
