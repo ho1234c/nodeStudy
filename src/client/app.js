@@ -1,8 +1,8 @@
 import angular      from 'angular';
 
-import 'angular-ui-router';
-import 'angular-sanitize';
 import 'angular-resource';
+import 'angular-sanitize';
+import 'angular-ui-router';
 import 'angular-material';
 import 'angular-utils-pagination';
 import 'angular-messages';

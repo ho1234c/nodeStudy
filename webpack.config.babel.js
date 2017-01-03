@@ -51,7 +51,7 @@ export default {
                         warnings: false
                     }
                 })
-            )
+            );
         }
         plugins.push(new ProgressBarPlugin(), new webpack.OldWatchingPlugin());
 
