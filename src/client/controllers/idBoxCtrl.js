@@ -106,7 +106,7 @@ export default class idBoxCtrl {
             })
             .catch(() => {
                 this.Toast.fail('목록을 제거하는데 실패했습니다.');
-            })
+            });
     }
 }
 

@@ -49,9 +49,10 @@ export default {
                 new webpack.optimize.UglifyJsPlugin({
                     compressor: {
                         warnings: false
-                    }
+                    },
+                    mangle: false
                 })
-            )
+            );
         }
         plugins.push(new ProgressBarPlugin(), new webpack.OldWatchingPlugin());
 
