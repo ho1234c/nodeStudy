@@ -49,7 +49,8 @@ export default {
                 new webpack.optimize.UglifyJsPlugin({
                     compressor: {
                         warnings: false
-                    }
+                    },
+                    mangle: false
                 })
             );
         }
