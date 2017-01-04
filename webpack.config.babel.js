@@ -13,7 +13,7 @@ export default {
     },
     resolve: {
         root: [
-            path.resolve('./src/client/node_modules'),
+            path.resolve('./node_modules'),
         ]
     },
     module:{

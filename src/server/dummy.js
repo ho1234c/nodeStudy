@@ -4,7 +4,26 @@ import Promise from 'bluebird';
 import _ from 'lodash'
 import {findNode} from './lib/index'
 
-export default function(num, infoNum){
+// usage: node dummy.js {number of dummy} {number of song}
+if(!(process.argv[2] && process.argv[3])){
+    console.log('please enter two integer {number of dummy} {number of song}');
+}
+else{
+    db.sequelize.sync({ force: true })
+        .then(() => {
+            return dummy(process.argv[2], process.argv[3]);
+        })
+        .then(msg => {
+            return console.log(msg);
+        })
+        .catch(err => {
+            return console.log(err);
+        });
+}
+
+
+
+function dummy(num, infoNum){
     return new Promise((resolve, reject) => {
         const url = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyAYJcoUSoEpehRGo-0XYHd4zafkiSmt9Wk&type=video&part=snippet&q=%EC%9E%84%EC%B0%BD%EC%A0%95&maxResults=' + infoNum;
         const userDummy = [], listDummy = [], commentDummy = [];
@@ -60,7 +79,7 @@ export default function(num, infoNum){
             .catch(err => {
                 clearInterval(interval);
                 console.log('.');
-                reject(err);
+                reject('Fail to insert dummy ' + err);
             })
     })
 

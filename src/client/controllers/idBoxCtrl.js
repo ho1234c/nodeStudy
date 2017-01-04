@@ -102,6 +102,11 @@ export default class idBoxCtrl {
         this.List.like(id, 'decrement')
             .then(() => {
                 this.Session.user.list.splice(index, 1);
+                this.List.musicList.forEach(obj => {
+                    if(obj.id == id){
+                        obj.isLike = false;
+                    }
+                });
                 this.Toast.success('제거되었습니다.');
             })
             .catch(() => {
