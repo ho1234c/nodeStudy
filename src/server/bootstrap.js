@@ -4,21 +4,13 @@ import routeIndex from './routes/index';
 import routeList from './routes/list';
 import routeUser from './routes/user'
 import db from './models';
-import dummy from './dummy';
-import config from './config'
 
-db.sequelize.sync({ force: config.env == 'localhost-db' })
+db.sequelize.sync()
     .then(() => {
-        if (config.env == 'localhost-db'){
-            return dummy(20, 15);
-        }
-        return;
-    })
-    .then(message => {
-        if(message) console.log(message);
+        console.log('Success to database syncronize');
     })
     .catch(() => {
-        console.log('Fail to insert database');
+        console.log('Fail to database syncronize');
     });
 
 const app = express();
