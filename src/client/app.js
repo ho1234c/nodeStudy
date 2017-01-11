@@ -18,8 +18,7 @@ import searchSvc                   from './service/searchSvc';
 import idBoxCtrl                   from './controllers/idBoxCtrl';
 import listCtrl                    from './controllers/listCtrl';
 import mainCtrl                    from './controllers/mainCtrl';
-import searchAddCtrl               from './controllers/searchAddCtrl'
-    ;
+import searchAddCtrl               from './controllers/searchAddCtrl';
 import krInput                     from './directives/krInput';
 import youtube                     from './directives/youtube';
 
