@@ -9,10 +9,6 @@ export default class mainCtrl {
                     Toast.fail('로그인이 필요합니다.')
                         .then(() => {
                             $scope.selectedIndex = 0;
-                            $mdSidenav('id-box').open();
-                        })
-                        .then(() => {
-                            angular.element(angular.element(document.querySelectorAll('#id-box-open-btn'))).css('right', '240px');
                         });
                 }
                 else{

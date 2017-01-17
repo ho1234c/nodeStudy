@@ -9,6 +9,6 @@ db.sequelize.sync()
             console.log(`server start on ${config.port} port, ${config.env}`);
         });
     })
-    .catch(() => {
-        console.log('Fail to database syncronize');
+    .catch((err) => {
+        console.log('Fail to database syncronize \n', `${err.name} : ${err.message}`);
     });
