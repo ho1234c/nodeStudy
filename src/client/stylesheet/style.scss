@@ -147,44 +147,56 @@ md-toast.md-fail-toast-theme {
       padding-top: 50px;
 
       #left-list{
-        #order-wrap{
+        #order-search-wrap{
           position: fixed;
           width: 490px;
           z-index: 10;
           background-color: white;
-        }
 
-        #search-input-wrap{
-          position: fixed;
-          width: 340px;
-          z-index: 10;
-          margin-left: 150px;
+          #order-wrap{
+            width: 166px;
+            float: left;
+          }
 
-          #search-input{
-            width: 340px;
-            float: right;
-
-            md-input-container{
-              margin: 16px 0 0 0;
-              height: 30px;
+          #search-input-wrap{
+            margin-left: 150px;
+          
+            #search-scope{
+              width: 80px;
+              height: 48px;
+              float: left;
+              margin: 0;
+              border-bottom: 1px solid rgb(225,225,225);
+              padding-left: 24px;
             }
-          }
 
-          input{
-            padding: 0 40px 20px 10px;
-          }
+            #search-input{
+              width: 220px;
+              float: right;
 
-          #search-button{
-            cursor: pointer;
-            position: absolute;
-            right: 0;
-            margin-top: 15px;
-            font-size: 2em;
-          }
+              md-input-container{
+                margin: 19px 0 0 0;
+                padding: 0;
+                height: 30px;
+              }
+            }
 
-          #input-container{
-            position: absolute;
-            width: 340px;
+            input{
+              padding: 0 40px 20px 10px;
+            }
+
+            #search-button{
+              cursor: pointer;
+              position: absolute;
+              right: 0;
+              margin-top: 15px;
+              font-size: 2em;
+            }
+
+            #input-container{
+              position: absolute;
+              width: 220px;
+            }
           }
         }
 

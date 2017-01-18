@@ -1,14 +1,13 @@
 import bcrypt from 'bcryptjs';
-import Promise from 'bluebird';
 
 export default (sequelize, DataTypes) => {
     const User = sequelize.define('User',
         {
-            id : {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-            email: {type: DataTypes.STRING, allowNull: false},
-            nickname: {type: DataTypes.STRING, allowNull: false},
-            password: {type: DataTypes.VIRTUAL, allowNull: true},
-            password_hash:{type: DataTypes.STRING}
+            id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+            email: { type: DataTypes.STRING, allowNull: false },
+            nickname: { type: DataTypes.STRING, allowNull: false },
+            password: { type: DataTypes.VIRTUAL, allowNull: true },
+            password_hash:{ type: DataTypes.STRING }
         },
         {
             hooks:{

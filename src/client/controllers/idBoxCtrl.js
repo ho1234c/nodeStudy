@@ -30,7 +30,7 @@ export default class idBoxCtrl {
         this.Player.highlighting(this.Player.status.listIndex, this.Player.status.listName);
         this.selectedListName = item.name;
 
-        this.List.loadSong(item.id)
+        this.List.loadDetail(item.id)
             .then(result => {
                 const songInfo = JSON.parse(result.data.songInfo);
                 for(const index in songInfo){

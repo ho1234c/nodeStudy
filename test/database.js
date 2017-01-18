@@ -1,5 +1,4 @@
 import chai from 'chai';
-import promise from 'bluebird';
 import db from '../src/server/models';
 
 chai.should();
@@ -45,7 +44,7 @@ describe('Database test', () => {
         let list = db.List.findOne();
         let comment = db.Comment.findOne();
 
-        promise.all([user, list, comment]).then(result => {
+        Promise.all([user, list, comment]).then(result => {
             user = result[0];
             list = result[1];
             comment = result[2];
