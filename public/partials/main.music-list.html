@@ -1,12 +1,17 @@
 <div id="content-left">
     <div id="left-list">
-        <div id="order-wrap">
+        <div id="order-search-wrap">
+            <div id="order-wrap">
             <md-tabs md-selected="vm.List.order" ng-click="vm.changeListOrder()" md-border-bottom md-autoselect>
                 <md-tab label="Date"></md-tab>
                 <md-tab label="Like"></md-tab>
             </md-tabs>
         </div>
         <div id="search-input-wrap">
+            <md-select id="search-scope" ng-model="vm.List.searchScope" placeholder="제목" class="md-no-underline">
+                    <md-option value="listname">제목</md-option>
+                    <md-option value="nickname">작성자</md-option>
+                </md-select>
             <div id="search-input" layout="row">
                 <md-input-container id="input-container" md-no-float>
                     <input ng-model="vm.List.searchWord" placeholder="검색어를 입력해주세요" ng-keyup="$event.keyCode == 13 && vm.loadList()">
@@ -17,20 +22,18 @@
             </div>
             </span>
         </div>
+        </div>
         <div id="music-list-wrap">
             <md-list layout="column">
-                <md-list-item ng-repeat="item in vm.List.musicList track by $index"
-                              ng-click="vm.selectList(this.item.id, $index)"
-                              ng-class="{ isSelected: vm.selectedList == $index }"
-                              ng-mouseenter="this.showTooltip = true"
-                              ng-mouseleave="this.showTooltip = false">
+                <md-list-item ng-repeat="item in vm.List.musicList track by $index" ng-click="vm.selectList(this.item.id, $index)" ng-class="{ isSelected: vm.selectedList == $index }"
+                    ng-mouseenter="this.showTooltip = true" ng-mouseleave="this.showTooltip = false">
                     <md-tooltip md-visible="this.showTooltip" md-direction="left">
                         {{ item.detail }}
                     </md-tooltip>
                     <div class="md-list-item-text list-component" layout="row" flex="100" layout-align="center center">
                         <div class="list-img" layout="row" layout-align="center center">
                             <div class="img-wrap" layout="row" layout-align="center center">
-                                <img ng-src="/thumbnails/{{ item.thumbnail }}"/>
+                                <img ng-src="/thumbnails/{{ item.thumbnail }}" />
                             </div>
                         </div>
                         <div class="list-info" layout="row" layout-align="start center">
@@ -51,7 +54,9 @@
                     <md-divider></md-divider>
                 </md-list-item>
             </md-list>
-            <div layout="row" layout-align="center center"><md-button class="watch-more" ng-click="vm.loadList(true)">더보기</md-button></div>
+            <div layout="row" layout-align="center center">
+                <md-button class="watch-more" ng-click="vm.loadList(true)">더보기</md-button>
+            </div>
         </div>
     </div>
 </div>
@@ -60,14 +65,12 @@
         <div id="right-song" layout="column">
             <div id="music-list-song">
                 <md-list layout="column">
-                    <md-list-item dir-paginate="item in vm.Player.listDetail | itemsPerPage: vm.Player.listDetailNumPerPage"
-                                  current-page="vm.Player.listDetailCurrentPage"
-                                  ng-click="vm.Player.playVideo($index, 'listDetail'); vm.Player.highlighting($index, 'listDetail')"
-                                  ng-class="{ isSelected: vm.selectedSong == $index }"
-                                  pagination-id="listDetail">
+                    <md-list-item dir-paginate="item in vm.Player.listDetail | itemsPerPage: vm.Player.listDetailNumPerPage" current-page="vm.Player.listDetailCurrentPage"
+                        ng-click="vm.Player.playVideo($index, 'listDetail'); vm.Player.highlighting($index, 'listDetail')" ng-class="{ isSelected: vm.selectedSong == $index }"
+                        pagination-id="listDetail">
                         <div class="md-list-item-text song-component" layout="row" layout-align="center center" flex="100">
                             <div class="song-img" layout="row" flex="20">
-                                <img ng-src="{{ item.snippet.thumbnails.default.url }}"/>
+                                <img ng-src="{{ item.snippet.thumbnails.default.url }}" />
                             </div>
                             <div class="song-info" layout="column" flex="80">
                                 <div class="info-title">{{ item.snippet.title }}</div>
@@ -78,10 +81,7 @@
                 </md-list>
             </div>
             <div class="pagination-wrap">
-                <dir-pagination-controls max-size="5"
-                                         template-url="/partials/dirPagination.tpl.html"
-                                         pagination-id="listDetail"
-                                         on-page-change="vm.Player.highlighting(vm.Player.status.listIndex, 'listDetail')">
+                <dir-pagination-controls max-size="5" template-url="/partials/dirPagination.tpl.html" pagination-id="listDetail" on-page-change="vm.Player.highlighting(vm.Player.status.listIndex, 'listDetail')">
                 </dir-pagination-controls>
             </div>
         </div>
@@ -90,8 +90,8 @@
             <form id="comment-create" name="commentForm" layout="row">
                 <div id="comment-textarea">
                     <md-input-container class="md-block" md-no-float md-is-error="vm.commentContent.length > 90">
-    <textarea name="content" ng-model="vm.Comment.content" rows="3" max-rows="3"
-              md-select-on-focus md-no-resize spellcheck="false" kr-input placeholder="댓글을 입력해 주세요"></textarea>
+                        <textarea name="content" ng-model="vm.Comment.content" rows="3" max-rows="3" md-select-on-focus md-no-resize spellcheck="false"
+                            kr-input placeholder="댓글을 입력해 주세요"></textarea>
                         <div id="comment-error" ng-class="{ isLimit: vm.Comment.content.length > 90 }">
                             {{ vm.Comment.content.length }} / 90
                         </div>
@@ -109,12 +109,11 @@
                     </md-tabs>
                 </div>
                 <div id="comment-list">
-                    <div dir-paginate="item in vm.Comment.commentList | itemsPerPage: vm.Comment.commentNumPerPage"
-                         pagination-id="comment">
+                    <div dir-paginate="item in vm.Comment.commentList | itemsPerPage: vm.Comment.commentNumPerPage" pagination-id="comment">
                         <div class="comment" layout="row">
                             <div class="comment-nickname" layout="column" layout-align="center center">
                                 {{ item.User.nickname }}
-                                <div class="comment-date">{{ item.createdAt | date:"yyyy. MM. dd.  H:mm" }}</div>
+                                <div class="comment-date">{{ item.createdAt | date:"yyyy. MM. dd. H:mm" }}</div>
                             </div>
                             <div class="comment-content" layout="column" layout-align="center start">
                                 {{ item.content }}
@@ -131,9 +130,7 @@
                     </div>
                 </div>
                 <div class="pagination-wrap">
-                    <dir-pagination-controls max-size="5"
-                                             template-url="/partials/dirPagination.tpl.html"
-                                             pagination-id="comment">
+                    <dir-pagination-controls max-size="5" template-url="/partials/dirPagination.tpl.html" pagination-id="comment">
                     </dir-pagination-controls>
                 </div>
             </div>

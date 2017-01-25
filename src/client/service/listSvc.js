@@ -7,6 +7,7 @@ export default class List {
         this.musicList = [];
         this.order = 0; // 'md-selected directive' get index of 'tab'. (0: createdAt, 1: like)
         this.searchWord = "";
+        this.searchScope = "listname";
 
         // config for created list
         this.listForm = {};
@@ -46,7 +47,8 @@ export default class List {
         this.listRequest.get({
             count: count,
             order: order,
-            word: this.searchWord
+            word: this.searchWord,
+            scope: this.searchScope
         }, result => {
             q.resolve(result);
         }, err => {
@@ -54,7 +56,7 @@ export default class List {
         });
         return q.promise;
     }
-    loadSong(id){
+    loadDetail(id){
         const q = this.$q.defer();
         this.songRequest.get({
             id: id

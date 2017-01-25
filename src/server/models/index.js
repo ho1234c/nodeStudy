@@ -3,7 +3,17 @@ import path from 'path';
 import fs from 'fs';
 import config from '../config/index'
 
-const sequelize = new Sequelize(config.db[config.env], {logging: false});
+const sequelize = new Sequelize(
+    config.db.postgres.WITHSONG_DB,
+    config.db.postgres.POSTGRES_USER,
+    config.db.postgres.POSTGRES_PASSWARD,
+    {
+        host: config.db.postgres.DB_HOST,
+        port: config.db.postgres.POSTGRE_PORT,
+        dialect: 'postgres',
+        logging: false
+    }
+);
 
 let db = [];
 

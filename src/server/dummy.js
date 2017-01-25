@@ -1,6 +1,5 @@
 import db from './models'
 import request from 'request-promise';
-import Promise from 'bluebird';
 import _ from 'lodash'
 import {findNode} from './lib/index'
 

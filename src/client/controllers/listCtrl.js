@@ -58,7 +58,7 @@ export default class listCtrl {
 
         this.Player.highlighting(this.Player.status.listIndex, this.Player.status.listName);
 
-        this.List.loadSong(id)
+        this.List.loadDetail(id)
             .then(result => {
                 const songInfo = JSON.parse(result.data.songInfo);
                 const comments = result.data.Comments;

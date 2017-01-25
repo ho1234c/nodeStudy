@@ -3,22 +3,22 @@ import config from '../config';
 import multer from  'multer';
 import crypto from 'crypto';
 import path from 'path';
-import Promise from 'bluebird';
 
 export default {
     //query.count, query.order, query.word
     load(req, res){
         const count = req.query.count || 0,
               order = req.query.order || 'createdAt',
-              word = req.query.word || "";
-
+              word = req.query.word || "",
+              scope = req.query.scope || "listname";
+        
         db.List.findAll({
-            where: { name: { $like: '%' + word + '%' } },
+            where: { name: { $ilike: '%' + (scope == "listname" ? word : "") + '%' } },
             attributes: ['id', 'name', 'detail', 'like', 'createdAt', 'thumbnail'],
             order: [[order, 'DESC']],
             offset: count,
             limit: 10,
-            include: {model: db.User, attributes: ['nickname']},
+            include: { model: db.User, where: { nickname: { $ilike: '%' + (scope == "nickname" ? word : "") + '%' }}, attributes: ['nickname'] },
         })
             .then(data => {
                 res.json({
@@ -29,9 +29,9 @@ export default {
     //params.id
     detail(req, res){
         db.List.findOne({
-            where: {id: req.params.id},
+            where: { id: req.params.id },
             attributes: ['songInfo'],
-            include: {model: db.Comment, attributes: ['id', 'content', 'like', 'createdAt'], include: {model: db.User, attributes: ['nickname']}},
+            include: { model: db.Comment, attributes: ['id', 'content', 'like', 'createdAt'], include: { model: db.User, attributes: ['nickname'] } },
         })
             .then(data => {
                 res.json({
@@ -56,7 +56,7 @@ export default {
     },
     //params.id, query.classify
     like(req, res){
-        Promise.all([db.List.findOne({where: {id: req.params.id}}), db.User.findOne({where: {id: req.user.id}})])
+        Promise.all([db.List.findOne({ where: {id: req.params.id }}), db.User.findOne({ where: { id: req.user.id } })])
             .then(data => {
                 if(req.query.classify == 'increment'){
                     return Promise.all([data[0].increment('like'), data[1].addListFavor(data[0])])
@@ -84,7 +84,7 @@ export default {
     likeComment(req, res){
         const classify = req.query.classify;
 
-        Promise.all([db.Comment.findOne({where: {id: req.params.id}}), db.User.findOne({where: {id: req.user.id}})])
+        Promise.all([db.Comment.findOne({where: { id: req.params.id}}), db.User.findOne({ where: { id: req.user.id } })])
             .then(data => {
                 if(classify == 'increment'){
                     return Promise.all([data[0].increment('like'), data[1].addCommentFavor(data[0])])
@@ -94,7 +94,7 @@ export default {
                 }
             })
             .then(result => {
-                res.status(200).json({data: result});
+                res.status(200).json({ data: result });
             });
     },
     //multer config for upload image
