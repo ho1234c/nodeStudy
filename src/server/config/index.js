@@ -23,7 +23,7 @@ const database = {
         },
         redis: {
             secretKey: 'abcdefg123456',
-            host: 'localhost',
+            host: ENV.REDIS_HOST,
             port: 6379
         }
     }
@@ -33,12 +33,12 @@ const api = {
     api: {
         melon: {},
         youtube: {
-            key: "AIzaSyAYJcoUSoEpehRGo-0XYHd4zafkiSmt9Wk",
+            key: ENV.YOUTUBE_KEY,
             url: "https://www.googleapis.com/youtube/v3/search?"
         },
         facebook: {
-            clientID: "236204970147380",
-            clientSecret: "5c07935753459e77497e898b23361dfd"
+            clientID: ENV.FACEBOOK_CLIENT_ID,
+            clientSecret: ENV.FACEBOOK_CLIENT_SECRET
         }
     }
 };

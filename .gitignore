@@ -7,3 +7,4 @@ public/*.map
 *.ttf
 public/thumbnails
 !public/thumbnails/default.png
+environment
