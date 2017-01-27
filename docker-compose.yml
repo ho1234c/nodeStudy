@@ -1,0 +1,32 @@
+version: "2"
+
+volumes: 
+    withsong_db:
+        driver: local
+
+services:
+    nginx:
+        container_name: nginx
+        build: ./nginx
+        links:
+            - withsong:withsong
+        ports:
+            - 80:80
+    withsong:
+        container_name: withsong
+        build: .
+        ports:
+            - 8000
+        links:
+            - postgres:withsong_db
+            - redis:withsong_redis
+    postgres:
+        container_name: postgres
+        image: postgres:9.3
+        ports:
+            - 5432:5432
+        volumes: 
+            - withsong_db:/var/lib/postgresql/data
+    redis:
+        container_name: redis
+        image: redis:latest

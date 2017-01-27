@@ -6,9 +6,12 @@ COPY . /usr/src/app
 WORKDIR /usr/src/app
 
 # set envirenment variable
+RUN chmod 777 ./env.sh
+ENTRYPOINT ["./env.sh"]
 ENV NODE_ENV production
 
 # open port
-EXPOSE $PORT
+EXPOSE 8000
 
+# start server
 CMD ["npm", "start"]
