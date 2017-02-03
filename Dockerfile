@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 
 # set envirenment variable
 RUN chmod 777 ./env.sh
-ENTRYPOINT ["./env.sh"]
+RUN ["./env.sh"]
 ENV NODE_ENV production
 
 # open port

@@ -22,9 +22,9 @@ const database = {
             POSTGRES_PASSWARD: ENV.POSTGRES_PASSWARD,
         },
         redis: {
-            secretKey: 'abcdefg123456',
-            host: ENV.REDIS_HOST,
-            port: 6379
+            REDIS_SECRETKEY: ENV.REDIS_SECRETKEY,
+            REDIS_HOST: ENV.REDIS_HOST,
+            PORT: ENV.REDIS_PORT
         }
     }
 };
@@ -34,7 +34,7 @@ const api = {
         melon: {},
         youtube: {
             key: ENV.YOUTUBE_KEY,
-            url: "https://www.googleapis.com/youtube/v3/search?"
+            url: ENV.YOUTUBE_URL
         },
         facebook: {
             clientID: ENV.FACEBOOK_CLIENT_ID,
