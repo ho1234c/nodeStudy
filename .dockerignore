@@ -1,2 +1,8 @@
 docker-compose.yml
 *.log
+src/*
+test/*
+webpack.config.babel.js
+.jshintrc
+.gitignore
+.babelrc
