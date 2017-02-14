@@ -4,7 +4,7 @@ import fs from 'fs';
 import config from '../config/index'
 
 const sequelize = new Sequelize(
-    config.db.postgres.WITHSONG_DB,
+    config.db.postgres.POSTGRES_DB,
     config.db.postgres.POSTGRES_USER,
     config.db.postgres.POSTGRES_PASSWARD,
     {
