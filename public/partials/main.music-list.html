@@ -44,10 +44,13 @@
                                 <div class="info-like"><strong>{{ item.like }}</strong>명이 좋아합니다</div>
                             </div>
                         </div>
-                        <div class="list-icon" layout="row" layout-align="center center">
-                            <div ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-click="vm.likeToggle(this)">
+                        <div class="list-icon" layout="column" layout-align="center center">
+                            <div class="heart-icon" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-click="vm.likeToggle(this)">
                                 <i ng-if="item.isLike" ng-class="hover ? 'fa fa-heart-o' : 'fa fa-heart'" aria-hidden="true"></i>
                                 <i ng-if="!item.isLike" ng-class="hover ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
+                            </div>
+                            <div class="edit-icon" ng-if="item.User.id == vm.Session.user.id" ng-click="vm.editList(item.id)">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </div>
                         </div>
                     </div>

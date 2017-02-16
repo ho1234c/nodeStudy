@@ -48,7 +48,7 @@ export function routeConfig($stateProvider){
             }
         })
         .state('main.search-add', {
-            url: '/',
+            url: '/search-add/:id',
             templateUrl: '/partials/main.search-add.html',
             controller: 'searchAddCtrl',
             controllerAs : 'vm',

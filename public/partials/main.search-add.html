@@ -98,8 +98,12 @@
                     </dir-pagination-controls>
                 </div>
             </div>
-            <div id="submit" layout="row" layout-align="center center">
-                <md-button class="md-raised" flex="100" ng-click="vm.createList(myList)">등록</md-button>
+            <div id="list-submit" layout="row" layout-align="center center">
+                <md-button class="md-raised" flex="100" ng-click="vm.createList(myList)" ng-if="vm.mode === 'add'">등록</md-button>
+                <div id="list-submit-edit" ng-if="vm.mode === 'edit'" layout="row" flex="100">
+                    <md-button class="md-raised" flex="45" ng-click="">수정</md-button>
+                    <md-button class="md-raised" flex="45" ng-click="">취소</md-button>
+                </div>
             </div>
     </form>
 </div>

@@ -6,7 +6,7 @@ import config from '.';
 export default function(app) {
     const host = config.db.redis.REDIS_HOST;
     const port = config.db.redis.PORT;
-    
+
     const redisStore = connectRedis(session);
     const redisClient = redis.createClient(port, host);
 

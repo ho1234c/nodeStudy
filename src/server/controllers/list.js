@@ -18,7 +18,7 @@ export default {
             order: [[order, 'DESC']],
             offset: count,
             limit: 10,
-            include: { model: db.User, where: { nickname: { $ilike: '%' + (scope == "nickname" ? word : "") + '%' }}, attributes: ['nickname'] },
+            include: { model: db.User, where: { nickname: { $ilike: '%' + (scope == "nickname" ? word : "") + '%' }}, attributes: ['id', 'nickname'] },
         })
             .then(data => {
                 res.json({
@@ -30,8 +30,8 @@ export default {
     detail(req, res){
         db.List.findOne({
             where: { id: req.params.id },
-            attributes: ['songInfo'],
-            include: { model: db.Comment, attributes: ['id', 'content', 'like', 'createdAt'], include: { model: db.User, attributes: ['nickname'] } },
+            attributes: ['name', 'detail', 'songInfo', 'thumbnail', 'createdAt'],
+            include: { model: db.Comment, attributes: ['id', 'content', 'like', 'createdAt'], include: { model: db.User, attributes: ['id', 'nickname'] } },
         })
             .then(data => {
                 res.json({
