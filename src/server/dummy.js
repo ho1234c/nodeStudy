@@ -26,7 +26,7 @@ function dummy(num, infoNum){
         const userDummy = [], listDummy = [], commentDummy = [];
 
         process.stdout.write('Inserting dummy data');
-        const interval = setInterval(() => {process.stdout.write('.')}, 200);
+        const interval = setInterval(() => { process.stdout.write('.') }, 200);
 
         for(let i=0; i<num; i++){
             userDummy.push({email: 'user' + i + '@dummy.com', nickname: 'userNick' + i, password: 'user' + i});
