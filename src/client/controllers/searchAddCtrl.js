@@ -1,20 +1,22 @@
 export default class searchAddCtrl {
-    constructor($rootScope, $stateParams, $state, $mdDialog, Search, Player, List, Session, Toast) {
-        angular.extend(this, { $stateParams, Search, Player, List, Session, Toast });
+    constructor($rootScope, $state, $mdDialog, Search, Player, List, Session, Toast) {
+        angular.extend(this, { $state, Search, Player, List, Session, Toast });
         this.date = new Date();
-        this.mode = $stateParams.id ? "edit" : "add";
+        this.mode = $state.params.id ? "edit" : "add";
+
         if (this.mode === "edit") {
-            List.loadDetail($stateParams.id)
+            List.loadDetail($state.params.id)
                 .then(result => {
                     const songInfo = JSON.parse(result.data.songInfo);
+                    const imageUrl = $state.href('main.music-list', $state.params, {absolute: true}) + 'thumbnails/'+result.data.thumbnail;
+                    const element = angular.element(document.getElementById('stored-image'));
 
                     List.initForm();
                     List.listForm.name = result.data.name;
                     List.listForm.detail = result.data.detail;
-                    List.listForm.thumbnail = '/thumbnails/' + result.data.thumbnail;
-                    for (const index in songInfo) {
-                        List.createdList.push(songInfo[index]);
-                    }
+                    songInfo.forEach(value => { List.createdList.push(value); });
+                    element.removeClass('ng-hide');
+                    element.attr('src', imageUrl);
                 });
         }
 
@@ -22,16 +24,16 @@ export default class searchAddCtrl {
             if (toState.name == 'main.search-add' || this.mode === 'add' || fromParams.skipAsync) {
                 return;
             }
-            if (this.mode === 'edit') {
+            else if (this.mode === 'edit') {
                 event.preventDefault();
                 const confirm = $mdDialog.confirm({ focusOnOpen: false })
-                    .textContent('작성중이던 내용을 잃어버릴 수 있습니다. 계속하시겠습니까?')
+                    .textContent('작성중이던 내용이 지워집니다. 계속하시겠습니까?')
                     .ok('계속')
                     .cancel('취소');
 
                 $mdDialog.show(confirm).then(() => {
                     fromParams.skipAsync = true;
-                    $state.go(toState.name)
+                    this.$state.go(toState.name)
                         .then(() => {
                             this.mode = 'add';
                             this.List.initForm();
@@ -76,6 +78,7 @@ export default class searchAddCtrl {
     }
     createList(list) {
         let msg = this.List.validation(list);
+
         if (msg == 'valid') {
             this.List.listForm.songInfo = this.List.createdList;
             this.List.listForm.makerId = this.Session.user.id;
@@ -92,6 +95,31 @@ export default class searchAddCtrl {
             this.Toast.fail(msg);
         }
     }
+    editList(list) {
+        let msg = this.List.validation(list);
+
+        if (msg == 'valid') {
+            this.List.listForm.songInfo = this.List.createdList;
+            this.List.edit(this.List.listForm, this.$state.params.id)
+                .then(res => {
+                    this.List.initForm();
+                    list.$setUntouched();
+                    this.Toast.success('수정되었습니다');
+                    this.mode = 'add';
+                    this.$state.go('main.search-add', {id: ""});
+                }).catch(() => {
+                    this.Toast.fail('수정에 실패했습니다');
+                });
+        }
+        else {
+            this.Toast.fail(msg);
+        }
+    }
+    imageValidation(form){
+        if(form.$error.maxSize){
+            this.Toast.fail('이미지 사이즈가 너무 큽니다.');
+        }
+    }
 }
 
-searchAddCtrl.$inject = ['$rootScope', '$stateParams', '$state', '$mdDialog', 'Search', 'Player', 'List', 'Session', 'Toast'];
+searchAddCtrl.$inject = ['$rootScope', '$state', '$mdDialog', 'Search', 'Player', 'List', 'Session', 'Toast'];

@@ -58,6 +58,7 @@ export default class List {
     }
     loadDetail(id){
         const q = this.$q.defer();
+
         this.songRequest.get({
             id: id
         }, result => {
@@ -69,14 +70,13 @@ export default class List {
     }
     create(data){
         const q = this.$q.defer();
+        const spec = { url: '/list', data: data, method: 'POST' };
+
         if(data.thumnail){
             this.Upload.resize(data.thumbnail, {width:320, height: 240})
                 .then(resizedImg => {
                     data.thumbnail = resizedImg;
-                    return this.Upload.upload({
-                        url: '/list',
-                        data: data
-                    });
+                    return this.Upload.upload(spec);
                 })
                 .then(result => {
                     q.resolve(result);
@@ -85,14 +85,39 @@ export default class List {
                 });
         }
         else{
-            this.Upload.upload({
-                url: '/list',
-                data: data
-            }).then(result => {
-                q.resolve(result);
-            }, err => {
-                q.reject(err);
-            });
+            this.Upload.upload(spec)
+                .then(result => {
+                    q.resolve(result);
+                }, err => {
+                    q.reject(err);
+                });
+        }
+
+        return q.promise;
+    }
+    edit(data, ListId){
+        const q = this.$q.defer();
+        const spec = { url: '/list/' + ListId, data: data, method: 'PUT' };
+
+        if(data.thumnail){
+            this.Upload.resize(data.thumbnail, {width:320, height: 240})
+                .then(resizedImg => {
+                    data.thumbnail = resizedImg;
+                    return this.Upload.upload(spec);
+                })
+                .then(result => {
+                    q.resolve(result);
+                }, err => {
+                    q.reject(err);
+                });
+        }
+        else{
+            this.Upload.upload(spec)
+                .then(result => {
+                    q.resolve(result);
+                }, err => {
+                    q.reject(err);
+                });
         }
 
         return q.promise;
@@ -123,6 +148,7 @@ export default class List {
     }
     like(id, classify){
         const q = this.$q.defer();
+
         this.likeRequest.post({
             id: id,
             classify: classify

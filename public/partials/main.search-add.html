@@ -40,10 +40,12 @@
                 <div id="header" layout="row">
                     <div id="thumbnail" layout="column" layout-align="center center">
                         <div ngf-select ng-model="vm.List.listForm.thumbnail" id="pic-btn" ngf-max-size="2MB" accept="image/*" ngf-size="{width: 160, height: 120}"
-                             layout="row" layout-align="center center" ngf-model-options="{updateOn: 'change'}">
-                            <div ng-if="!vm.List.listForm.thumbnail">이미지를 등록해주세요.<br>( 1MB 이하 jpg, png )</div>
+                             layout="row" layout-align="center center" ngf-model-options="{updateOn: 'change'}" ngf-change="vm.imageValidation(myList)">
+                            <div ng-if="!vm.List.listForm.thumbnail && vm.mode === 'add'">이미지를 등록해주세요.<br>( 1MB 이하 jpg, png )</div>
                         </div>
-                        <div id="thumbnail-background" ng-if="vm.List.listForm.thumbnail"></div>
+                        <div class="thumbnail-background" ng-if="vm.List.listForm.thumbnail || vm.mode === 'edit'"></div>
+                        <img id="stored-image" ng-if="vm.mode === 'edit'">
+                        <div class="thumbnail-background" ng-if="vm.List.listForm.thumbnail && vm.mode === 'edit'"></div>
                         <img ngf-thumbnail="vm.List.listForm.thumbnail" id="image">
                     </div>
                     <div id="info" layout="column">
@@ -101,7 +103,7 @@
             <div id="list-submit" layout="row" layout-align="center center">
                 <md-button class="md-raised" flex="100" ng-click="vm.createList(myList)" ng-if="vm.mode === 'add'">등록</md-button>
                 <div id="list-submit-edit" ng-if="vm.mode === 'edit'" layout="row" flex="100">
-                    <md-button class="md-raised" flex="45" ng-click="">수정</md-button>
+                    <md-button class="md-raised" flex="45" ng-click="vm.editList(myList)">수정</md-button>
                     <md-button class="md-raised" flex="45" ng-click="">취소</md-button>
                 </div>
             </div>

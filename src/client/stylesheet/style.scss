@@ -498,9 +498,16 @@ md-toast.md-fail-toast-theme {
               max-width: 160px;
               max-height: 120px;
               z-index: 9;
+              position: absolute;
             }
 
-            #thumbnail-background{
+            #stored-image{
+              max-width: 160px;
+              max-height: 120px;
+              z-index: 8;
+            }
+
+            .thumbnail-background{
               top: 10px;
               left: 10px;
               width: 160px;
@@ -508,6 +515,7 @@ md-toast.md-fail-toast-theme {
               position: absolute;
               background-color: black;
               border-radius: 4px;
+              z-index: 8;
             }
 
             #pic-btn {
