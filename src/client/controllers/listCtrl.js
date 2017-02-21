@@ -1,7 +1,7 @@
 export default class listCtrl {
-    constructor($rootScope, $window, initList, Player, List, Session, Toast, Comment) {
-        angular.extend(this, { initList, Player, List, Session, Toast, Comment});
-
+    constructor($rootScope, $window, $state, initList, Player, List, Session, Toast, Comment) {
+        angular.extend(this, { $state, initList, Player, List, Session, Toast, Comment });
+        
         // only first time
         if(this.List.musicList.length === 0){
             this.List.musicList = initList.data;
@@ -173,7 +173,10 @@ export default class listCtrl {
                 }
             });
     }
+    editList(id){
+        this.$state.go('main.search-add', { id: id });
+    }
 }
 
-listCtrl.$inject = ['$rootScope', '$window', 'initList', 'Player', 'List', 'Session', 'Toast', 'Comment'];
+listCtrl.$inject = ['$rootScope', '$window', '$state', 'initList', 'Player', 'List', 'Session', 'Toast', 'Comment'];
 

@@ -233,7 +233,7 @@ md-toast.md-fail-toast-theme {
             width: 305px;
 
             .info-wrapper > * {
-              line-height: 2em
+              line-height: 2em;
             }
 
             .info-nickname{
@@ -246,8 +246,16 @@ md-toast.md-fail-toast-theme {
             z-index: 5;
             font-size: 1.5em;
 
-            i{
-              color: $primary-color
+            .heart-icon{
+              color: $primary-color;
+            }
+
+            .edit-icon{
+              color: rgba(158,158,158,0.2);
+              
+              &:hover{
+                color: $primary-color;
+              }
             }
           }
 
@@ -490,9 +498,16 @@ md-toast.md-fail-toast-theme {
               max-width: 160px;
               max-height: 120px;
               z-index: 9;
+              position: absolute;
             }
 
-            #thumbnail-background{
+            #stored-image{
+              max-width: 160px;
+              max-height: 120px;
+              z-index: 8;
+            }
+
+            .thumbnail-background{
               top: 10px;
               left: 10px;
               width: 160px;
@@ -500,6 +515,7 @@ md-toast.md-fail-toast-theme {
               position: absolute;
               background-color: black;
               border-radius: 4px;
+              z-index: 8;
             }
 
             #pic-btn {
@@ -570,9 +586,16 @@ md-toast.md-fail-toast-theme {
           }
         }
 
-        #submit{
+        #list-submit{
           height: 50px;
           padding: 0 20px;
+          .md-button:not([disabled]):hover{
+            background-color: rgba(158,158,158,0.2);
+          }
+
+          #list-submit-edit{
+            justify-content: space-between;
+          }
         }
       }
 
@@ -780,6 +803,7 @@ md-toast.md-fail-toast-theme {
   }
 
   #signUp-form{
+
     #signUp-description{
       padding: 0;
       color: rgb(203,203,203);
@@ -808,6 +832,7 @@ md-toast.md-fail-toast-theme {
     #id-box-song{
       overflow: hidden;
       height: 385px;
+
       .id-box-song-component{
         height: 55px;
 
@@ -830,7 +855,6 @@ md-toast.md-fail-toast-theme {
           -webkit-box-orient: vertical;
           word-wrap:break-word;
         }
-
       }
     }
   

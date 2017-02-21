@@ -17,7 +17,7 @@ const database = {
         postgres: {
             DB_HOST: ENV.DB_HOST,
             POSTGRES_PORT: ENV.POSTGRES_PORT,
-            WITHSONG_DB: ENV.WITHSONG_DB,
+            POSTGRES_DB: ENV.POSTGRES_DB,
             POSTGRES_USER: ENV.POSTGRES_USER,
             POSTGRES_PASSWARD: ENV.POSTGRES_PASSWARD,
         },

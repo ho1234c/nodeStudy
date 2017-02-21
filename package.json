@@ -4,15 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "set NODE_ENV=production && node dist/server/index.js",
-    "build": "set NODE_ENV=production && babel src/server -d dist/server && webpack",
+    "start": "NODE_ENV=production node dist/server/index.js",
+    "build": "NODE_ENV=production babel src/server -d dist/server && webpack",
     "dev-start": "set NODE_ENV=localhost && nodemon src/server/index.js --exec babel-node --presets es2015",
+    "dev-build": "set NODE_ENV=localhost && babel src/server -d dist/server && webpack",
     "dummy": "set NODE_ENV=localhost && node dist/server/dummy.js 20 15",
     "test": "set NODE_ENV=test && mocha --compilers js:babel-core/register"
   },
   "author": "",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "angular": "< 1.6",
     "angular-animate": "< 1.6",
     "angular-aria": "< 1.6",
@@ -42,9 +43,7 @@
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.2"
-  },
-  "dependencies": {
+    "webpack": "^1.13.2",
     "bcryptjs": "^2.3.0",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
@@ -58,7 +57,6 @@
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
-    "pg": "^6.1.0",
     "redis": "^2.6.2",
     "request": "^2.75.0",
     "request-promise": "^4.1.1",

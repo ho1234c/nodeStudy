@@ -1,9 +1,9 @@
 import db from './models'
 import request from 'request-promise';
 import _ from 'lodash'
-import {findNode} from './lib/index'
+import { findNode } from './lib/index'
 
-// usage: node dummy.js {number of dummy} {number of song}
+// usage: node dummy.js {number of list} {number of detailed music}
 if(!(process.argv[2] && process.argv[3])){
     console.log('please enter two integer {number of dummy} {number of song}');
 }
@@ -19,8 +19,6 @@ else{
             return console.log(err);
         });
 }
-
-
 
 function dummy(num, infoNum){
     return new Promise((resolve, reject) => {
@@ -68,7 +66,7 @@ function dummy(num, infoNum){
                 let list = result[1];
                 let comment = result[2];
 
-                return Promise.all(user.setListFavor(list), user.setCommentFavor(comment));
+                return Promise.all([user.setListFavor(list), user.setCommentFavor(comment)]);
             })
             .then(() => {
                 clearInterval(interval);
@@ -78,7 +76,7 @@ function dummy(num, infoNum){
             .catch(err => {
                 clearInterval(interval);
                 console.log('.');
-                reject('Fail to insert dummy ' + err);
+                reject('Fail to insert dummy: ' + err);
             })
     })
 
