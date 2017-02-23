@@ -6,7 +6,7 @@ import config from '../config/index'
 const sequelize = new Sequelize(
     config.db.postgres.POSTGRES_DB,
     config.db.postgres.POSTGRES_USER,
-    config.db.postgres.POSTGRES_PASSWARD,
+    config.db.postgres.POSTGRES_PASSWORD,
     {
         host: config.db.postgres.DB_HOST,
         port: config.db.postgres.POSTGRE_PORT,

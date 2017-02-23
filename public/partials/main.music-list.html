@@ -49,7 +49,7 @@
                                 <i ng-if="item.isLike" ng-class="hover ? 'fa fa-heart-o' : 'fa fa-heart'" aria-hidden="true"></i>
                                 <i ng-if="!item.isLike" ng-class="hover ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
                             </div>
-                            <div class="edit-icon" ng-if="item.User.id == vm.Session.user.id" ng-click="vm.editList(item.id)">
+                            <div class="edit-icon" ng-if="item.User.id === vm.Session.user.id" ng-click="vm.editList(item.id)">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </div>
                         </div>

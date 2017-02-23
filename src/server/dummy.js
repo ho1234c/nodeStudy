@@ -29,9 +29,9 @@ function dummy(num, infoNum){
         const interval = setInterval(() => { process.stdout.write('.') }, 200);
 
         for(let i=0; i<num; i++){
-            userDummy.push({email: 'user' + i + '@dummy.com', nickname: 'userNick' + i, password: 'user' + i});
-            listDummy.push({name: 'list' + i, detail: 'detail' + i, like: _randomRange(0, 100), songInfo:'', makerId: _randomRange(1, num), createdAt: _randomDate(new Date(2012, 0, 1), new Date())});
-            commentDummy.push({content: 'content' + i, like: _randomRange(0, 100), listId: _randomRange(1, num), writerId: _randomRange(1, num), createdAt: _randomDate(new Date(2012, 0, 1), new Date())});
+            userDummy.push({ email: 'user' + i + '@dummy.com', nickname: 'userNick' + i, password: 'user' + i} );
+            listDummy.push({ name: 'list' + i, detail: 'detail' + i, like: _randomRange(0, 100), songInfo:'', makerId: _randomRange(1, num), createdAt: _randomDate(new Date(2012, 0, 1), new Date()) });
+            commentDummy.push({ content: 'content' + i, like: _randomRange(0, 100), listId: _randomRange(1, num), writerId: _randomRange(1, num), createdAt: _randomDate(new Date(2012, 0, 1), new Date()) });
         }
 
         // insert user dummy
