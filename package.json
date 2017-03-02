@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node dist/server/index.js",
-    "build": "NODE_ENV=production babel src/server -d dist/server && NODE_ENV=production webpack",
+    "build": "NODE_ENV=production babel src/server -d dist/server && webpack --config webpack.config.babel.js",
     "dev-start": "set NODE_ENV=localhost && nodemon src/server/index.js --exec babel-node --presets es2015",
-    "dev-build": "set NODE_ENV=localhost && babel src/server -d dist/server && webpack",
+    "dev-build": "set NODE_ENV=localhost && babel src/server -d dist/server && webpack --config webpack.config.dev.babel.js",
     "dummy": "set NODE_ENV=localhost && node dist/server/dummy.js 20 15",
     "test": "set NODE_ENV=test && mocha --compilers js:babel-core/register"
   },
