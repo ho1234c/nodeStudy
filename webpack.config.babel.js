@@ -3,7 +3,6 @@ import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 import path from 'path';
 
 export default {
-    devtool: (() => { return 'source-map' })(),
     entry: './src/client/app.js',
     output: {
         path: path.join(__dirname, 'public'),
