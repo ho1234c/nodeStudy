@@ -8,3 +8,4 @@ public/*.map
 public/thumbnails
 !public/thumbnails/default.png
 .env
+.dev.env

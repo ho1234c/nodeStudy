@@ -439,6 +439,7 @@ md-toast.md-fail-toast-theme {
             height: 60px;
 
             .comment-nickname{
+              font-size: 12px;
               width: 120px;
 
               .comment-date{
@@ -573,6 +574,7 @@ md-toast.md-fail-toast-theme {
 
             .song-info{
               line-height: 2em;
+              align-items: flex-start;
             }
 
             .list-icon{

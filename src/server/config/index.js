@@ -1,10 +1,12 @@
 import _ from 'lodash';
+import fs from 'fs';
 
-const ENV = process.env;
+const currentENV = process.env.NODE_ENV.trim(); // trim() is for windows
+const ENV = _setENV();
 
-const config = {
+const info = {
     port: ENV.PORT || 8000,
-    env: ENV.NODE_ENV.trim(),   // trim() is for windows
+    env: currentENV,   
     cwd: process.cwd(),
     domain: ENV.DOMAIN || 'localhost',
     path: {
@@ -43,4 +45,20 @@ const api = {
     }
 };
 
-export default _.merge(config, database, api);
+function _setENV() {
+    let result = {};
+
+    if (currentENV == 'localhost') {
+        fs.readFileSync('./.dev.env').toString().split('\n').forEach(line => {
+            const lines = line.split('=');
+            result[lines[0]] = lines[1].replace(/(\r\n|\n|\r)/gm, "");;
+        });
+    }
+    else if (currentENV == 'production') {
+        result = process.env;
+    }
+
+    return result
+}
+
+export default _.merge(info, database, api);
