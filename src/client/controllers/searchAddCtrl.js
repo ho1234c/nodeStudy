@@ -74,7 +74,8 @@ export default class searchAddCtrl {
         this.List.createdList.push(obj);
     }
     removeSong(index) {
-        this.List.createdList.splice(index, 1);
+        const removedIndex = this.List.createdListNumPerPage * (this.List.createdListcurrentPage-1) + index;
+        this.List.createdList.splice(removedIndex, 1);
     }
     createList(list) {
         let msg = this.List.validation(list);

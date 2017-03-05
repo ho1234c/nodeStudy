@@ -1,9 +1,10 @@
 export default class PlayerSvc {
     constructor($rootScope, $window) {
         this.$rootScope = $rootScope;
+
+        // video properties
         this.width = 240;
         this.height = 180;
-
         this.videoid = null;
 
         // in main-music-list
@@ -54,7 +55,7 @@ export default class PlayerSvc {
         this.status.listIndex = index;
         this.status.videoIndex = this._findVideoIndex(listname);
 
-        let list = this[listname]; // find context list
+        const list = this[listname]; // find context list
         this.videoid = list[this.status.videoIndex].videoId;
     }
     highlighting(index, listname){
@@ -65,7 +66,7 @@ export default class PlayerSvc {
             return;
         }
 
-        let highlightObj = {
+        const highlightObj = {
             index: this._checkViewPage() ? index : -1, // 유저가 조회하고 있는 페이지가 재생중인 비디오가 포함된 페이지가 아니라면 하이라이팅 하지 않는다.
             listname: listname,
             listId: this.status.playingListId
@@ -82,7 +83,7 @@ export default class PlayerSvc {
             }
             this.status.listIndex = 0;
         }
-        else if(listName == 'playlist' && ((index + 1)% this.playlistNumPerPage === 0)){
+        else if(listName == 'playlist' && ((index + 1) % this.playlistNumPerPage === 0)){
             if(this._checkViewPage()){
                 this.playlistCurrentPage += 1;
                 this.status.videoIndex += 1;
