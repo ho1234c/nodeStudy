@@ -574,7 +574,6 @@ md-toast.md-fail-toast-theme {
 
             .song-info{
               line-height: 2em;
-              align-items: flex-start;
             }
 
             .list-icon{
@@ -846,6 +845,7 @@ md-toast.md-fail-toast-theme {
 
         .song-info{
           padding: 0 8px;
+          align-items: flex-start;
         }
 
         .info-title{
