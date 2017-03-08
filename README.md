@@ -6,20 +6,18 @@ Install postgres, redis and nodemon if you are in the localhost environment for 
 
 ## Install
 
-1. Receive the source file.
-
+- Receive the source file.
 ``` 
 git clone https://github.com/ho1234c/withSong_2.0
 ```
 
-2. Install module dependency
-
+- Install module dependency
 ```
 cd withSong_2.0
 npm install
 ```
 
-3. Make config file
+- Make config file
 
 Make ".env" file and insert config you need. but if your environment is localhost, create ".dev.env" file. (maybe you can make both.)
 
@@ -42,7 +40,7 @@ FACEBOOK_CLIENT_ID=facebook client id
 FACEBOOK_CLIENT_SECRET=facebook client secret key
 ```
 
-4. Prepare to launch app
+- Prepare to launch app
 
 Bundling and compiling to run the application.
 
@@ -50,7 +48,7 @@ Bundling and compiling to run the application.
 npm run build
 ```
 
-5. start app in server
+- Start app in server
 
 ```
 docker-compose up
