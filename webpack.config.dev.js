@@ -40,6 +40,11 @@ module.exports = {
     },
     devtool: "eval",
     plugins: [
-        new ProgressBarPlugin()
+        new ProgressBarPlugin(),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "vendor",
+            filename: "vendor.js",
+            minChunks: module => module.context && module.context.indexOf("node_modules") !== -1
+        })
     ]
 }

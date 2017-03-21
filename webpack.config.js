@@ -47,6 +47,11 @@ module.exports = {
                 warnings: false
             },
             mangle: false
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "vendor",
+            filename: "vendor.js",
+            minChunks: module => module.context && module.context.indexOf("node_modules") !== -1
         })
     ]
 }
