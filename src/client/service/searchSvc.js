@@ -1,6 +1,6 @@
 export default class Search {
     constructor($resource, $q) {
-        angular.extend(this, {$q});
+        angular.extend(this, { $q });
 
         this.youtubeApi = $resource('search/:word', {
             word: '@word'
@@ -10,7 +10,7 @@ export default class Search {
         this.nextPageToken = null;
         this.selectedIndex = null;
     }
-    searchVideo(word, pageToken){
+    searchVideo(word, pageToken) {
         const q = this.$q.defer();
         this.youtubeApi.get({
             word: word,

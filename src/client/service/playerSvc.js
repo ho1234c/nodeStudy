@@ -1,6 +1,7 @@
 export default class PlayerSvc {
-    constructor($rootScope, $window) {
+    constructor($rootScope, $window, $mdSidenav) {
         this.$rootScope = $rootScope;
+        this.$mdSidenav = $mdSidenav;
 
         // video properties
         this.width = 240;
@@ -29,7 +30,7 @@ export default class PlayerSvc {
 
         this.$rootScope.$on('videoEnd', () => {
             let context = this[this.status.listName];
-            if(this.status.listIndex == context.length -1){ // if current video is last in list, it stop playing
+            if (this.status.listIndex == context.length - 1) { // if current video is last in list, it stop playing
                 return;
             }
             this._pageControl(this.status.listIndex, this.status.listName); // increment video index and change current page into next page.
@@ -39,7 +40,7 @@ export default class PlayerSvc {
         });
 
         this.$rootScope.$watch(() => angular.element($window)[0].innerHeight, (newVal, oldVal) => {
-            if(newVal < 1000) {
+            if (newVal < 1000) {
                 this.listDetailNumPerPage = 10;
             }
             else {
@@ -47,8 +48,8 @@ export default class PlayerSvc {
             }
         });
     }
-    playVideo(index, listname){
-        this.status.playingListId = listname  == 'listDetail' ? this.status.musicListId : this.status.userListId;
+    playVideo(index, listname) {
+        this.status.playingListId = listname == 'listDetail' ? this.status.musicListId : this.status.userListId;
 
         // update status
         this.status.listName = listname;
@@ -56,10 +57,17 @@ export default class PlayerSvc {
         this.status.videoIndex = this._findVideoIndex(listname);
 
         const list = this[listname]; // find context list
+        if (!this.videoid) {
+            angular.element(angular.element(document.querySelectorAll('#id-box-wrap'))).css('position', 'inherit');
+            this.$mdSidenav('id-box').open()
+                .then(() => {
+                    angular.element(angular.element(document.querySelectorAll('#id-box-open-btn'))).css('right', '240px');
+                });
+        }
         this.videoid = list[this.status.videoIndex].videoId;
     }
-    highlighting(index, listname){
-        if((listname == 'listDetail' && this.status.playingListId != this.status.musicListId) ||  // 현재 플레이되고 있는 비디오가 포함된 리스트와
+    highlighting(index, listname) {
+        if ((listname == 'listDetail' && this.status.playingListId != this.status.musicListId) ||  // 현재 플레이되고 있는 비디오가 포함된 리스트와
             (listname == 'playlist' && this.status.playingListId != this.status.userListId) ||    // 유저가 조회하고있는 리스트가 다를 경우 하이라이팅하지 않는다.
             (listname != this.status.listName)) // 클릭한 리스트만 하이라이팅하기 위함
         {
@@ -75,51 +83,51 @@ export default class PlayerSvc {
         this.$rootScope.$broadcast('highlighting', highlightObj);
     }
     // determine whether page increase or not.
-    _pageControl(index, listName){
-        if(listName == 'listDetail' && ((index + 1) % this.listDetailNumPerPage === 0)){
-            if(this._checkViewPage()){
+    _pageControl(index, listName) {
+        if (listName == 'listDetail' && ((index + 1) % this.listDetailNumPerPage === 0)) {
+            if (this._checkViewPage()) {
                 this.listDetailCurrentPage += 1;
                 this.status.videoIndex += 1;
             }
             this.status.listIndex = 0;
         }
-        else if(listName == 'playlist' && ((index + 1) % this.playlistNumPerPage === 0)){
-            if(this._checkViewPage()){
+        else if (listName == 'playlist' && ((index + 1) % this.playlistNumPerPage === 0)) {
+            if (this._checkViewPage()) {
                 this.playlistCurrentPage += 1;
                 this.status.videoIndex += 1;
             }
             this.status.listIndex = 0;
         }
-        else{
+        else {
             this.status.listIndex += 1;
             this.status.videoIndex += 1;
             this.highlighting(this.status.listIndex, this.status.listName);
         }
     }
     // index of object in ng-repeat and real array is different.
-    _findVideoIndex(listName){
+    _findVideoIndex(listName) {
         let videoIndex;
 
-        if(listName == 'listDetail'){
+        if (listName == 'listDetail') {
             videoIndex = this.listDetailNumPerPage * (this.listDetailCurrentPage - 1) + this.status.listIndex;
         }
-        else if(listName == 'playlist'){
+        else if (listName == 'playlist') {
             videoIndex = this.playlistNumPerPage * (this.playlistCurrentPage - 1) + this.status.listIndex;
         }
         return videoIndex;
     }
     // this method is made for checking that whether user is viewing the page containing current played video.
-    _checkViewPage(){
+    _checkViewPage() {
         let temp;
-        if(this.status.listName == 'listDetail'){
+        if (this.status.listName == 'listDetail') {
             temp = this.listDetailNumPerPage * (this.listDetailCurrentPage - 1) + this.status.listIndex;
-            if(temp == this.status.videoIndex){
+            if (temp == this.status.videoIndex) {
                 return true;
             }
         }
-        else if(this.status.listName == 'playlist'){
+        else if (this.status.listName == 'playlist') {
             temp = this.playlistNumPerPage * (this.playlistCurrentPage - 1) + this.status.listIndex;
-            if(temp == this.status.videoIndex){
+            if (temp == this.status.videoIndex) {
                 return true;
             }
         }
@@ -127,4 +135,4 @@ export default class PlayerSvc {
     }
 }
 
-PlayerSvc.$inject = ['$rootScope', '$window'];
+PlayerSvc.$inject = ['$rootScope', '$window', '$mdSidenav'];

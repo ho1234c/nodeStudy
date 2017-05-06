@@ -1,6 +1,6 @@
 export default class idBoxCtrl {
     constructor(Player, User, Session, List, Search, Toast, $scope, $state, $mdSidenav, $window) {
-        angular.extend(this, {Player, User, Session, List, Search, Toast, $scope, $state, $mdSidenav, $window});
+        angular.extend(this, { Player, User, Session, List, Search, Toast, $scope, $state, $mdSidenav, $window });
 
         this.selectedListName = null;
         this.selectedSong = null;
@@ -10,11 +10,11 @@ export default class idBoxCtrl {
         this.signUpForm = new User.userRequest();
 
         this.$scope.$on('highlighting', (event, msg) => {
-            if(msg.index == -1){
+            if (msg.index == -1) {
                 this.selectedSong = null;
             }
-            else{
-                if(msg.listname == 'playlist'){
+            else {
+                if (msg.listname == 'playlist') {
                     this.selectedSong = msg.index;
                 }
                 else {
@@ -23,7 +23,7 @@ export default class idBoxCtrl {
             }
         });
     }
-    selectList(item){
+    selectList(item) {
         this.selectedSong = null;
         this.Player.playlist = [];
         this.Player.status.userListId = item.id;
@@ -33,21 +33,21 @@ export default class idBoxCtrl {
         this.List.loadDetail(item.id)
             .then(result => {
                 const songInfo = JSON.parse(result.data.songInfo);
-                for(const index in songInfo){
+                for (const index in songInfo) {
                     this.Player.playlist.push(songInfo[index]);
                 }
             });
     }
-    listControl(dir){
-        if(dir == 'up' && this.listStart > 0){
+    listControl(dir) {
+        if (dir == 'up' && this.listStart > 0) {
             this.listStart -= 5;
             this.listEnd -= 5;
-        }else if(dir == 'down' && this.listEnd < this.Session.user.list.length - 1){
+        } else if (dir == 'down' && this.listEnd < this.Session.user.list.length - 1) {
             this.listStart += 5;
             this.listEnd += 5;
         }
     }
-    login(){
+    login() {
         this.User.login(this.loginForm)
             .then(data => {
                 this.isShowSignUpForm = false;
@@ -59,19 +59,17 @@ export default class idBoxCtrl {
                 this.Toast.fail(err);
             });
     }
-    logout(){
+    logout() {
         this.User.logout()
             .then(result => {
                 this.Session.destroy();
-
-                //init object related to user
-                this.Player.playlist = [];
+                this.Player.playlist = []; //init object related to user
                 this.List.initForm();
                 this.Search.searchArray = [];
                 this.$state.go('main.music-list');
             });
     }
-    signUp(){
+    signUp() {
         this.isShowSignUpForm = false;
 
         this.signUpForm.$save(data => {
@@ -79,15 +77,15 @@ export default class idBoxCtrl {
             this.Session.set(data);
         });
     }
-    toggleIdBox(){
-        if(this.$mdSidenav('id-box').isOpen()){
+    toggleIdBox() {
+        if (this.$mdSidenav('id-box').isOpen()) {
             angular.element(angular.element(document.querySelectorAll('#id-box-wrap'))).css('position', 'fixed');
             this.$mdSidenav('id-box').close()
                 .then(() => {
                     angular.element(angular.element(document.querySelectorAll('#id-box-open-btn'))).css('right', '20px');
                 });
         }
-        else{
+        else {
             angular.element(angular.element(document.querySelectorAll('#id-box-wrap'))).css('position', 'inherit');
             this.$mdSidenav('id-box').open()
                 .then(() => {
@@ -95,15 +93,15 @@ export default class idBoxCtrl {
                 });
         }
     }
-    facebookLogin(){
+    facebookLogin() {
         this.$window.location.assign('/user/login/facebook');
     }
-    removeList(id, index){
+    removeList(id, index) {
         this.List.like(id, 'decrement')
             .then(() => {
                 this.Session.user.list.splice(index, 1);
                 this.List.musicList.forEach(obj => {
-                    if(obj.id == id){
+                    if (obj.id == id) {
                         obj.isLike = false;
                     }
                 });

@@ -64,8 +64,7 @@ const hashPasswordHook = (user, options, callback) => {
         });
 };
 
-const hashPromise = (password, salt) => {
-    salt = salt || 10;
+const hashPromise = (password, salt = 10) => {
     return new Promise((resolve, reject) => {
         bcrypt.hash(password, salt, (err, hash) => {
             if (err) return reject(err);

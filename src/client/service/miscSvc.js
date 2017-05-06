@@ -2,18 +2,18 @@ import nprogress from 'nprogress';
 
 export function httpInterceptors($q) {
     return {
-        request(req){
+        request(req) {
             nprogress.start();
             return req || $q.when(req);
         },
-        requestError(req){
+        requestError(req) {
             return $q.reject(req);
         },
-        response(res){
+        response(res) {
             nprogress.done();
             return res || $q.when(res);
         },
-        responseError(res){
+        responseError(res) {
             let reject = res.data.message;
             nprogress.done();
             return $q.reject(reject);
@@ -29,7 +29,7 @@ export class Session {
         this.user = {};
         this.init = $http.get('/session')
             .then(res => {
-                if(res.data.user){
+                if (res.data.user) {
                     this.set(res.data);
                 }
                 else {
@@ -53,14 +53,14 @@ export class Session {
 Session.$inject = ['$http'];
 
 export class Toast {
-    constructor($mdToast, $q){
-        angular.extend(this, {$mdToast, $q});
+    constructor($mdToast, $q) {
+        angular.extend(this, { $mdToast, $q });
 
         this.simple = this.$mdToast.simple()
             .position('top')
             .hideDelay(700);
     }
-    success(message){
+    success(message) {
         const q = this.$q.defer();
 
         this.$mdToast.show(
@@ -77,7 +77,7 @@ export class Toast {
         return q.promise;
     }
 
-    fail(message){
+    fail(message) {
         const q = this.$q.defer();
 
         this.$mdToast.show(

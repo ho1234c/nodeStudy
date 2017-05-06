@@ -8,7 +8,7 @@ export default class searchAddCtrl {
             List.loadDetail($state.params.id)
                 .then(result => {
                     const songInfo = JSON.parse(result.data.songInfo);
-                    const imageUrl = $state.href('main.music-list', $state.params, {absolute: true}) + 'thumbnails/'+result.data.thumbnail;
+                    const imageUrl = $state.href('main.music-list', $state.params, { absolute: true }) + 'thumbnails/' + result.data.thumbnail;
                     const element = angular.element(document.getElementById('stored-image'));
 
                     List.initForm();
@@ -74,7 +74,7 @@ export default class searchAddCtrl {
         this.List.createdList.push(obj);
     }
     removeSong(index) {
-        const removedIndex = this.List.createdListNumPerPage * (this.List.createdListcurrentPage-1) + index;
+        const removedIndex = this.List.createdListNumPerPage * (this.List.createdListcurrentPage - 1) + index;
         this.List.createdList.splice(removedIndex, 1);
     }
     createList(list) {
@@ -107,7 +107,7 @@ export default class searchAddCtrl {
                     list.$setUntouched();
                     this.Toast.success('수정되었습니다');
                     this.mode = 'add';
-                    this.$state.go('main.search-add', {id: ""});
+                    this.$state.go('main.search-add', { id: "" });
                 }).catch(() => {
                     this.Toast.fail('수정에 실패했습니다');
                 });
@@ -116,8 +116,8 @@ export default class searchAddCtrl {
             this.Toast.fail(msg);
         }
     }
-    imageValidation(form){
-        if(form.$error.maxSize){
+    imageValidation(form) {
+        if (form.$error.maxSize) {
             this.Toast.fail('이미지 사이즈가 너무 큽니다.');
         }
     }
