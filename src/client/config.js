@@ -13,10 +13,10 @@ export function miscConfig($httpProvider, $locationProvider, $mdThemingProvider)
     $mdThemingProvider.theme('fail-toast');
 }
 
-export function routeConfig($stateProvider){
+export function routeConfig($stateProvider) {
     $stateProvider
         .state('main', {
-            views:{
+            views: {
                 main: {
                     url: '',
                     templateUrl: '/partials/main.html',
@@ -40,7 +40,7 @@ export function routeConfig($stateProvider){
             url: '/',
             templateUrl: '/partials/main.music-list.html',
             controller: 'listCtrl',
-            controllerAs : 'vm',
+            controllerAs: 'vm',
             resolve: {
                 initList: $resource => {
                     return $resource('/list').get().$promise;
@@ -51,13 +51,13 @@ export function routeConfig($stateProvider){
             url: '/search-add/:id',
             templateUrl: '/partials/main.search-add.html',
             controller: 'searchAddCtrl',
-            controllerAs : 'vm',
+            controllerAs: 'vm',
             resolve: {
-                isLogin: (Session, $q)=> {
+                isLogin: (Session, $q) => {
                     const q = $q.defer();
-                    if(Session.isLogin){
+                    if (Session.isLogin) {
                         q.resolve();
-                    }else{
+                    } else {
                         q.reject();
                     }
                     return q.promise;

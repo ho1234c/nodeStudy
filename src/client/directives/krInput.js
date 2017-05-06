@@ -1,9 +1,9 @@
 export default class krInput {
-    constructor(){
+    constructor() {
         this.priority = 2;
         this.restrict = 'A';
     }
-    compile(element){
+    compile(element) {
         element.on('compositionstart', e => {
             e.stopImmediatePropagation();
         });

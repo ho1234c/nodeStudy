@@ -12,7 +12,7 @@ export default class mainCtrl {
             // prevent selectedIndex from changing even if the route change fails.
             if (fromState.name == 'main.search-add') {
                 $scope.selectedIndex = 1;
-            }else if(fromState.name == 'main.music-list'){
+            } else if (fromState.name == 'main.music-list') {
                 $scope.selectedIndex = 0;
             }
         });

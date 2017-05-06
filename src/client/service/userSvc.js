@@ -1,14 +1,14 @@
 export default class User {
     constructor($resource, $q) {
-        angular.extend(this, {$q});
+        angular.extend(this, { $q });
         this.userRequest = $resource('user/:controller', {
             controller: '@controller',
         }, {
-            login: { method: 'POST', params: { controller: 'login' }},
-            logout: { method: 'GET', params: { controller: 'logout' }}
-        });
+                login: { method: 'POST', params: { controller: 'login' } },
+                logout: { method: 'GET', params: { controller: 'logout' } }
+            });
     }
-    login({email, password}) {
+    login({ email, password }) {
         const delay = this.$q.defer();
 
         this.userRequest.login({ email, password }, result => {

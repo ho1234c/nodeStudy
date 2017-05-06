@@ -1,5 +1,5 @@
 export default class Youtube {
-    constructor($window){
+    constructor($window) {
         this.$window = $window;
         this.template = '<div></div>';
         this.restrict = 'E';
@@ -9,7 +9,7 @@ export default class Youtube {
             videoid: "@"
         };
     }
-    link(scope, element){
+    link(scope, element) {
         const tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
 
@@ -29,9 +29,9 @@ export default class Youtube {
                         event.target.playVideo();
                         event.target.setVolume(100);
                     },
-                    'onStateChange':  event => {
+                    'onStateChange': event => {
                         // When finished find the next video.
-                        if(event.data == YT.PlayerState.ENDED){
+                        if (event.data == YT.PlayerState.ENDED) {
                             scope.$apply(() => {
                                 scope.$emit('videoEnd');
                             });

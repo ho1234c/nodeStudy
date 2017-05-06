@@ -30,7 +30,7 @@ import 'font-awesome/scss/font-awesome.scss';
 import './stylesheet/style.scss';
 
 angular
-    .module('withSong', [ 'ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination', 'ngSanitize', 'ngMessages', 'ngFileUpload' ])
+    .module('withSong', ['ui.router', 'ngResource', 'ngMaterial', 'angularUtils.directives.dirPagination', 'ngSanitize', 'ngMessages', 'ngFileUpload'])
     .service('List', listSvc)
     .service('User', userSvc)
     .service('Player', playerSvc)

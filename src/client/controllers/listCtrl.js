@@ -1,9 +1,9 @@
 export default class listCtrl {
     constructor($rootScope, $window, $state, initList, Player, List, Session, Toast, Comment) {
         angular.extend(this, { $state, initList, Player, List, Session, Toast, Comment });
-        
+
         // only first time
-        if(this.List.musicList.length === 0){
+        if (this.List.musicList.length === 0) {
             this.List.musicList = initList.data;
         }
 
@@ -15,11 +15,11 @@ export default class listCtrl {
         this.commetOrderBy = 'createdAt';
 
         $rootScope.$on('highlighting', (event, msg) => {
-            if(msg.index === -1){
+            if (msg.index === -1) {
                 this.selectedSong = null;
             }
-            else{
-                if(msg.listname == 'listDetail'){
+            else {
+                if (msg.listname == 'listDetail') {
                     this.selectedSong = msg.index;
                 }
                 else {
@@ -29,23 +29,23 @@ export default class listCtrl {
         });
 
         $rootScope.$watch(() => angular.element($window)[0].innerHeight, (newVal, oldVal) => {
-            if(newVal > 1000) {
+            if (newVal > 1000) {
                 this.isShowComment = true;
             }
         });
     }
-    loadList(watchMore){
-        if(!watchMore){
+    loadList(watchMore) {
+        if (!watchMore) {
             this.List.musicList = [];
         }
         this.List.load(this.List.musicList.length)
             .then(result => {
-                for(const index in result.data){
+                for (const index in result.data) {
                     this.List.musicList.push(result.data[index]);
                 }
             });
     }
-    selectList(id, index){
+    selectList(id, index) {
         this.selectedSong = null;
 
         this.Comment.listId = id;
@@ -64,17 +64,17 @@ export default class listCtrl {
                 const comments = result.data.Comments;
 
                 this.Player.listDetail = [];
-                for(const index in songInfo){
+                for (const index in songInfo) {
                     this.Player.listDetail.push(songInfo[index]);
                 }
                 this.Comment.commentList = [];
-                for(const index in comments){
+                for (const index in comments) {
                     this.Comment.commentList.push(comments[index]);
                 }
                 this.changeCommentOrder();
             });
     }
-    changeListOrder(){
+    changeListOrder() {
         this.List.musicList = [];
         this.Player.listDetail = [];
         this.Comment.commentList = [];
@@ -83,25 +83,25 @@ export default class listCtrl {
 
         this.List.load()
             .then(result => {
-                for(const index in result.data){
+                for (const index in result.data) {
                     this.List.musicList.push(result.data[index]);
                 }
             });
     }
-    likeToggle(element){
-        if(!this.Session.isLogin){
+    likeToggle(element) {
+        if (!this.Session.isLogin) {
             this.Toast.fail('로그인이 필요합니다');
             return;
         }
         element.hover = !element.hover; // because when click to target, it was fired mouse enter and mouse leave event.
-        if(element.item.isLike){
+        if (element.item.isLike) {
             this.List.like(element.item.id, 'decrement')
                 .then(() => {
                     this.Session.user.list = this.Session.user.list.filter(obj => obj.id != element.item.id);
                     element.item.like -= 1;
                 });
         }
-        else{
+        else {
             this.List.like(element.item.id, 'increment')
                 .then(() => {
                     this.Session.user.list.push(element.item);
@@ -110,17 +110,17 @@ export default class listCtrl {
         }
         element.item.isLike = !element.item.isLike;
     }
-    submitComment(){
-        if(!this.Session.isLogin){
+    submitComment() {
+        if (!this.Session.isLogin) {
             this.Toast.fail('로그인해주세요');
             return;
         }
 
-        if(this.Comment.content.length === 0){
+        if (this.Comment.content.length === 0) {
             this.Toast.fail('댓글을 입력해 주세요');
             return;
         }
-        else if(this.Comment.content.length > 90){
+        else if (this.Comment.content.length > 90) {
             this.Toast.fail('90자 미만으로 입력해주세요');
             return;
         }
@@ -135,25 +135,25 @@ export default class listCtrl {
             this.changeCommentOrder();
         });
     }
-    changeCommentOrder(){
+    changeCommentOrder() {
         this.Comment.commentList.sort((a, b) => {
             return new Date(b[this.commetOrderBy]) - new Date(a[this.commetOrderBy]);
         });
     }
-    likeCommentToggle(element){
-        if(!this.Session.isLogin){
+    likeCommentToggle(element) {
+        if (!this.Session.isLogin) {
             this.Toast.fail('로그인이 필요합니다');
             return;
         }
         element.hover = !element.hover; // because when click to target, it was fired mouse enter and mouse leave event.
-        if(element.item.isLike){
+        if (element.item.isLike) {
             this.Comment.like(element.item.id, 'decrement')
                 .then(() => {
                     this.Session.user.comment = this.Session.user.comment.filter(obj => obj.id != element.item.id);
                     element.item.like -= 1;
                 });
         }
-        else{
+        else {
             this.Comment.like(element.item.id, 'increment')
                 .then(result => {
                     this.Session.user.comment.push(element.item);
@@ -162,18 +162,18 @@ export default class listCtrl {
         }
         element.item.isLike = !element.item.isLike;
     }
-    searchList(){
-        if(!this.List.searchWord){
+    searchList() {
+        if (!this.List.searchWord) {
             this.List.musicList = [];
         }
         this.List.load(this.List.musicList.length)
             .then(result => {
-                for(const index in result.data){
+                for (const index in result.data) {
                     this.List.musicList.push(result.data[index]);
                 }
             });
     }
-    editList(id){
+    editList(id) {
         this.$state.go('main.search-add', { id: id });
     }
 }
