@@ -111,6 +111,9 @@ export default class idBoxCtrl {
                 this.Toast.fail('목록을 제거하는데 실패했습니다.');
             });
     }
+    muteToggle(){
+        this.Player.isMuted = !this.Player.isMuted;
+    }
 }
 
 idBoxCtrl.$inject = ['Player', 'User', 'Session', 'List', 'Search', 'Toast', '$scope', '$state', '$mdSidenav', '$window'];

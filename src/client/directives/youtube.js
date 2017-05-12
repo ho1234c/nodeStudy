@@ -6,7 +6,9 @@ export default class Youtube {
         this.scope = {
             height: "@",
             width: "@",
-            videoid: "@"
+            videoid: "@",
+            volume: "@",
+            isMuted: "@"
         };
     }
     link(scope, element) {
@@ -27,7 +29,9 @@ export default class Youtube {
                 events: {
                     'onReady': event => {
                         event.target.playVideo();
-                        event.target.setVolume(100);
+                        if(event.target.isMuted()){
+                            event.target.unMute();
+                        }
                     },
                     'onStateChange': event => {
                         // When finished find the next video.
@@ -36,6 +40,11 @@ export default class Youtube {
                                 scope.$emit('videoEnd');
                             });
                         }
+                    },
+                    'onError': event => {
+                        scope.$apply(() => {
+                                scope.$emit('videoEnd');
+                            });
                     }
                 }
             });
@@ -53,6 +62,27 @@ export default class Youtube {
                 return;
             }
             player.setSize(scope.width, scope.height);
+        });
+
+        scope.$watch('volume', (newValue, oldValue) => {
+            if(newValue == oldValue){
+                return;
+            }
+    
+            player.setVolume(scope.volume);
+        });
+
+        scope.$watch('isMuted', (newValue, oldValue) => {
+            if(!player){
+                return;
+            }
+            
+            // passed "isMuted" as boolean but received as string
+            if(scope.isMuted == "true"){
+                player.mute();
+            }else{
+                player.unMute();
+            }
         });
     }
 }

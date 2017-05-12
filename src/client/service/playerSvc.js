@@ -7,6 +7,8 @@ export default class PlayerSvc {
         this.width = 240;
         this.height = 180;
         this.videoid = null;
+        this.volume = 50;
+        this.isMuted = false;
 
         // in main-music-list
         this.listDetail = [];

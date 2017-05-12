@@ -1,6 +1,7 @@
 node_modules
 dist
 public/bundle.js
+public/vendor.js
 public/*.map
 *.eot
 *.svg

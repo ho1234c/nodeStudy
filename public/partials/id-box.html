@@ -20,7 +20,15 @@
         </form>
     </md-content>
     <div id="player-wrap" ng-if="vm.Player.videoid">
-        <youtube width="{{ vm.Player.width }}" height="{{ vm.Player.height }}" videoid="{{ vm.Player.videoid }}" class="player"></youtube>
+        <md-slider-container id=volume-controller flex>
+            <div id=volume-icon ng-click="vm.muteToggle()">
+                <i id=volume-up-icon class="fa fa-volume-up" aria-hidden="true" ng-if="!vm.Player.isMuted"></i>
+                <i id=volume-off-icon class="fa fa-volume-off" aria-hidden="true" ng-if="vm.Player.isMuted"></i>
+            </div>
+            <md-slider ng-model="vm.Player.volume" min="0" max="100" aria-label="volume" id="volume-slider" class="md-accent" md-vertical 
+                md-range ng-click="vm.Player.isMuted = false"></md-slider>
+        </md-slider-container>
+        <youtube width="{{ vm.Player.width }}" height="{{ vm.Player.height }}" videoid="{{ vm.Player.videoid }}" volume="{{ vm.Player.volume }}" is-muted="{{ vm.Player.isMuted }}" class="player"></youtube>
     </div>
     <md-content id="id-box-list" ng-if="vm.Session.isLogin" layout="column">
         <md-button id="list-up-btn" aria-label="Up" ng-click="vm.listControl('up')"><i class="fa fa-caret-up" aria-hidden="true"></i></md-button>
