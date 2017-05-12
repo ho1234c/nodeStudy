@@ -11,7 +11,7 @@ services:
             - 443:443
         volumes: 
             - /data/nginx:/var/log/nginx
-            - /data/letsencrypt:/letsencrypt
+            - /etc/letsencrypt:/letsencrypt
 
     withsong:
         container_name: withsong
