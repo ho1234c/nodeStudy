@@ -4,7 +4,6 @@ import routeIndex from './routes/index';
 import routeList from './routes/list';
 import routeUser from './routes/user'
 
-
 const app = express();
 const route = configExpress(app);
 

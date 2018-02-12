@@ -1,5 +1,7 @@
 # withsong
 
+This service is YouTube player. It offers convenience to play video.
+
 ## Preparation
 
 Install postgres, redis and nodemon if you are in the localhost environment for development. and if you are in real server for deploy, install docker.

@@ -1,6 +1,6 @@
 import bootstrap from './bootstrap'
 import config from './config'
-import db from './models';
+import db from './models'
 
 db.sequelize.sync()
     .then(() => {

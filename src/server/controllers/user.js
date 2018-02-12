@@ -55,6 +55,6 @@ export default {
     },
     logout(req, res){
         req.logout();
-        res.sendStatus(200);
+        res.sendStatus(200).send('LOGOUT_SUCCESS');
     }
 }

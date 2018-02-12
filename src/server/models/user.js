@@ -10,12 +10,12 @@ export default (sequelize, DataTypes) => {
             password_hash:{ type: DataTypes.STRING }
         },
         {
-            hooks:{
+            hooks: {
                 beforeBulkCreate: hashPasswordHook,
                 beforeCreate: hashPasswordHook,
                 beforeUpdate: hashPasswordHook
             },
-            instanceMethods:{
+            instanceMethods: {
                 authenticate: function (password, callback) {
                     bcrypt.compare(password, this.password_hash, function(err, isMatch) {
                         if (err) {

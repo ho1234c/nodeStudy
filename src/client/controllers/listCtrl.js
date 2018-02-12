@@ -179,4 +179,3 @@ export default class listCtrl {
 }
 
 listCtrl.$inject = ['$rootScope', '$window', '$state', 'initList', 'Player', 'List', 'Session', 'Toast', 'Comment'];
-
